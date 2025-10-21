@@ -1,10 +1,9 @@
-type ActionHandler = (context: ActionContext) => Promise<any>
+import * as map from './map'
+import * as resource from './resource'
+import * as character from './character'
 
-const testRoute = async (context: ActionContext) => {
-  return { message: 'This is a test route' }
-}
-
-// Key là chuỗi 'category/actionName', value là hàm handler tương ứng.
-export const actions: Record<string, ActionHandler> = {
-  'test/route': testRoute
+export const actions: Record<string, any> = {
+  'map/move': map.move,
+  'resource/gather': resource.gather,
+  'character/cultivate': character.cultivate,
 }

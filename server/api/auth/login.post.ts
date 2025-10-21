@@ -1,10 +1,5 @@
 import { z } from 'zod'
 
-const bodySchema = z.object({
-  email: z.string().email(),
-  password: z.string().min(6)
-})
-
 export default defineEventHandler(async (event) => {
   const { email, password } = await readBody(event)
 

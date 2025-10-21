@@ -1,49 +1,46 @@
 export function useGameAction() {
   const { addLog } = useGameLog()
-  // Lấy pháp quyết từ Linh Đài
-  const { updateCharacter } = useCharacterStore()
+  const playerStore = usePlayerStore()
+  const mapStore = useMapStore()
   const isLoading = ref(false)
-  const { setTerritory } = useTerritoryStore()
 
-  const performAction = async <T extends { message?: string }>(action: string, payload?: any): Promise<T | null> => {
+  // Hàm thực thi hành động chính
+  async function execute<T>(action: string, payload?: T) {
+    if (isLoading.value)
+      return // Ngăn chặn spam click
+
     isLoading.value = true
     try {
-      const result = await $fetch<T>('/api/action', {
+      // Gọi đến API action duy nhất
+      const result = await $fetch('/api/action', {
         method: 'POST',
-        body: { action, payload }
+        body: { action, payload },
       })
 
-      if (result && result.message) {
-        addLog(result.message, 'success')
+      // Xử lý kết quả trả về từ server
+      if (result.log) {
+        if (Array.isArray(result.log))
+          result.log.forEach((msg: string) => addLog(msg))
+        else
+          addLog(result.log)
       }
 
-      if (result) {
-        const { territory, resources, ...characterUpdates } = result as any
+      // Cập nhật state trên client
+      if (result.updates) {
+        if (result.updates.character)
+          playerStore.updateCharacter(result.updates.character)
 
-        // 1. Cập nhật Linh Đài Lãnh Địa nếu có
-        if (territory) {
-          setTerritory(territory)
-        }
-
-        // 2. Cập nhật Linh Đài Nhân Vật nếu có
-        // Gộp 'resources' vào chung với các update khác của character
-        const allCharacterUpdates = resources ? { ...characterUpdates, resources } : characterUpdates
-        if (Object.keys(allCharacterUpdates).length > 0) {
-          updateCharacter(allCharacterUpdates)
-        }
+        if (result.updates.zone)
+          mapStore.setCurrentZone(result.updates.zone)
       }
-
-      return result
-    } catch (e: any) {
-      addLog(e.data?.message || 'Hành động thất bại.', 'error')
-      return null
-    } finally {
+    }
+    catch (error: any) {
+      addLog(error.data?.message || 'Có lỗi xảy ra', 'error')
+    }
+    finally {
       isLoading.value = false
     }
   }
 
-  return {
-    performAction,
-    isLoading
-  }
+  return { execute, isLoading }
 }
