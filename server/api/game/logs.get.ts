@@ -13,9 +13,8 @@ export default defineEventHandler(async (event) => {
   return rawLogs.map((log) => {
     const parts = log.split('|')
     const timestamp = parts[0]
-    // Mặc định là 'default' nếu type không có hoặc không hợp lệ
     const type = (parts[1] as LogType) || 'default'
-    const message = parts.slice(2).join('|')
+    const message = parts.slice(2).join('|') // Logic này vẫn đúng để xử lý message có chứa '|'
 
     return {
       timestamp,

@@ -1,15 +1,15 @@
 import type { Document } from 'mongoose'
-import { ICharacter } from '../models/character.model'
+import type { LogPayload } from '../utils/logger'
 
 export interface ActionContext {
-  character: Document & ICharacter // Nhân vật thực hiện hành động
-  payload?: any
+  character: Document & ICharacter
+  payload?: unknown
 }
 
 export interface ActionResult {
-  log: string | string[] // Thông báo log để hiển thị cho người chơi
-  updates: Record<string, any> // Dữ liệu để cập nhật state trên client (player, zone...)
-  [key: string]: any
+  log?: LogPayload[]
+  updates: Record<string, unknown>
+  [key: string]: unknown
 }
 
 export type ActionHandler = (context: ActionContext) => Promise<ActionResult>

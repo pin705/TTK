@@ -1,43 +1,48 @@
 export function useGameAction() {
-  const { addLog } = useGameLog()
+  const { addMultipleLogs, addLog } = useGameLog()
   const playerStore = usePlayerStore()
   const mapStore = useMapStore()
   const isLoading = ref(false)
 
-  // Hàm thực thi hành động chính
   async function execute<T>(action: string, payload?: T) {
-    if (isLoading.value)
-      return // Ngăn chặn spam click
+    if (isLoading.value) return
 
     isLoading.value = true
     try {
-      // Gọi đến API action duy nhất
       const result = await $fetch('/api/action', {
         method: 'POST',
-        body: { action, payload },
+        body: { action, payload }
       })
 
-      // Xử lý kết quả trả về từ server
+      // Xử lý log trả về từ action
       if (result.log) {
-        if (Array.isArray(result.log))
-          result.log.forEach((msg: string) => addLog(msg))
-        else
-          addLog(result.log)
+        // 1. Normalize `result.log` into an array, regardless of its original form.
+        const logsToProcess = Array.isArray(result.log) ? result.log : [result.log]
+
+        // 2. Map the normalized array to the client-side LogEntry format.
+        const newLogs: LogEntry[] = logsToProcess.map((l: any) => ({
+          timestamp: new Date().toISOString(),
+          message: l.message,
+          type: l.type
+        }))
+
+        // 3. Add the new logs to the UI.
+        if (newLogs.length > 0) {
+          addMultipleLogs(newLogs)
+        }
       }
 
-      // Cập nhật state trên client
+      // Xử lý updates state
       if (result.updates) {
         if (result.updates.character)
           playerStore.updateCharacter(result.updates.character)
-
         if (result.updates.zone)
           mapStore.setCurrentZone(result.updates.zone)
       }
-    }
-    catch (error: any) {
-      addLog(error.data?.message || 'Có lỗi xảy ra', 'error')
-    }
-    finally {
+    } catch (error: any) {
+      const message = error.data?.message || 'Có lỗi xảy ra'
+      addLog(message, 'error')
+    } finally {
       isLoading.value = false
     }
   }

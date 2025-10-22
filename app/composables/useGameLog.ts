@@ -1,47 +1,44 @@
 import { ref } from 'vue'
 
+// Định nghĩa cấu trúc của một entry trong log
 export interface LogEntry {
   timestamp: string
   message: string
-  type?: 'error' | 'info' | 'command'
+  type?: 'default' | 'error' | 'warning' | 'success' | 'info' | 'command' | 'attack' | 'victory' | 'reward' | 'defeat'
 }
 
 const logs = ref<LogEntry[]>([])
-const MAX_CLIENT_LOGS = 50 // Giữ số lượng log trên client khớp với server
+const MAX_CLIENT_LOGS = 50 // Giới hạn số log hiển thị trên client
 
 export function useGameLog() {
-  /**
-   * Tải log ban đầu từ server.
-   */
+  // Hàm tải log ban đầu từ server (Redis)
   async function fetchInitialLogs() {
     try {
       const initialLogs = await $fetch<LogEntry[]>('/api/game/logs')
-      logs.value = initialLogs.reverse() // Đảo ngược để log cũ nhất ở trên
+      logs.value = initialLogs.reverse()
     } catch (e) {
-      console.error('Failed to fetch initial logs', e)
+      console.error('Không thể tải lịch sử log', e)
     }
   }
 
-  /**
-   * Thêm một log mới vào danh sách trên client.
-   * @param message Nội dung log
-   * @param type Loại log
-   */
+  // Hàm thêm một mảng các log mới
+  function addMultipleLogs(newLogs: LogEntry[]) {
+    logs.value.push(...newLogs)
+    const excess = logs.value.length - MAX_CLIENT_LOGS
+    if (excess > 0) {
+      logs.value.splice(0, excess)
+    }
+  }
+
+  // Hàm thêm một log đơn lẻ (dùng cho các lệnh /command ở client)
   function addLog(message: string, type?: LogEntry['type']) {
-    logs.value.push({
+    console.log('Adding log:', message, type)
+    addMultipleLogs([{
       timestamp: new Date().toISOString(),
       message,
-      type
-    })
-
-    // Cắt bớt log cũ trên client
-    if (logs.value.length > MAX_CLIENT_LOGS)
-      logs.value.shift()
+      type: type || 'default'
+    }])
   }
 
-  return {
-    logs,
-    addLog,
-    fetchInitialLogs
-  }
+  return { logs, addLog, addMultipleLogs, fetchInitialLogs }
 }

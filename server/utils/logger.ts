@@ -3,40 +3,43 @@ import redis from './redis'
 const LOG_LIST_PREFIX = 'logs:'
 const MAX_LOGS = 50 // Giới hạn chỉ lưu 50 log mới nhất
 
-// Định nghĩa các loại log hợp lệ
-export type LogType = 'default' | 'error' | 'info' | 'command' | 'success' | 'warning'
+export type LogType = 'default' | 'error' | 'info' | 'command' | 'success' | 'warning' | 'attack' | 'victory' | 'reward' | 'defeat'
+
+export interface LogPayload {
+  message: string
+  type: LogType
+}
 
 export const Logger = {
   /**
-   * Thêm một log mới cho nhân vật.
-   * @param characterId ID của nhân vật
-   * @param message Nội dung log
-   * @param type Loại log
+   * Thêm một hoặc nhiều log entries mới cho nhân vật.
    */
-  async add(characterId: string, message: string | string[], type: LogType = 'default') {
-    if (!characterId) return
+  async add(characterId: string, logs: LogPayload[]) {
+    if (!characterId || logs.length === 0) return
 
     const key = `${LOG_LIST_PREFIX}${characterId}`
-    const now = new Date().toISOString()
 
-    // ĐỊNH DẠNG MỚI: timestamp|type|message
-    const messages = Array.isArray(message)
-      ? message.map(msg => `${now}|${type}|${msg}`)
-      : [`${now}|${type}|${message}`]
+    // SỬA LỖI 1: Tạo timestamp riêng cho mỗi log trong batch
+    const messages = logs.map(log => {
+      const now = new Date().toISOString()
+      return `${now}|${log.type}|${log.message}`
+    })
 
-    if (messages.length > 0) {
-      await redis.lpush(key, ...messages)
-      await redis.ltrim(key, 0, MAX_LOGS - 1)
-    }
+    await redis.lpush(key, ...messages)
+    // Lệnh ltrim vẫn rất quan trọng để giữ cho danh sách trên Redis luôn gọn gàng
+    await redis.ltrim(key, 0, MAX_LOGS - 1)
   },
 
   /**
-   * Lấy toàn bộ danh sách log của một nhân vật.
+   * Lấy danh sách log mới nhất của một nhân vật.
    * @returns Mảng các chuỗi log thô từ Redis.
    */
   async get(characterId: string): Promise<string[]> {
     if (!characterId) return []
     const key = `${LOG_LIST_PREFIX}${characterId}`
-    return await redis.lrange(key, 0, -1)
+
+    // SỬA LỖI 2: Luôn chỉ lấy tối đa MAX_LOGS phần tử
+    // Điều này đảm bảo an toàn ngay cả khi ltrim gặp sự cố.
+    return await redis.lrange(key, 0, MAX_LOGS - 1)
   },
 }

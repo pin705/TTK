@@ -24,8 +24,11 @@
 const { logs } = useGameLog()
 const logContainer = ref<HTMLElement | null>(null)
 
-// Hàm format thời gian
-function formatTime(isoString: string) {
+/**
+ * Định dạng chuỗi ISO timestamp thành dạng HH:mm:ss.
+ */
+function formatTime(isoString: string): string {
+  if (!isoString) return ''
   return new Date(isoString).toLocaleTimeString('vi-VN', {
     hour: '2-digit',
     minute: '2-digit',
@@ -33,20 +36,50 @@ function formatTime(isoString: string) {
   })
 }
 
-// Hàm chọn màu cho log
-function logColor(type?: string) {
+/**
+ * Trả về class màu của TailwindCSS dựa trên loại log.
+ */
+function logColor(type?: string): string {
   switch (type) {
-    case 'error': return 'text-red-500'
-    case 'info': return 'text-cyan-400'
-    case 'command': return 'text-yellow-400'
-    default: return 'text-gray-300'
+    // Lỗi & Thất bại
+    case 'error':
+    case 'defeat':
+      return 'text-red-500 font-semibold'
+
+    // Cảnh báo & Rủi ro
+    case 'warning':
+      return 'text-yellow-400'
+
+    // Thành công & Tích cực
+    case 'success':
+    case 'victory':
+      return 'text-green-400 font-semibold'
+
+    // Nhận thưởng
+    case 'reward':
+      return 'text-cyan-400'
+
+    // Thông tin từ hệ thống hoặc command
+    case 'info':
+      return 'text-blue-400'
+
+    // Lệnh người dùng gõ
+    case 'command':
+      return 'text-purple-400'
+
+    // Các log khác
+    case 'attack':
+    default:
+      return 'text-gray-300'
   }
 }
 
+// Tự động cuộn xuống log mới nhất
 watch(logs, () => {
   nextTick(() => {
-    if (logContainer.value)
+    if (logContainer.value) {
       logContainer.value.scrollTop = logContainer.value.scrollHeight
+    }
   })
 }, { deep: true })
 </script>

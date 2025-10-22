@@ -2,7 +2,7 @@ import { z } from 'zod'
 import type { ActionHandler } from '../types'
 
 const gatherPayloadSchema = z.object({
-  itemId: z.string(),
+  itemId: z.string()
 })
 
 export const gather: ActionHandler = async ({ character, payload }) => {
@@ -25,10 +25,13 @@ export const gather: ActionHandler = async ({ character, payload }) => {
   addItemToInventory(character, itemId, quantity)
 
   return {
-    log: `Bạn đã thu thập được ${quantity} x [${itemId}].`,
+    log: {
+      message: `Bạn đã thu thập được ${quantity} x [${itemId}].`,
+      type: 'reward'
+    },
     updates: {
       character: { inventory: character.inventory },
-      zone, // Cập nhật lại zone để tài nguyên biến mất
-    },
+      zone // Cập nhật lại zone để tài nguyên biến mất
+    }
   }
 }

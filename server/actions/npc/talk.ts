@@ -21,7 +21,10 @@ export const talk: ActionHandler = async ({ character, payload }) => {
   const randomGreeting = npc.dialogues.greeting[Math.floor(Math.random() * npc.dialogues.greeting.length)]
 
   return {
-    log: `[${npc.name}]: "${randomGreeting}"`,
+    log: {
+      message: `[${npc.name}]: "${randomGreeting}"`,
+      type: 'info'
+    },
     updates: {} // Hiện tại chỉ log, sau này có thể mở ra bảng hội thoại
   }
 }

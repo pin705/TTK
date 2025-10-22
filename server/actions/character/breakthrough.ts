@@ -36,7 +36,10 @@ export const breakthrough: ActionHandler = async ({ character }) => {
     character.energy = character.energyMax
 
     return {
-      log: `⚡ ĐỘT PHÁ THÀNH CÔNG! ⚡ Bạn đã bước vào cảnh giới [${nextRealm.name}]. Sức mạnh tăng vọt!`,
+      log: {
+        message: `⚡ ĐỘT PHÁ THÀNH CÔNG! ⚡ Bạn đã bước vào cảnh giới [${nextRealm.name}]. Sức mạnh tăng vọt!`,
+        type: 'success'
+      },
       updates: { character }
     }
   } else {
@@ -46,7 +49,10 @@ export const breakthrough: ActionHandler = async ({ character }) => {
     character.cultivation.stateOfMind = Math.max(0.1, character.cultivation.stateOfMind - 0.3) // Tâm cảnh giảm mạnh
 
     return {
-      log: `Đột phá thất bại! Linh khí phản phệ, bạn mất ${expLoss} tu vi, tâm cảnh bất ổn.`,
+      log: {
+        message: `Đột phá thất bại! Linh khí phản phệ, bạn mất ${expLoss} tu vi, tâm cảnh bất ổn.`,
+        type: 'warning'
+      },
       updates: {
         character: { cultivation: character.cultivation }
       }

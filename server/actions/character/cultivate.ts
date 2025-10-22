@@ -6,7 +6,7 @@ export const cultivate: ActionHandler = async ({ character }) => {
   const secondsPassed = Math.floor((now.getTime() - lastTick.getTime()) / 1000)
 
   if (secondsPassed < 5)
-    return { log: '', updates: {} }
+    return { log: { message: 'Bạn cần chờ thêm một chút trước khi tu luyện tiếp.', type: 'info' }, updates: {} }
 
   // **KIỂM TRA ĐIỀU KIỆN TU LUYỆN - SỬA LỖI Ở ĐÂY**
   // Lấy dữ liệu zone từ file config, không cần `await`
@@ -16,8 +16,11 @@ export const cultivate: ActionHandler = async ({ character }) => {
 
   if (!zone.allowCultivation) {
     return {
-      log: 'Nơi này linh khí hỗn loạn, không thích hợp để tu luyện.',
-      updates: {},
+      log: {
+        message: 'Nơi này linh khí hỗn loạn, không thích hợp để tu luyện.',
+        type: 'warning'
+      },
+      updates: {}
     }
   }
 
@@ -35,21 +38,26 @@ export const cultivate: ActionHandler = async ({ character }) => {
   if (expGained > 0) {
     character.cultivation.exp += expGained
     character.lastCultivateTick = now
-  }
-  else {
+  } else {
     return {
-      log: 'Tâm cảnh bất ổn, không thể hấp thụ linh khí.',
-      updates: {},
+      log: {
+        message: 'Tâm cảnh bất ổn, không thể hấp thụ linh khí.',
+        type: 'warning'
+      },
+      updates: {}
     }
   }
 
   return {
-    log: `Bạn tu luyện và nhận được ${expGained} điểm tu vi.`,
+    log: {
+      message: `Bạn tu luyện và nhận được ${expGained} điểm tu vi.`,
+      type: 'info'
+    },
     updates: {
       character: {
         cultivation: character.cultivation,
-        lastCultivateTick: character.lastCultivateTick,
-      },
-    },
+        lastCultivateTick: character.lastCultivateTick
+      }
+    }
   }
 }

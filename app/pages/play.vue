@@ -21,7 +21,7 @@ if (error.value) {
 } else if (data.value) {
   playerStore.setCharacter(data.value.character)
   mapStore.setCurrentZone(data.value.currentZone)
-  addLog('Chào mừng đến với Tinh Không Đạo Lộ.')
+  addLog('Chào mừng đến với Tinh Không Đạo Lộ.', 'default')
   await fetchInitialLogs()
 }
 </script>

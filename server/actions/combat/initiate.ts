@@ -26,7 +26,10 @@ export const initiate: ActionHandler = async ({ character, payload }) => {
   }
 
   return {
-    log: `Bạn đã bắt đầu chiến đấu với [${monsterTemplate.name}]!`,
+    log: {
+      message: `Bạn đã khiêu chiến với [${monsterTemplate.name}]! Hãy chiến đấu!`,
+      type: 'info'
+    },
     updates: {
       character: { inCombat: true, combat: character.combat }
     }

@@ -50,7 +50,10 @@ export const move: ActionHandler = async ({ character, payload }) => {
 
   // Trả về kết quả để client cập nhật
   return {
-    log: `Bạn đã di chuyển đến ${newZone.name}.`,
+    log: {
+      message: `Bạn đã di chuyển đến khu vực [${newZone.name}].`,
+      type: 'info'
+    },
     updates: {
       zone: newZone,
       character: { // Chỉ gửi những trường thay đổi
