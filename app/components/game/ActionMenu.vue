@@ -1,67 +1,49 @@
 <template>
-  <div
-    v-if="mapStore.currentZone"
-    class="space-y-2"
-  >
-    <h3 class="text-purple-400">
-      [Hành động Khả dụng]
-    </h3>
+  <div v-if="mapStore.currentZone" class="space-y-3">
+    <h3 class="text-purple-400 font-semibold">[Hành động Khả dụng]</h3>
     <div class="flex flex-wrap gap-2">
       <button
         v-for="exit in mapStore.currentZone.connectedZones"
         :key="exit.direction"
-        class="bg-green-800/50 hover:bg-green-700/50 px-3 py-1 rounded disabled:opacity-50"
+        class="bg-green-800/60 hover:bg-green-700/60 px-3 py-1 rounded disabled:opacity-50 border border-green-700 text-sm"
         :disabled="isLoading"
         @click="performMove(exit.direction)"
       >
-        {{ exit.direction }}
+        <Icon name="lucide:move-right" class="inline-block mr-1 -mt-px"/> {{ exit.direction }}
       </button>
 
       <button
         v-for="resource in mapStore.currentZone.resources"
         :key="resource.itemId"
-        class="bg-yellow-800/50 hover:bg-yellow-700/50 px-3 py-1 rounded disabled:opacity-50"
+        class="bg-yellow-800/60 hover:bg-yellow-700/60 px-3 py-1 rounded disabled:opacity-50 border border-yellow-700 text-sm"
         :disabled="isLoading"
         @click="performGather(resource.itemId)"
       >
-        Thu thập [{{ resource.itemId }}]
+         <Icon name="lucide:shovel" class="inline-block mr-1 -mt-px"/> Thu thập [{{ resource.itemId }}]
       </button>
 
       <button
-        v-if="mapStore.currentZone.allowCultivation"
-        class="bg-sky-800/50 hover:bg-sky-700/50 px-3 py-1 rounded disabled:opacity-50 flex items-center"
+        v-if="canCultivate"
+        class="bg-sky-800/60 hover:bg-sky-700/60 px-3 py-1 rounded disabled:opacity-50 border border-sky-700 text-sm flex items-center"
         :disabled="isLoading"
         @click="performCultivate"
       >
-        <svg
-          v-if="isCultivating"
-          class="animate-spin -ml-1 mr-2 h-4 w-4 text-white"
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-        >
-          <circle
-            class="opacity-25"
-            cx="12"
-            cy="12"
-            r="10"
-            stroke="currentColor"
-            stroke-width="4"
-          />
-          <path
-            class="opacity-75"
-            fill="currentColor"
-            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-          />
-        </svg>
+        <Icon v-if="isCultivating" name="lucide:loader-circle" class="animate-spin -ml-1 mr-2 h-4 w-4"/>
+        <Icon v-else name="lucide:brain-circuit" class="inline-block mr-1 -mt-px"/>
         Tu Luyện
+      </button>
+
+      <button
+        v-if="canMeditate"
+        class="bg-indigo-800/60 hover:bg-indigo-700/60 px-3 py-1 rounded disabled:opacity-50 border border-indigo-700 text-sm flex items-center"
+        :disabled="isLoading"
+        @click="performMeditate"
+      >
+         <Icon name="lucide:heart-pulse" class="inline-block mr-1 -mt-px"/> Đả Tọa
       </button>
     </div>
 
-    <p
-      v-if="isLoading && !isCultivating"
-      class="text-sm text-gray-400 animate-pulse"
-    >
+    <p v-if="isLoading && !isCultivating" class="text-xs text-gray-400 animate-pulse pt-1">
       Đang xử lý...
     </p>
   </div>
@@ -70,7 +52,19 @@
 <script setup lang="ts">
 const mapStore = useMapStore()
 const { execute, isLoading } = useGameAction()
+const playerStore = usePlayerStore()
 const isCultivating = ref(false)
+
+// Kiểm tra trạng thái Trọng Thương
+const isWounded = computed(() => {
+  return playerStore.character?.effects?.some(e => e.effectId === 'heavy_wound' && (!e.expiresAt || new Date(e.expiresAt) > new Date())) || false
+})
+
+// Điều kiện hiển thị nút Tu Luyện
+const canCultivate = computed(() => mapStore.currentZone?.allowCultivation && !isWounded.value);
+
+// Điều kiện hiển thị nút Đả Tọa
+const canMeditate = computed(() => mapStore.currentZone?.allowCultivation && !isWounded.value);
 
 async function performMove(direction: string) {
   await execute('map/move', { direction })

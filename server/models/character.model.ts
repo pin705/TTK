@@ -36,8 +36,12 @@ export interface ICharacter {
   effects: {
     effectId: string
     name: string
-    durationTurns: number
-    power: number
+    durationTurns?: number
+    power?: number
+    preventsCombat?: boolean
+    hpRegenModifier?: number
+    energyRegenModifier?: number
+    expiresAt?: Date
   }[]
   reputation: number
   karma: number
@@ -46,7 +50,7 @@ export interface ICharacter {
     monsterId: string | null
     monsterHp: number
     monsterName: string
-  }
+  } | null
   activeQuests: {
     questId: string
     objectives: {
@@ -99,7 +103,10 @@ export const Character = defineMongooseModel<ICharacter>('Character', {
     effectId: String,
     name: String,
     durationTurns: Number,
-    power: Number
+    power: Number,
+    preventsCombat: { type: Boolean, default: false },
+    hpRegenModifier: { type: Number, default: 0 }, // e.g., -1 (ngăn chặn), 0.5 (tăng 50%)
+    energyRegenModifier: { type: Number, default: 0 } // e.g., -1 (ngăn chặn), 0.5 (tăng 50%)
   }],
   reputation: { type: Number, default: 0 },
   karma: { type: Number, default: 0 },

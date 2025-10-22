@@ -7,7 +7,7 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 401, message: 'Yêu cầu đăng nhập' })
   }
 
-  const rawLogs = await Logger.get(characterId.toString())
+  const rawLogs = await Logger.get(characterId)
 
   // Parse chuỗi log thành object để client dễ xử lý
   return rawLogs.map((log) => {

@@ -8,17 +8,21 @@
         <img
           :src="playerStore.character.avatar || '/default-avatar.png'"
           alt="Avatar"
-          class="h-20 w-20 rounded-full border-2 border-green-500 object-cover"
+          class="h-20 w-20 rounded-full border-2 object-cover"
+          :class="isWounded ? 'border-red-600 grayscale-[50%]' : 'border-green-500'"
         >
         <label
           for="avatar-upload"
-          class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 rounded-full cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity"
+          class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-70 rounded-full cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity"
         >
-          <span class="text-xs text-white">Thay đổi</span>
           <UiLoadingSpinner
             v-if="isUploading"
-            class="h-5 w-5 text-white"
+            class="h-6 w-6 text-white"
           />
+          <span
+            v-else
+            class="text-xs text-white"
+          >Thay đổi</span>
         </label>
         <input
           id="avatar-upload"
@@ -33,65 +37,52 @@
           {{ playerStore.character.name }}
         </h2>
         <p class="text-yellow-400 text-sm">
-          {{ playerStore.character.cultivationStage }}
+          {{ playerStore.character.realm }}
+        </p>
+        <p
+          v-if="isWounded"
+          class="text-red-500 text-xs font-semibold animate-pulse mt-1"
+        >
+          <Icon
+            name="lucide:heart-crack"
+            class="inline-block mr-1"
+          /> Trọng Thương
         </p>
       </div>
     </div>
 
     <div class="space-y-3 mt-4">
       <div>
-        <div class="flex justify-between text-xs text-red-400">
+        <div
+          class="flex justify-between text-xs"
+          :class="isWounded ? 'text-red-500' : 'text-red-400'"
+        >
           <span>HP</span>
           <span>{{ playerStore.character.hp }} / {{ playerStore.character.hpMax }}</span>
         </div>
-        <div class="w-full bg-gray-700 rounded-full h-2.5 mt-1">
+        <div class="w-full bg-gray-700 rounded-full h-2.5 mt-1 relative overflow-hidden border border-gray-600">
           <div
-            class="bg-red-600 h-2.5 rounded-full transition-all duration-500"
+            class="h-full rounded-full transition-all duration-500"
+            :class="isWounded ? 'bg-red-700' : 'bg-red-600'"
             :style="{ width: hpPercent + '%' }"
           />
         </div>
       </div>
-
       <div>
         <div class="flex justify-between text-xs text-blue-400">
           <span>Năng Lượng</span>
           <span>{{ playerStore.character.energy }} / {{ playerStore.character.energyMax }}</span>
         </div>
-        <div class="w-full bg-gray-700 rounded-full h-2.5 mt-1">
+        <div class="w-full bg-gray-700 rounded-full h-2.5 mt-1 relative overflow-hidden border border-gray-600">
           <div
-            class="bg-blue-600 h-2.5 rounded-full transition-all duration-500"
+            class="bg-blue-600 h-full rounded-full transition-all duration-500"
             :style="{ width: energyPercent + '%' }"
           />
         </div>
       </div>
     </div>
 
-    <div class="grid grid-cols-3 text-center mt-4 border-t border-green-700/50 pt-3">
-      <div>
-        <p class="text-gray-400 text-xs">
-          Tấn Công
-        </p>
-        <p class="text-white font-semibold">
-          {{ playerStore.character.stats?.attack || 0 }}
-        </p>
-      </div>
-      <div>
-        <p class="text-gray-400 text-xs">
-          Phòng Thủ
-        </p>
-        <p class="text-white font-semibold">
-          {{ playerStore.character.stats?.defense || 0 }}
-        </p>
-      </div>
-      <div>
-        <p class="text-gray-400 text-xs">
-          Tốc Độ
-        </p>
-        <p class="text-white font-semibold">
-          {{ playerStore.character.stats?.speed || 0 }}
-        </p>
-      </div>
-    </div>
+    <div class="grid grid-cols-3 text-center mt-4 border-t border-green-700/50 pt-3" />
 
     <div class="text-center border-t border-green-700/50 pt-2 mt-3">
       <p class="text-sm text-gray-400">
@@ -101,6 +92,13 @@
         {{ mapStore.currentZone?.name }}
       </p>
     </div>
+
+    <p
+      v-if="uploadError"
+      class="text-xs text-red-500 mt-2 text-center"
+    >
+      {{ uploadError }}
+    </p>
   </div>
 </template>
 
@@ -108,7 +106,12 @@
 const playerStore = usePlayerStore()
 const mapStore = useMapStore()
 const { addLog } = useGameLog()
-const { upload, isLoading: isUploading } = useAvatarUploader()
+const { upload, isLoading: isUploading, error: uploadError } = useAvatarUploader()
+
+// Computed property để kiểm tra trạng thái Trọng Thương
+const isWounded = computed(() => {
+  return playerStore.character?.effects?.some(e => e.effectId === 'heavy_wound' && (!e.expiresAt || new Date(e.expiresAt) > new Date())) || false
+})
 
 const hpPercent = computed(() => {
   if (!playerStore.character) return 0
@@ -122,20 +125,13 @@ const energyPercent = computed(() => {
 async function handleAvatarChange(event: Event) {
   const input = event.target as HTMLInputElement
   if (!input.files?.length) return
-
   const file = input.files[0]
 
-  // Kiểm tra kích thước file (ví dụ: < 2MB)
-  if (file.size > 2 * 1024 * 1024) {
-    addLog('Lỗi: Kích thước file không được vượt quá 2MB.', 'error')
-    return
-  }
-
+  // Chỉ gọi composable upload, addLog sẽ được gọi bên trong nếu có lỗi
   const result = await upload(file)
-  if (result.error) {
-    addLog(`Lỗi: ${result.error}`, 'error')
-  } else {
+  if (!result?.error) {
     addLog('Cập nhật avatar thành công!', 'success')
   }
+  input.value = '' // Reset input
 }
 </script>

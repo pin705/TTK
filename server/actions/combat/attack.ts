@@ -19,12 +19,28 @@ function handleVictory(character: any, monsterData: any, monsterTemplate: any) {
 }
 
 // Xử lý khi người chơi bị đánh bại
-function handleDefeat(character: any, monsterData: any) {
+function handleDefeat(character: ICharacter, monsterData: unknown) {
   character.inCombat = false
-  character.hp = Math.floor(character.hpMax * 0.1)
-  character.cultivation.stateOfMind = Math.max(0.1, character.cultivation.stateOfMind - 0.2)
+  character.combat = null
+  character.hp = Math.max(1, Math.floor(character.hpMax * 0.05)) // Hồi sinh với 5% HP (tối thiểu 1)
+  character.cultivation.stateOfMind = Math.max(0.1, character.cultivation.stateOfMind - 0.3) // Giảm mạnh tâm cảnh
 
-  return { message: `Bạn đã bị [${monsterData.name}] đánh bại! Hồi sinh với 10% HP và tâm cảnh giảm.`, type: 'defeat' }
+  // Đưa về khu vực hồi sinh mặc định
+  const respawnZoneId = 'giang_nam_khu_dan_cu_01' // Lấy từ config sau này
+  character.currentZoneId = respawnZoneId
+
+  // Áp dụng Debuff "Trọng Thương"
+  const woundDurationSeconds = 60 // 60 giây
+  character.effects.push({
+    effectId: 'heavy_wound',
+    name: 'Trọng Thương',
+    expiresAt: new Date(Date.now() + woundDurationSeconds * 1000),
+    preventsCombat: true,
+    hpRegenModifier: -1 // Ngăn chặn hồi phục tự nhiên
+  })
+  // Xóa các buff có lợi khác nếu cần
+
+  return { message: `Bạn đã bị [${monsterData.name}] đánh bại! Bị đưa về ${ZoneManager.getZone(respawnZoneId)?.name}. Trạng thái Trọng Thương trong ${woundDurationSeconds} giây.`, type: 'defeat' }
 }
 
 // --- Action Attack chính ---
@@ -52,7 +68,6 @@ export const attack: ActionHandler = async ({ character }) => {
   }
 
   const turnLogs: any[] = []
-
   const currentHp = parseInt(monsterData.hp, 10) || 0
 
   // Kiểm tra nếu HP đã là NaN hoặc <= 0 từ trước (có thể do lỗi khác hoặc người chơi khác vừa giết)

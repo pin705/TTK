@@ -15,4 +15,6 @@ export const actions: Record<string, unknown> = {
   'quest/accept': quest.accept,
   'character/breakthrough': character.breakthrough,
   'character/updateAvatar': character.updateAvatar,
+  'character/passiveRecoveryTick': character.passiveRecoveryTick,
+  'character/meditate': character.meditate
 }

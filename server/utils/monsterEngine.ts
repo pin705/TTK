@@ -62,9 +62,9 @@ export const MonsterEngine = {
       templateId: monsterTemplateId, // Quan trọng: Lưu lại template gốc
       zoneId,
       name: monsterTemplate.name,
-      level: monsterTemplate.level.toString(), // Lưu dạng string trong Redis
-      hp: monsterTemplate.hp.toString(),
-      maxHp: monsterTemplate.hp.toString(),
+      level: monsterTemplate.level, // Lưu dạng string trong Redis
+      hp: monsterTemplate.stats.hp,
+      maxHp: monsterTemplate.stats.hp,
       status: 'idle',
       createdAt: Date.now().toString()
     }

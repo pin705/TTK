@@ -7,16 +7,17 @@ export default defineNuxtConfig({
     'nuxt-auth-utils',
     '@vueuse/nuxt',
     '@vite-pwa/nuxt',
-    '@pinia/nuxt'
+    '@pinia/nuxt',
+    '@nuxt/icon'
   ],
 
   ssr: false,
 
-    css: ['~/assets/css/tailwind.css'],
-
   devtools: {
     enabled: false
   },
+
+  css: ['~/assets/css/tailwind.css'],
 
   compatibilityDate: '2025-01-15',
   vite: {
