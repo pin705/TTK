@@ -37,7 +37,7 @@ export function useGameAction() {
         if (result.updates.character)
           playerStore.updateCharacter(result.updates.character)
         if (result.updates.zone)
-          mapStore.setCurrentZone(result.updates.zone)
+          mapStore.uploadCurrentZone(result.updates.zone)
       }
     } catch (error: any) {
       const message = error.data?.message || 'Có lỗi xảy ra'

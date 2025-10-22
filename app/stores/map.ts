@@ -7,6 +7,10 @@ export const useMapStore = defineStore('map', {
   actions: {
     setCurrentZone(data: any) {
       this.currentZone = data
+    },
+    uploadCurrentZone(data: any) {
+      if (!this.currentZone) return
+      this.currentZone = { ...this.currentZone, ...data }
     }
   }
 })
