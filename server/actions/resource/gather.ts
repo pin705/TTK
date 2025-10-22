@@ -8,7 +8,7 @@ const gatherPayloadSchema = z.object({
 export const gather: ActionHandler = async ({ character, payload }) => {
   const { itemId } = gatherPayloadSchema.parse(payload)
 
-  const zone = await Zone.findById(character.currentZoneId)
+  const zone = await ZoneManager.getZone(character.currentZoneId)
   if (!zone)
     throw new Error('Không tìm thấy khu vực.')
 

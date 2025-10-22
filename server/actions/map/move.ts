@@ -1,38 +1,52 @@
 import { z } from 'zod'
-import { ActionHandler } from '../types'
+import type { ActionHandler } from '../types'
 
 // Định nghĩa payload cho hành động này
 const movePayloadSchema = z.object({
-  direction: z.string(),
+  direction: z.string()
 })
 
 // Logic xử lý hành động
 export const move: ActionHandler = async ({ character, payload }) => {
   const { direction } = movePayloadSchema.parse(payload)
+  const currentZoneData = ZoneManager.getZone(character.currentZoneId as ZoneId)
 
-  const currentZone = await Zone.findById(character.currentZoneId)
-  if (!currentZone)
+  if (!currentZoneData)
     throw new Error('Không tìm thấy khu vực hiện tại của nhân vật.')
 
-  const exit = currentZone.connectedZones.find(z => z.direction === direction)
+  const exit = currentZoneData.connectedZones?.find(z => z.direction === direction)
   if (!exit)
     throw new Error('Không thể đi theo hướng này.')
 
   // TODO: Kiểm tra năng lượng, các điều kiện khác...
-  // Ví dụ:
   // if (character.energy < 5) {
   //   throw new Error('Không đủ năng lượng để di chuyển.');
   // }
   // character.energy -= 5;
 
+  // LỖI NẰM Ở ĐÂY - SỬA LẠI HOÀN TOÀN
+  // 1. Lấy dữ liệu zone mới từ config
+  const newZoneData = ZoneManager.getZone(exit.zoneId as ZoneId)
+  if (!newZoneData)
+    throw new Error(`Khu vực đích '${exit.zoneId}' không tồn tại.`)
+
+  // 2. "Populate" (làm đầy) thông tin quái vật thủ công
+  const populatedMonsters = (newZoneData.monsters || []).map((monsterEntry) => {
+    return {
+      ...monsterEntry,
+      // Lấy thông tin chi tiết của quái vật từ MonsterManager
+      monsterData: MonsterManager.getMonsterTemplate(monsterEntry.monsterId)
+    }
+  })
+
+  // 3. Tạo object zone hoàn chỉnh để gửi về cho client
+  const newZone = {
+    ...newZoneData,
+    monsters: populatedMonsters
+  }
+
+  // 4. Cập nhật vị trí mới cho nhân vật
   character.currentZoneId = exit.zoneId
-
-  const newZone = await Zone.findById(character.currentZoneId)
-    .populate('monsters.monsterId')
-    .lean()
-
-  if (!newZone)
-    throw new Error('Khu vực đích không tồn tại.')
 
   // Trả về kết quả để client cập nhật
   return {
@@ -41,8 +55,8 @@ export const move: ActionHandler = async ({ character, payload }) => {
       zone: newZone,
       character: { // Chỉ gửi những trường thay đổi
         energy: character.energy,
-        currentZoneId: character.currentZoneId,
-      },
-    },
+        currentZoneId: character.currentZoneId
+      }
+    }
   }
 }

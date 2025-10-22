@@ -1,26 +1,53 @@
 import type { ActionHandler } from '../types'
 
-// Logic cho tu luyện bị động (idle)
 export const cultivate: ActionHandler = async ({ character }) => {
   const now = new Date()
   const lastTick = new Date(character.lastCultivateTick)
   const secondsPassed = Math.floor((now.getTime() - lastTick.getTime()) / 1000)
 
-  if (secondsPassed < 5) // Giới hạn 5 giây một lần để tránh spam
+  if (secondsPassed < 5)
     return { log: '', updates: {} }
 
-  // Mỗi 5 giây nhận 1 EXP (ví dụ)
-  const expGained = Math.floor(secondsPassed / 5)
+  // **KIỂM TRA ĐIỀU KIỆN TU LUYỆN - SỬA LỖI Ở ĐÂY**
+  // Lấy dữ liệu zone từ file config, không cần `await`
+  const zone = ZoneManager.getZone(character.currentZoneId)
+  if (!zone)
+    throw new Error('Lỗi: Không tìm thấy khu vực hiện tại.')
+
+  if (!zone.allowCultivation) {
+    return {
+      log: 'Nơi này linh khí hỗn loạn, không thích hợp để tu luyện.',
+      updates: {},
+    }
+  }
+
+  // **TÍNH TOÁN EXP NHẬN ĐƯỢC**
+  const baseExpPerTick = 1 // 1 EXP mỗi 5 giây
+
+  // Hệ số từ Tâm Cảnh (stateOfMind)
+  const stateOfMindMultiplier = character.cultivation.stateOfMind
+
+  // Hệ số từ Linh khí khu vực (energyFluctuation)
+  const zoneMultiplier = zone.energyFluctuation || 1.0
+
+  const expGained = Math.floor(baseExpPerTick * stateOfMindMultiplier * zoneMultiplier)
+
   if (expGained > 0) {
-    character.cultivationExp += expGained
+    character.cultivation.exp += expGained
     character.lastCultivateTick = now
+  }
+  else {
+    return {
+      log: 'Tâm cảnh bất ổn, không thể hấp thụ linh khí.',
+      updates: {},
+    }
   }
 
   return {
-    log: `Bạn nhận được ${expGained} điểm tu vi.`,
+    log: `Bạn tu luyện và nhận được ${expGained} điểm tu vi.`,
     updates: {
       character: {
-        cultivationExp: character.cultivationExp,
+        cultivation: character.cultivation,
         lastCultivateTick: character.lastCultivateTick,
       },
     },

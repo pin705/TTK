@@ -1,47 +1,47 @@
-// composables/useGameLog.ts
 import { ref } from 'vue'
 
 export interface LogEntry {
-  id: number
+  timestamp: string
   message: string
-  type: 'success' | 'error' | 'info'
+  type?: 'error' | 'info' | 'command'
 }
 
-// "Linh Đài" chứa các truyền âm
 const logs = ref<LogEntry[]>([])
+const MAX_CLIENT_LOGS = 50 // Giữ số lượng log trên client khớp với server
 
 export function useGameLog() {
   /**
-   * Phát ra một truyền âm mới.
-   * @param message Nội dung truyền âm
-   * @param type Loại (thành công, thất bại, thông thường)
-   * @param duration Thời gian tồn tại (tính bằng mili giây)
+   * Tải log ban đầu từ server.
    */
-  const addLog = (message: string, type: 'success' | 'error' | 'info' = 'info', duration: number = 5000) => {
-    // Tạo một định danh duy nhất cho mỗi truyền âm
-    const id = Date.now() + Math.random();
+  async function fetchInitialLogs() {
+    try {
+      const initialLogs = await $fetch<LogEntry[]>('/api/game/logs')
+      logs.value = initialLogs.reverse() // Đảo ngược để log cũ nhất ở trên
+    } catch (e) {
+      console.error('Failed to fetch initial logs', e)
+    }
+  }
 
-    // Thêm truyền âm mới vào đầu danh sách
-    logs.value.unshift({
-      id,
+  /**
+   * Thêm một log mới vào danh sách trên client.
+   * @param message Nội dung log
+   * @param type Loại log
+   */
+  function addLog(message: string, type?: LogEntry['type']) {
+    logs.value.push({
+      timestamp: new Date().toISOString(),
       message,
-      type,
+      type
     })
 
-    // *** PHÁP QUYẾT TỰ ĐỘNG TIÊU TÁN ***
-    // Sau một khoảng thời gian, tự động loại bỏ truyền âm này khỏi Linh Đài
-    setTimeout(() => {
-      logs.value = logs.value.filter(log => log.id !== id)
-    }, duration)
-
-    // Giới hạn số lượng truyền âm tối đa để tránh nhiễu loạn
-    if (logs.value.length > 7) {
-        logs.value.pop()
-    }
+    // Cắt bớt log cũ trên client
+    if (logs.value.length > MAX_CLIENT_LOGS)
+      logs.value.shift()
   }
 
   return {
     logs,
     addLog,
+    fetchInitialLogs
   }
 }

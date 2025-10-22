@@ -15,7 +15,7 @@ function getRealIP(event) {
 // Validate form
 const bodySchema = z.object({
   email: z.string().email(),
-  password: z.string().min(6),
+  password: z.string().min(6)
 })
 
 export default defineEventHandler(async (event) => {
@@ -67,13 +67,18 @@ export default defineEventHandler(async (event) => {
   const newUser = await user.save()
 
   // 6. Tạo nhân vật mặc định nếu chưa có
-  const exists = await Character.findOne({ userId: newUser._id })
+  let exists = await Character.findOne({ userId: newUser._id })
   if (!exists) {
-    await Character.create({
+    // Tìm khu vực khởi đầu bằng ID định danh
+
+    const startZone = ZoneManager.getStartZone()
+    if (!startZone)
+      throw createError({ statusCode: 500, message: 'Lỗi hệ thống: Không tìm thấy khu vực khởi đầu. Vui lòng chạy seed data.' })
+
+    exists = await Character.create({
       userId: newUser._id,
       name: 'Người chơi',
-      realm: 'Luyện Khí Tầng 1',
-      exp: 0
+      currentZoneId: startZone.zoneId // Gán _id của khu vực khởi đầu
     })
   }
 
@@ -81,6 +86,7 @@ export default defineEventHandler(async (event) => {
     user: {
       email
     },
+    character: exists,
     loggedInAt: Date.now()
   })
 
