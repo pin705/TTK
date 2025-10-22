@@ -1,7 +1,7 @@
 import redis from './redis'
 
 const LOG_LIST_PREFIX = 'logs:'
-const MAX_LOGS = 50 // Giới hạn chỉ lưu 50 log mới nhất
+const MAX_LOGS = 15 // Giới hạn chỉ lưu 50 log mới nhất
 
 export type LogType = 'default' | 'error' | 'info' | 'command' | 'success' | 'warning' | 'attack' | 'victory' | 'reward' | 'defeat'
 

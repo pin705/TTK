@@ -38,7 +38,13 @@ export const zones = {
   hoang_da_0201: {
     name: 'Hoang Dã - Khu 0201',
     description: 'Nhà cao tầng đổ nát bị cây dại bao phủ. Tiếng gầm của quái thú vang vọng từ xa.',
-    recommendedLevel: 3, monsterDensity: 'medium', allowCultivation: false,
+    allowCultivation: false,
+    recommendedLevel: 3,
+    // Gợi ý cho AI
+    monsterDensity: 5, // AI sẽ cố gắng duy trì 5 quái vật trong khu vực này
+    monsterTypes: ['thú', 'côn trùng'], // Gợi ý về loại quái
+    possibleBosses: [], // Các loại boss có thể xuất hiện
+
     monsters: [
       { monsterId: 'bloodfang_boar', spawnChance: 0.6 },
       { monsterId: 'horned_wolf', spawnChance: 0.4 }
@@ -52,7 +58,13 @@ export const zones = {
   hoang_da_0202: {
     name: 'Hoang Dã - Khu 0202 (Ngoại vi)',
     description: 'Tàn tích của một khu công nghiệp cũ. Những con quái thú mạnh hơn đang rình rập trong bóng tối.',
-    recommendedLevel: 6, monsterDensity: 'high', allowCultivation: false,
+    allowCultivation: false,
+
+    recommendedLevel: 10,
+    monsterDensity: 3,
+    monsterTypes: ['thú', 'dị thú'],
+    possibleBosses: ['armored_tiger'], // Boss 'Giáp Sắt Mãnh Hổ' có thể xuất hiện ở đây
+
     monsters: [
       { monsterId: 'shadow_cat', spawnChance: 0.5 },
       { monsterId: 'iron_fist_ape', spawnChance: 0.3 }

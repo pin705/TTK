@@ -3,11 +3,11 @@
     v-if="playerStore.character && currentRealm"
     class="space-y-4"
   >
-    <div class="p-3 bg-gray-900/50 rounded">
-      <h3 class="text-yellow-400 border-b border-yellow-700/50 pb-1 mb-2">
+    <div class="p-3 bg-gray-900/50 rounded-lg border border-gray-700">
+      <h3 class="text-yellow-400 border-b border-yellow-700/50 pb-1 mb-2 font-semibold">
         Tu Luyện
       </h3>
-      <p>Cảnh giới: <span class="text-white">{{ playerStore.character.cultivation.stage }}</span></p>
+      <p>Cảnh giới: <span class="text-white font-bold">{{ playerStore.character.cultivation.stage }}</span></p>
 
       <div>
         <span class="text-sm text-purple-400">Tu Vi</span>
@@ -27,36 +27,54 @@
         class="mt-3 text-center"
       >
         <button
-          class="bg-yellow-600/50 hover:bg-yellow-500/50 px-4 py-2 rounded disabled:opacity-50 animate-pulse"
+          class="bg-yellow-600/50 hover:bg-yellow-500/50 px-4 py-2 rounded disabled:opacity-50 animate-pulse font-bold"
           :disabled="isLoading"
           @click="performBreakthrough"
         >
           ⚡ ĐỘT PHÁ ⚡
         </button>
+        <p
+          v-if="nextRealm"
+          class="text-xs text-gray-400 mt-1"
+        >
+          Cảnh giới tiếp theo: {{ nextRealm.name }}
+        </p>
       </div>
     </div>
 
-    <div class="grid grid-cols-2 gap-4" />
+    <div class="p-3 bg-gray-900/50 rounded-lg border border-gray-700">
+      <h3 class="text-cyan-400 border-b border-cyan-700/50 pb-1 mb-2 font-semibold">
+        Bảng Thuộc Tính
+      </h3>
+      <div class="grid grid-cols-2 gap-x-4 gap-y-1 text-sm">
+        <span>Tấn Công: <span class="text-white">{{ playerStore.character.stats.attack }}</span></span>
+        <span>Phòng Thủ: <span class="text-white">{{ playerStore.character.stats.defense }}</span></span>
+        <span>Tốc Độ: <span class="text-white">{{ playerStore.character.stats.speed }}</span></span>
+        <span>Chí Mạng: <span class="text-white">{{ (playerStore.character.stats.critChance * 100).toFixed(0) }}%</span></span>
+        <span>Kháng: <span class="text-white">{{ playerStore.character.stats.resistance }}</span></span>
+        <span>Né Tránh: <span class="text-white">{{ (playerStore.character.stats.dodgeChance * 100).toFixed(0) }}%</span></span>
+      </div>
+    </div>
+
     <GameInventoryPanel />
   </div>
 </template>
 
 <script setup lang="ts">
-// Cần một store hoặc composable để chứa dữ liệu các cảnh giới
+import { realms } from '~~/shared/config' // <-- IMPORT TRỰC TIẾP TỪ CONFIG
+
 const { execute, isLoading } = useGameAction()
 const playerStore = usePlayerStore()
 
-// Dữ liệu mẫu, lý tưởng nhất là tạo một store để tải tất cả realm khi game bắt đầu
-const allRealms = ref([
-  { level: 1, stageId: 'apprentice_low', name: 'Học Đồ Cấp Thấp', expRequired: 100 },
-  { level: 2, stageId: 'apprentice_mid', name: 'Học Đồ Cấp Trung', expRequired: 300 },
-  { level: 3, stageId: 'apprentice_high', name: 'Học Đồ Cấp Cao', expRequired: 800 },
-  { level: 4, stageId: 'fighter_low', name: 'Võ Giả Cấp Thấp', expRequired: 2000 }
-])
-
 const currentRealm = computed(() => {
   if (!playerStore.character) return null
-  return allRealms.value.find(r => r.stageId === playerStore.character.cultivation.stageId) || allRealms.value[0]
+  const stageId = playerStore.character.cultivation.stageId as keyof typeof realms
+  return realms[stageId] || Object.values(realms)[0]
+})
+
+const nextRealm = computed(() => {
+  if (!currentRealm.value) return null
+  return Object.values(realms).find(r => r.level === currentRealm.value.level + 1)
 })
 
 const expPercent = computed(() => {

@@ -5,11 +5,16 @@ interface Actor {
 }
 
 export function calculateDamage(attacker: Actor, defender: Actor, weaponMultiplier = 1.0, skillPower = 0) {
-  const isCrit = Math.random() < attacker.stats.critChance
-  const critFactor = isCrit ? attacker.stats.critDamage : 1
-  const rawDamage = (attacker.stats.attack * weaponMultiplier + skillPower) * critFactor
-  const finalDamage = Math.max(1, rawDamage - (defender.stats.defense + defender.stats.resistance))
+  const isCrit = Math.random() < (attacker.stats.critChance || 0)
+  const critFactor = isCrit ? (attacker.stats.critDamage || 1) : 1
+  const attack = attacker.stats.attack || 0
+  const defense = defender.stats.defense || 0
+  const resistance = defender.stats.resistance || 0
 
+  const rawDamage = (attack * weaponMultiplier + skillPower) * critFactor
+  console.log('rawDamage', rawDamage)
+  const finalDamage = Math.max(1, rawDamage - (defense + resistance))
+  console.log('finalDamage', finalDamage)
   return {
     damage: Math.floor(finalDamage),
     isCrit

@@ -1,6 +1,7 @@
 <template>
   <div class="space-y-4">
     <GameZoneInfo />
-    <GameNpcPanel /> <GameActionMenu />
+    <GameNpcPanel />
+    <GameActionMenu />
   </div>
 </template>

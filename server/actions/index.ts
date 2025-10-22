@@ -3,6 +3,7 @@ import * as resource from './resource'
 import * as character from './character'
 import * as combat from './combat'
 import * as npc from './npc'
+import * as quest from './quest'
 
 export const actions: Record<string, unknown> = {
   'map/move': map.move,
@@ -10,5 +11,8 @@ export const actions: Record<string, unknown> = {
   'character/cultivate': character.cultivate,
   'combat/initiate': combat.initiate,
   'combat/attack': combat.attack,
-  'npc/talk': npc.talk
+  'npc/talk': npc.talk,
+  'quest/accept': quest.accept,
+  'character/breakthrough': character.breakthrough,
+  'character/updateAvatar': character.updateAvatar,
 }

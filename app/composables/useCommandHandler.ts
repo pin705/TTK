@@ -1,3 +1,5 @@
+import { zones, npcs } from '~~/shared/config'
+
 export function useCommandHandler() {
   const playerStore = usePlayerStore()
   const mapStore = useMapStore()
@@ -24,26 +26,49 @@ export function useCommandHandler() {
       case 'st':
         showStatus()
         break
-
       case 'map':
-        showMap()
+        showAsciiMap()
         break
-
       case 'events':
         showEvents()
         break
-
-        // Thêm các lệnh khác ở đây
-        // case 'goto':
-        //   // TODO: Thêm logic di chuyển nhanh
-        //   break
-
+      case 'npc':
+        showNpcs()
+        break
       default:
         addLog(`Lệnh không tồn tại: /${command}`, 'error')
     }
   }
 
   // --- Các hàm xử lý cho từng lệnh ---
+
+  function showAsciiMap() {
+    const zoneId = mapStore.currentZone?.zoneId as keyof typeof zones
+    if (!zoneId) return
+    const currentZone = zones[zoneId]
+    addLog('--- [ BẢN ĐỒ KHU VỰC ] ---', 'info')
+    currentZone.connectedZones?.forEach((exit) => {
+      const exitZone = zones[exit.zoneId as keyof typeof zones]
+      addLog(`[Bạn] <==(${exit.direction})==> [${exitZone.name}]`, 'info')
+    })
+    if (!currentZone.connectedZones?.length) addLog('Không có lối đi nào.', 'info')
+  }
+
+  function showNpcs() {
+    const zoneId = mapStore.currentZone?.zoneId as keyof typeof zones
+    console.log('Current Zone ID:', zoneId)
+    if (!zoneId) return
+    const currentZone = zones[zoneId]
+    addLog('--- [ NPC TRONG KHU VỰC ] ---', 'info')
+    if (!currentZone.npcs?.length) {
+      addLog('Không có NPC nào ở đây.', 'info')
+      return
+    }
+    currentZone.npcs.forEach((entry) => {
+      const npcData = npcs[entry.npcId as keyof typeof npcs]
+      addLog(`- ${npcData.name}`, 'info')
+    })
+  }
 
   function showStatus() {
     const char = playerStore.character

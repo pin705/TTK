@@ -5,12 +5,11 @@
     </h2>
     <div
       ref="logContainer"
-      class="flex-grow overflow-y-auto space-y-1 pr-2 text-sm"
+      class="flex-grow overflow-auto space-y-1 pr-2 text-sm max-h-[calc(100vh-200px)]"
     >
       <p
         v-for="(log, index) in logs"
         :key="index"
-        class="font-mono"
       >
         <span class="text-gray-500 mr-2">{{ formatTime(log.timestamp) }}</span>
         <span :class="logColor(log.type)">{{ log.message }}</span>
@@ -24,6 +23,26 @@
 const { logs } = useGameLog()
 const logContainer = ref<HTMLElement | null>(null)
 
+// --- LOGIC TỰ ĐỘNG CUỘN ĐÃ ĐƯỢC TỐI ƯU ---
+watch(logs, () => {
+  if (!logContainer.value) return
+
+  // 1. Lấy thông tin vị trí cuộn TRƯỚC KHI DOM được cập nhật
+  const { scrollTop, scrollHeight, clientHeight } = logContainer.value
+
+  // 2. Kiểm tra xem người dùng có đang ở gần cuối hay không (sai số 20px)
+  const isScrolledToBottom = scrollHeight - clientHeight <= scrollTop + 20
+
+  // 3. Chờ cho DOM cập nhật (log mới được thêm vào)
+  nextTick(() => {
+    // 4. Nếu trước đó người dùng đang ở cuối, thì mới tự động cuộn xuống
+    if (isScrolledToBottom && logContainer.value) {
+      logContainer.value.scrollTop = logContainer.value.scrollHeight
+    }
+  })
+}, { deep: true })
+
+// --- CÁC HÀM TIỆN ÍCH ---
 /**
  * Định dạng chuỗi ISO timestamp thành dạng HH:mm:ss.
  */
@@ -41,45 +60,14 @@ function formatTime(isoString: string): string {
  */
 function logColor(type?: string): string {
   switch (type) {
-    // Lỗi & Thất bại
-    case 'error':
-    case 'defeat':
-      return 'text-red-500 font-semibold'
-
-    // Cảnh báo & Rủi ro
-    case 'warning':
-      return 'text-yellow-400'
-
-    // Thành công & Tích cực
-    case 'success':
-    case 'victory':
-      return 'text-green-400 font-semibold'
-
-    // Nhận thưởng
-    case 'reward':
-      return 'text-cyan-400'
-
-    // Thông tin từ hệ thống hoặc command
-    case 'info':
-      return 'text-blue-400'
-
-    // Lệnh người dùng gõ
-    case 'command':
-      return 'text-purple-400'
-
-    // Các log khác
+    case 'error': case 'defeat': return 'text-red-500 font-semibold'
+    case 'warning': return 'text-yellow-400'
+    case 'success': case 'victory': return 'text-green-400 font-semibold'
+    case 'reward': return 'text-cyan-400'
+    case 'info': return 'text-blue-400'
+    case 'command': return 'text-purple-400'
     case 'attack':
-    default:
-      return 'text-gray-300'
+    default: return 'text-gray-300'
   }
 }
-
-// Tự động cuộn xuống log mới nhất
-watch(logs, () => {
-  nextTick(() => {
-    if (logContainer.value) {
-      logContainer.value.scrollTop = logContainer.value.scrollHeight
-    }
-  })
-}, { deep: true })
 </script>

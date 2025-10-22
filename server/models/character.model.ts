@@ -3,6 +3,7 @@ import { defineMongooseModel } from '#nuxt/mongoose'
 
 export interface ICharacter {
   _id: string
+  avatar?: string
   userId: Schema.Types.ObjectId
   name: string
   hp: number
@@ -46,11 +47,26 @@ export interface ICharacter {
     monsterHp: number
     monsterName: string
   }
+  activeQuests: {
+    questId: string
+    objectives: {
+      type: string
+      target: string
+      count: number
+      current: number
+    }[]
+    completed: boolean
+  }[]
+  exploration: Map<string, {
+    progress: number
+    discoveredQuests: string[]
+  }>
   lastCultivateTick: Date
 }
 
 export const Character = defineMongooseModel<ICharacter>('Character', {
   userId: { type: Schema.Types.ObjectId, ref: 'User', required: true, index: true },
+  avatar: { type: String, default: '' },
   name: { type: String, required: true, unique: true },
   hp: { type: Number, default: 100 },
   hpMax: { type: Number, default: 100 },
@@ -67,7 +83,8 @@ export const Character = defineMongooseModel<ICharacter>('Character', {
     stage: { type: String, default: 'Võ Giả Cấp Thấp' },
     exp: { type: Number, default: 0 },
     stateOfMind: { type: Number, default: 1.0, min: 0.1, max: 2.0 },
-    comprehension: { type: Number, default: 10 }
+    comprehension: { type: Number, default: 10 },
+    stageId: { type: String, default: 'apprentice_low' }
   },
   stats: {
     attack: { type: Number, default: 10 },
@@ -91,6 +108,24 @@ export const Character = defineMongooseModel<ICharacter>('Character', {
     monsterId: { type: String, default: null },
     monsterHp: { type: Number, default: 0 },
     monsterName: { type: String, default: '' }
+  },
+  activeQuests: [{
+    questId: { type: String },
+    objectives: [{
+      type: { type: String },
+      target: { type: String },
+      count: { type: Number },
+      current: { type: Number, default: 0 }
+    }],
+    completed: { type: Boolean, default: false }
+  }],
+  exploration: {
+    type: Map,
+    of: {
+      progress: { type: Number, default: 0 }, // 0-100%
+      discoveredQuests: [String]
+    },
+    default: {}
   },
   lastCultivateTick: { type: Date, default: Date.now }
 }, { timestamps: true })

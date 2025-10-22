@@ -24,6 +24,7 @@
       <div class="p-3 flex-grow overflow-y-auto">
         <GameTabsZoneTab v-if="activeTab === 'zone'" />
         <GameTabsCharacterTab v-if="activeTab === 'character'" />
+        <GameTabsQuestsTab v-if="activeTab === 'quests'" />
       </div>
     </div>
   </div>

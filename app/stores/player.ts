@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 
 export const usePlayerStore = defineStore('player', {
   state: () => ({
-    character: null as any | null,
+    character: null as any | null
   }),
   actions: {
     setCharacter(data: any) {
@@ -12,6 +12,6 @@ export const usePlayerStore = defineStore('player', {
     updateCharacter(updates: Record<string, any>) {
       if (this.character)
         this.character = { ...this.character, ...updates }
-    },
-  },
+    }
+  }
 })

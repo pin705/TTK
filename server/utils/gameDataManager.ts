@@ -1,4 +1,4 @@
-import { realms, zones, monsters, npcs, items } from '~~/shared/config'
+import { realms, zones, monsters, npcs, items, quests } from '~~/shared/config'
 import type { RealmId, ZoneId, MonsterId } from '~~/shared/config' // Tạo file index để export type
 
 // Quản lý Cảnh giới
@@ -40,5 +40,11 @@ export const NpcManager = {
 export const ItemManager = {
   getItem(itemId: string) {
     return items[itemId]
+  }
+}
+
+export const QuestManager = {
+  getQuest(questId: string) {
+    return quests[questId]
   }
 }

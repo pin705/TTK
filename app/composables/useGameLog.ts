@@ -8,7 +8,7 @@ export interface LogEntry {
 }
 
 const logs = ref<LogEntry[]>([])
-const MAX_CLIENT_LOGS = 50 // Giới hạn số log hiển thị trên client
+const MAX_CLIENT_LOGS = 10 // Giới hạn số log hiển thị trên client
 
 export function useGameLog() {
   // Hàm tải log ban đầu từ server (Redis)
