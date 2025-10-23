@@ -16,19 +16,21 @@ export const gather: ActionHandler = async ({ character, payload }) => {
   if (!resourceNode || resourceNode.spawnChance < Math.random())
     throw new Error('Không tìm thấy tài nguyên này.')
 
-  // Xóa tài nguyên khỏi khu vực sau khi thu thập
-  zone.resources = zone.resources.filter(r => r.itemId !== itemId)
-  await zone.save()
-
   // Thêm vật phẩm vào túi đồ
   const quantity = Math.floor(Math.random() * (resourceNode.quantity[1] - resourceNode.quantity[0] + 1)) + resourceNode.quantity[0]
   addItemToInventory(character, itemId, quantity)
 
+  // ✨ CẬP NHẬT TIẾN TRÌNH QUEST 'GATHER' ✨
+  const questCompleted = QuestManager.updateProgress(character, 'gather', itemId, quantity)
+  const logMessage = `Bạn đã thu thập được ${quantity} x [${itemId}].`
+  const logs: LogPayload[] = [{ message: logMessage, type: 'reward' }]
+
+  if (questCompleted) {
+    logs.push({ message: 'Một nhiệm vụ đã hoàn thành mục tiêu!', type: 'info' })
+  }
+
   return {
-    log: {
-      message: `Bạn đã thu thập được ${quantity} x [${itemId}].`,
-      type: 'reward'
-    },
+    log: logs,
     updates: {
       character: { inventory: character.inventory },
       zone // Cập nhật lại zone để tài nguyên biến mất

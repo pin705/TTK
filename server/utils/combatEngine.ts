@@ -12,9 +12,7 @@ export function calculateDamage(attacker: Actor, defender: Actor, weaponMultipli
   const resistance = defender.stats.resistance || 0
 
   const rawDamage = (attack * weaponMultiplier + skillPower) * critFactor
-  console.log('rawDamage', rawDamage)
   const finalDamage = Math.max(1, rawDamage - (defense + resistance))
-  console.log('finalDamage', finalDamage)
   return {
     damage: Math.floor(finalDamage),
     isCrit

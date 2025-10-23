@@ -6,6 +6,10 @@ export const passiveRecoveryTick: ActionHandler = async ({ character }) => {
 
   // 1. Xóa các hiệu ứng hết hạn
   character.effects = character.effects.filter((effect) => {
+    if (!effect.expiresAt) {
+      hasExpiredEffects = true
+      return false
+    }
     if (effect.expiresAt && effect.expiresAt.getTime() <= now) {
       hasExpiredEffects = true
       return false // Xóa hiệu ứng

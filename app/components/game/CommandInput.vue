@@ -7,7 +7,7 @@
           ref="inputRef"
           v-model="command"
           type="text"
-          placeholder="Nhập lệnh... (ví dụ: /status, /map)"
+          placeholder="Nhập lệnh... (ví dụ: /help, /status)"
           class="w-full bg-gray-900/50 text-green-300 placeholder-gray-500 pl-6 pr-3 py-2 rounded focus:outline-none focus:ring-1 focus:ring-green-500 transition"
           @keydown.up.prevent="showHistory('up')"
           @keydown.down.prevent="showHistory('down')"

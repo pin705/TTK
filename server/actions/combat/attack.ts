@@ -7,6 +7,11 @@ function handleVictory(character: any, monsterData: any, monsterTemplate: any) {
 
   const logs: any[] = [{ message: `Bạn đã tiêu diệt [${monsterData.name}]! Nhận được ${monsterTemplate.expReward} EXP.`, type: 'victory' }]
 
+  const questCompleted = QuestManager.updateProgress(character, 'kill', monsterData.templateId, 1)
+  if (questCompleted) {
+    logs.push({ message: 'Một nhiệm vụ đã hoàn thành mục tiêu!', type: 'info' })
+  }
+
   monsterTemplate.drops.forEach((drop: any) => {
     if (Math.random() < drop.chance) {
       const quantity = Math.floor(Math.random() * (drop.quantity[1] - drop.quantity[0] + 1)) + drop.quantity[0]
@@ -34,7 +39,7 @@ function handleDefeat(character: ICharacter, monsterData: unknown) {
   character.effects.push({
     effectId: 'heavy_wound',
     name: 'Trọng Thương',
-    expiresAt: new Date(Date.now() + woundDurationSeconds * 1000),
+    expiresAt: new Date(Date.now() + woundDurationSeconds * 1000), // 60 giây
     preventsCombat: true,
     hpRegenModifier: -1 // Ngăn chặn hồi phục tự nhiên
   })

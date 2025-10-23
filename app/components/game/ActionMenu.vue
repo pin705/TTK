@@ -1,6 +1,11 @@
 <template>
-  <div v-if="mapStore.currentZone" class="space-y-3">
-    <h3 class="text-purple-400 font-semibold">[Hành động Khả dụng]</h3>
+  <div
+    v-if="mapStore.currentZone"
+    class="space-y-3"
+  >
+    <h3 class="text-purple-400 font-semibold">
+      [Hành động Khả dụng]
+    </h3>
     <div class="flex flex-wrap gap-2">
       <button
         v-for="exit in mapStore.currentZone.connectedZones"
@@ -9,7 +14,10 @@
         :disabled="isLoading"
         @click="performMove(exit.direction)"
       >
-        <Icon name="lucide:move-right" class="inline-block mr-1 -mt-px"/> {{ exit.direction }}
+        <Icon
+          name="lucide:move-right"
+          class="inline-block mr-1 -mt-px"
+        /> {{ exit.direction }}
       </button>
 
       <button
@@ -19,7 +27,10 @@
         :disabled="isLoading"
         @click="performGather(resource.itemId)"
       >
-         <Icon name="lucide:shovel" class="inline-block mr-1 -mt-px"/> Thu thập [{{ resource.itemId }}]
+        <Icon
+          name="lucide:shovel"
+          class="inline-block mr-1 -mt-px"
+        /> Thu thập [{{ resource.itemId }}]
       </button>
 
       <button
@@ -28,8 +39,16 @@
         :disabled="isLoading"
         @click="performCultivate"
       >
-        <Icon v-if="isCultivating" name="lucide:loader-circle" class="animate-spin -ml-1 mr-2 h-4 w-4"/>
-        <Icon v-else name="lucide:brain-circuit" class="inline-block mr-1 -mt-px"/>
+        <Icon
+          v-if="isCultivating"
+          name="lucide:loader-circle"
+          class="animate-spin -ml-1 mr-2 h-4 w-4"
+        />
+        <Icon
+          v-else
+          name="lucide:brain-circuit"
+          class="inline-block mr-1 -mt-px"
+        />
         Tu Luyện
       </button>
 
@@ -39,11 +58,17 @@
         :disabled="isLoading"
         @click="performMeditate"
       >
-         <Icon name="lucide:heart-pulse" class="inline-block mr-1 -mt-px"/> Đả Tọa
+        <Icon
+          name="lucide:heart-pulse"
+          class="inline-block mr-1 -mt-px"
+        /> Đả Tọa
       </button>
     </div>
 
-    <p v-if="isLoading && !isCultivating" class="text-xs text-gray-400 animate-pulse pt-1">
+    <p
+      v-if="isLoading && !isCultivating"
+      class="text-xs text-gray-400 animate-pulse pt-1"
+    >
       Đang xử lý...
     </p>
   </div>
@@ -59,12 +84,13 @@ const isCultivating = ref(false)
 const isWounded = computed(() => {
   return playerStore.character?.effects?.some(e => e.effectId === 'heavy_wound' && (!e.expiresAt || new Date(e.expiresAt) > new Date())) || false
 })
-
 // Điều kiện hiển thị nút Tu Luyện
-const canCultivate = computed(() => mapStore.currentZone?.allowCultivation && !isWounded.value);
-
+const canCultivate = computed(() => mapStore.currentZone?.allowCultivation && !isWounded.value)
+const isFullHp = computed(() => {
+  return playerStore.character ? playerStore.character.hp >= playerStore.character.hpMax : false
+})
 // Điều kiện hiển thị nút Đả Tọa
-const canMeditate = computed(() => mapStore.currentZone?.allowCultivation && !isWounded.value);
+const canMeditate = computed(() => mapStore.currentZone?.allowCultivation && !isWounded.value && !isFullHp.value)
 
 async function performMove(direction: string) {
   await execute('map/move', { direction })
@@ -72,6 +98,10 @@ async function performMove(direction: string) {
 
 async function performGather(itemId: string) {
   await execute('resource/gather', { itemId })
+}
+
+async function performMeditate() {
+  execute('character/meditate')
 }
 
 async function performCultivate() {

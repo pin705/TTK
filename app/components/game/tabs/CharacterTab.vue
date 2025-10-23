@@ -1,77 +1,143 @@
 <template>
   <div
     v-if="playerStore.character && currentRealm"
-    class="space-y-4"
+    class="space-y-4 text-sm"
   >
-    <div class="p-3 bg-gray-900/50 rounded-lg border border-gray-700">
-      <p class="mt-2 text-sm">
-        Tâm Cảnh:
-        <span :class="mindStateColor">{{ mindStateText }} ({{ playerStore.character.cultivation.stateOfMind.toFixed(1) }})</span>
-      </p>
-    </div>
-
-    <div class="p-3 bg-gray-900/50 rounded-lg border border-gray-700">
-      <h3 class="text-yellow-400 border-b border-yellow-700/50 pb-1 mb-2 font-semibold">
-        Tu Luyện
+    <div class="p-3 bg-gray-900/50 rounded-lg border border-gray-700 shadow-inner">
+      <h3 class="text-yellow-400 border-b border-yellow-700/50 pb-1 mb-2 font-semibold flex items-center">
+        <Icon
+          name="lucide:swords"
+          class="mr-2 h-4 w-4 text-yellow-500"
+        /> Tu Luyện & Cảnh Giới
       </h3>
-      <p>Cảnh giới: <span class="text-white font-bold">{{ playerStore.character.cultivation.stage }}</span></p>
+      <div class="grid grid-cols-2 gap-x-4 mb-2">
+        <p>Cảnh Giới Hiện Tại: <span class="text-white font-bold">{{ playerStore.character.cultivation.stage }}</span></p>
+        <p>Ngộ Đạo: <span class="text-white">{{ playerStore.character.cultivation.comprehension }}</span></p>
+      </div>
 
-      <div>
-        <span class="text-sm text-purple-400">Tu Vi</span>
-        <div class="w-full bg-gray-700 rounded-full h-2.5 mt-1">
+      <div class="mb-2">
+        <div class="flex justify-between items-center text-xs mb-0.5 text-purple-400">
+          <span class="font-semibold">Tu Vi</span>
+          <span>{{ playerStore.character.cultivation.exp }} / {{ currentRealm.expRequired }}</span>
+        </div>
+        <div class="w-full bg-gray-800/50 rounded-full h-2.5 relative overflow-hidden border border-gray-700">
           <div
-            class="bg-purple-600 h-2.5 rounded-full"
+            class="bg-gradient-to-r from-purple-600 to-indigo-500 h-full rounded-full transition-all duration-300 ease-in-out"
             :style="{ width: expPercent + '%' }"
           />
         </div>
-        <p class="text-xs text-right">
-          {{ playerStore.character.cultivation.exp }} / {{ currentRealm.expRequired }}
-        </p>
       </div>
+
+      <p class="text-sm">
+        Tâm Cảnh:
+        <span
+          :class="mindStateColor"
+          class="font-semibold"
+        >{{ mindStateText }}</span>
+        <span class="text-xs text-gray-400"> ({{ playerStore.character.cultivation.stateOfMind.toFixed(1) }})</span>
+      </p>
 
       <div
         v-if="canBreakthrough"
         class="mt-3 text-center"
       >
         <button
-          class="bg-yellow-600/50 hover:bg-yellow-500/50 px-4 py-2 rounded disabled:opacity-50 animate-pulse font-bold"
+          class="bg-gradient-to-r from-yellow-600 to-orange-500 hover:from-yellow-500 hover:to-orange-400 text-white px-4 py-2 rounded-md disabled:opacity-50 disabled:cursor-not-allowed animate-pulse font-bold shadow-lg border border-yellow-400/80 text-base"
           :disabled="isLoading"
           @click="performBreakthrough"
         >
-          ⚡ ĐỘT PHÁ ⚡
+          <Icon
+            name="lucide:sparkles"
+            class="inline-block mr-1 -mt-px h-4 w-4"
+          /> ĐỘT PHÁ <Icon
+            name="lucide:sparkles"
+            class="inline-block ml-1 -mt-px h-4 w-4"
+          />
         </button>
         <p
           v-if="nextRealm"
           class="text-xs text-gray-400 mt-1"
         >
-          Cảnh giới tiếp theo: {{ nextRealm.name }}
+          Đủ điều kiện đột phá lên: <span class="text-yellow-300 font-medium">{{ nextRealm.name }}</span>
+        </p>
+        <p
+          v-else
+          class="text-xs text-green-400 mt-1"
+        >
+          Đã đạt cảnh giới tối đa!
+        </p>
+      </div>
+      <div
+        v-else-if="currentRealm && nextRealm"
+        class="mt-3 text-center"
+      >
+        <p class="text-xs text-gray-500 italic">
+          Cần thêm {{ expNeeded }} Tu Vi để đột phá lên {{ nextRealm.name }}
         </p>
       </div>
     </div>
 
-    <div class="p-3 bg-gray-900/50 rounded-lg border border-gray-700">
-      <h3 class="text-cyan-400 border-b border-cyan-700/50 pb-1 mb-2 font-semibold">
-        Bảng Thuộc Tính
+    <div class="p-3 bg-gray-900/50 rounded-lg border border-gray-700 shadow-inner">
+      <h3 class="text-cyan-400 border-b border-cyan-700/50 pb-1 mb-2 font-semibold flex items-center">
+        <Icon
+          name="lucide:bar-chart-3"
+          class="mr-2 h-4 w-4 text-cyan-500"
+        /> Bảng Thuộc Tính
       </h3>
-      <div class="grid grid-cols-2 gap-x-4 gap-y-1 text-sm">
-        <span>Tấn Công: <span class="text-white">{{ playerStore.character.stats.attack }}</span></span>
-        <span>Phòng Thủ: <span class="text-white">{{ playerStore.character.stats.defense }}</span></span>
-        <span>Tốc Độ: <span class="text-white">{{ playerStore.character.stats.speed }}</span></span>
-        <span>Chí Mạng: <span class="text-white">{{ (playerStore.character.stats.critChance * 100).toFixed(0) }}%</span></span>
-        <span>Kháng: <span class="text-white">{{ playerStore.character.stats.resistance }}</span></span>
-        <span>Né Tránh: <span class="text-white">{{ (playerStore.character.stats.dodgeChance * 100).toFixed(0) }}%</span></span>
+      <div class="grid grid-cols-2 md:grid-cols-3 gap-x-4 gap-y-1">
+        <span class="flex items-center"><Icon
+          name="lucide:sword"
+          class="mr-1.5 text-red-400 h-4 w-4"
+        /> Tấn Công: <span class="text-white ml-1">{{ playerStore.character.stats.attack }}</span></span>
+        <span class="flex items-center"><Icon
+          name="lucide:shield"
+          class="mr-1.5 text-blue-400 h-4 w-4"
+        /> Phòng Thủ: <span class="text-white ml-1">{{ playerStore.character.stats.defense }}</span></span>
+        <span class="flex items-center"><Icon
+          name="lucide:wind"
+          class="mr-1.5 text-green-400 h-4 w-4"
+        /> Tốc Độ: <span class="text-white ml-1">{{ playerStore.character.stats.speed }}</span></span>
+        <span class="flex items-center"><Icon
+          name="lucide:swords"
+          class="mr-1.5 text-yellow-400 h-4 w-4"
+        /> Chí Mạng: <span class="text-white ml-1">{{ (playerStore.character.stats.critChance * 100).toFixed(0) }}%</span></span>
+        <span class="flex items-center"><Icon
+          name="lucide:shield-half"
+          class="mr-1.5 text-purple-400 h-4 w-4"
+        /> Kháng Phép: <span class="text-white ml-1">{{ playerStore.character.stats.resistance }}</span></span>
+        <span class="flex items-center"><Icon
+          name="lucide:feather"
+          class="mr-1.5 text-sky-400 h-4 w-4"
+        /> Né Tránh: <span class="text-white ml-1">{{ (playerStore.character.stats.dodgeChance * 100).toFixed(0) }}%</span></span>
+      </div>
+      <div class="grid grid-cols-2 md:grid-cols-3 gap-x-4 gap-y-1 mt-1 pt-1 border-t border-gray-700/50">
+        <span class="flex items-center"><Icon
+          name="lucide:star"
+          class="mr-1.5 text-gray-400 h-4 w-4"
+        /> Danh Vọng: <span class="text-white ml-1">{{ playerStore.character.reputation }}</span></span>
+        <span class="flex items-center"><Icon
+          name="lucide:heart"
+          class="mr-1.5 h-4 w-4"
+          :class="karmaColor"
+        /> Karma: <span
+          :class="karmaColor"
+          class="ml-1"
+        >{{ playerStore.character.karma }}</span></span>
       </div>
     </div>
 
-    <div class="p-3 bg-gray-900/50 rounded-lg border border-gray-700">
-      <h3 class="text-orange-400 border-b border-orange-700/50 pb-1 mb-2 font-semibold">
-        Trạng Thái Hiện Tại
+    <div class="p-3 bg-gray-900/50 rounded-lg border border-gray-700 shadow-inner">
+      <h3 class="text-orange-400 border-b border-orange-700/50 pb-1 mb-2 font-semibold flex items-center">
+        <Icon
+          name="lucide:wand-sparkles"
+          class="mr-2 h-4 w-4 text-orange-500"
+        /> Trạng Thái & Hiệu Ứng
       </h3>
       <div
         v-if="!activeEffects.length"
         class="text-sm text-gray-500 italic"
       >
-        - Bình thường -
+        - Trạng thái bình thường -
       </div>
       <ul
         v-else
@@ -81,15 +147,16 @@
           v-for="effect in activeEffects"
           :key="effect.effectId"
           :class="effectColor(effect)"
+          class="flex items-center"
         >
           <Icon
             :name="effectIcon(effect)"
-            class="inline-block mr-1"
+            class="inline-block mr-2 flex-shrink-0 h-4 w-4"
           />
-          {{ effect.name }}
+          <span class="font-medium">{{ effect.name }}</span>
           <span
             v-if="effect.durationText"
-            class="text-gray-400 text-xs ml-1"
+            class="text-gray-400 text-xs ml-auto pl-2 whitespace-nowrap"
           >({{ effect.durationText }})</span>
         </li>
       </ul>
@@ -97,84 +164,120 @@
 
     <GameInventoryPanel />
   </div>
+  <div
+    v-else
+    class="p-3 text-center text-gray-500 italic"
+  >
+    Đang tải dữ liệu nhân vật...
+  </div>
 </template>
 
 <script setup lang="ts">
-import { realms } from '~~/shared/config' // <-- IMPORT TRỰC TIẾP TỪ CONFIG
-import { formatDistanceToNowStrict } from 'date-fns'; // Import thư viện date-fns
+import { useGameAction } from '~/composables/useGameAction' // Sửa đường dẫn nếu cần
+import { usePlayerStore } from '~/stores/player' // Sửa đường dẫn nếu cần
+import { formatDistanceToNowStrict } from 'date-fns'
+import { vi } from 'date-fns/locale'
+import { realms } from '~~/shared/config'
 
 const { execute, isLoading } = useGameAction()
 const playerStore = usePlayerStore()
 
+// --- Logic Cảnh giới & EXP (Sửa lỗi allRealms) ---
 const currentRealm = computed(() => {
-  if (!playerStore.character) return null
+  if (!playerStore.character?.cultivation?.stageId) return Object.values(realms)[0] // Mặc định cảnh giới đầu
   const stageId = playerStore.character.cultivation.stageId as keyof typeof realms
+  // Trả về cảnh giới từ config, hoặc cảnh giới đầu tiên nếu stageId không hợp lệ
   return realms[stageId] || Object.values(realms)[0]
 })
 
 const nextRealm = computed(() => {
   if (!currentRealm.value) return null
+  // Tìm cảnh giới có level cao hơn 1 bậc
   return Object.values(realms).find(r => r.level === currentRealm.value.level + 1)
 })
 
 const expPercent = computed(() => {
-  if (!playerStore.character || !currentRealm.value) return 0
-  return (playerStore.character.cultivation.exp / currentRealm.value.expRequired) * 100
+  // Chống lỗi chia cho 0 nếu expRequired không hợp lệ
+  if (!playerStore.character || !currentRealm.value || currentRealm.value.expRequired <= 0) return 0
+  // Đảm bảo % không vượt quá 100 hoặc nhỏ hơn 0
+  return Math.max(0, Math.min(100, (playerStore.character.cultivation.exp / currentRealm.value.expRequired) * 100))
 })
 
+// Tính EXP còn thiếu để đột phá
+const expNeeded = computed(() => {
+  if (!playerStore.character || !currentRealm.value) return 0
+  return Math.max(0, currentRealm.value.expRequired - playerStore.character.cultivation.exp)
+})
+
+// Điều kiện để nút Đột Phá hiển thị và hoạt động
 const canBreakthrough = computed(() => {
   if (!playerStore.character || !currentRealm.value) return false
-  return playerStore.character.cultivation.exp >= currentRealm.value.expRequired
+  // Phải có cảnh giới tiếp theo VÀ đủ EXP
+  return !!nextRealm.value && playerStore.character.cultivation.exp >= currentRealm.value.expRequired
 })
 
+async function performBreakthrough() { await execute('character/breakthrough') }
+
+// --- Hiển thị Tâm Cảnh ---
 const mindStateText = computed(() => {
   const mind = playerStore.character?.cultivation.stateOfMind || 1.0
-  if (mind >= 1.5) return 'Minh Kính'
-  if (mind >= 1.1) return 'Bình Tĩnh'
-  if (mind >= 0.9) return 'Bình Thường'
-  if (mind >= 0.5) return 'Bất Ổn'
-  return 'Hỗn Loạn'
+  if (mind >= 1.5) return 'Tâm Như Minh Kính'
+  if (mind >= 1.1) return 'Tâm Thần Bình Tĩnh'
+  if (mind >= 0.9) return 'Tâm Trạng Bình Thường'
+  if (mind >= 0.5) return 'Tâm Thần Bất Ổn'
+  return 'Tâm Ma Xâm Thực'
 })
 
 const mindStateColor = computed(() => {
   const mind = playerStore.character?.cultivation.stateOfMind || 1.0
   if (mind >= 1.5) return 'text-sky-400'
   if (mind >= 1.1) return 'text-green-400'
-  if (mind >= 0.9) return 'text-gray-300'
+  if (mind >= 0.9) return 'text-gray-300' // Bình thường màu xám nhạt
   if (mind >= 0.5) return 'text-yellow-400'
-  return 'text-red-500'
+  return 'text-red-500 font-bold' // Hỗn loạn màu đỏ đậm
 })
 
-// --- HIỂN THỊ HIỆU ỨNG ---
+// --- Hiển thị Karma ---
+const karmaColor = computed(() => {
+  const karma = playerStore.character?.karma || 0
+  if (karma > 50) return 'text-sky-400' // Thiện cao
+  if (karma > 0) return 'text-green-400' // Thiện
+  if (karma < -50) return 'text-red-600' // Ác cao
+  if (karma < 0) return 'text-red-400' // Ác
+  return 'text-white' // Trung lập
+})
+
+// --- Hiển thị Hiệu Ứng ---
 const activeEffects = computed(() => {
   if (!playerStore.character?.effects) return []
   const now = Date.now()
   return playerStore.character.effects
-    .filter(e => !e.expiresAt || new Date(e.expiresAt).getTime() > now) // Lọc hiệu ứng còn hạn
+    // Lọc bỏ hiệu ứng hết hạn
+    .filter(e => !e.expiresAt || new Date(e.expiresAt).getTime() > now)
     .map(e => ({
       ...e,
-      // Tính toán thời gian còn lại
+      // Tính toán thời gian còn lại dạng "còn lại X p/s"
       durationText: e.expiresAt
-        ? formatDistanceToNowStrict(new Date(e.expiresAt), { addSuffix: true, locale: vi })
-        : null // Hiển thị 'còn lại X phút/giây'
+        ? formatDistanceToNowStrict(new Date(e.expiresAt), { addSuffix: true, locale: vi }).replace('khoảng ', '') // Bỏ chữ "khoảng"
+        : null
     }))
 })
 
 // Hàm chọn màu cho hiệu ứng
 function effectColor(effect: any): string {
   if (effect.effectId === 'heavy_wound') return 'text-red-500 font-semibold'
-  // Thêm màu cho các buff/debuff khác
+  // Thêm màu cho các buff (màu xanh lá) / debuff khác (màu vàng/cam)
+  if (effect.hpRegenModifier > 0) return 'text-green-400' // Buff hồi phục
+  if (effect.hpRegenModifier < 0) return 'text-yellow-400' // Debuff hồi phục
   return 'text-gray-300'
 }
 
 // Hàm chọn icon cho hiệu ứng
 function effectIcon(effect: any): string {
   if (effect.effectId === 'heavy_wound') return 'lucide:heart-crack'
-  // Thêm icon cho các buff/debuff khác
+  if (effect.hpRegenModifier > 0) return 'lucide:trending-up' // Buff
+  if (effect.hpRegenModifier < 0) return 'lucide:trending-down' // Debuff
+  // Thêm icon cho các buff/debuff khác dựa trên effectId
   return 'lucide:sparkles' // Icon mặc định
-}
-
-async function performBreakthrough() {
-  await execute('character/breakthrough')
 }
 </script>

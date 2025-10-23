@@ -42,9 +42,3 @@ export const ItemManager = {
     return items[itemId]
   }
 }
-
-export const QuestManager = {
-  getQuest(questId: string) {
-    return quests[questId]
-  }
-}

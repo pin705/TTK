@@ -9,6 +9,7 @@ export const move: ActionHandler = async ({ character, payload }) => {
   const currentZoneData = ZoneManager.getZone(character.currentZoneId as ZoneId)
 
   if (!currentZoneData) throw new Error('Không tìm thấy khu vực hiện tại.')
+    console.log('currentZoneData', character.currentZoneId,currentZoneData)
   const exit = currentZoneData.connectedZones?.find(z => z.direction === direction)
   if (!exit) throw new Error('Không thể đi theo hướng này.')
 

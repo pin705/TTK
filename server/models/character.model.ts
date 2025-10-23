@@ -1,9 +1,24 @@
 import { Schema } from 'mongoose'
 import { defineMongooseModel } from '#nuxt/mongoose'
 
+export interface ActiveQuestObjective {
+  type: string // 'kill', 'gather', 'talk', 'explore'
+  target: string // monsterId, itemId, npcId, zoneId
+  count: number // Số lượng yêu cầu
+  current: number // Tiến trình hiện tại
+}
+
+export interface ActiveQuest {
+  questId: string
+  status: 'active' | 'completed' | 'claimed' // Trạng thái nhiệm vụ
+  objectives: ActiveQuestObjective[]
+  startedAt: Date
+}
+
 export interface ICharacter {
   _id: string
   avatar?: string
+  level: number
   userId: Schema.Types.ObjectId
   name: string
   hp: number
@@ -51,16 +66,8 @@ export interface ICharacter {
     monsterHp: number
     monsterName: string
   } | null
-  activeQuests: {
-    questId: string
-    objectives: {
-      type: string
-      target: string
-      count: number
-      current: number
-    }[]
-    completed: boolean
-  }[]
+  activeQuests: ActiveQuest[] // Nhiệm vụ đang hoạt động
+  completedQuests: string[] // Lưu ID quest đã hoàn thành
   exploration: Map<string, {
     progress: number
     discoveredQuests: string[]
@@ -71,7 +78,8 @@ export interface ICharacter {
 export const Character = defineMongooseModel<ICharacter>('Character', {
   userId: { type: Schema.Types.ObjectId, ref: 'User', required: true, index: true },
   avatar: { type: String, default: '' },
-  name: { type: String, required: true, unique: true },
+  level: { type: Number, default: 1, index: true },
+  name: { type: String, required: true },
   hp: { type: Number, default: 100 },
   hpMax: { type: Number, default: 100 },
   energy: { type: Number, default: 500 },
@@ -84,7 +92,7 @@ export const Character = defineMongooseModel<ICharacter>('Character', {
     accessory: { type: String, default: null }
   },
   cultivation: {
-    stage: { type: String, default: 'Võ Giả Cấp Thấp' },
+    stage: { type: String, default: 'Học Đồ Cấp Thấp' },
     exp: { type: Number, default: 0 },
     stateOfMind: { type: Number, default: 1.0, min: 0.1, max: 2.0 },
     comprehension: { type: Number, default: 10 },
@@ -94,42 +102,52 @@ export const Character = defineMongooseModel<ICharacter>('Character', {
     attack: { type: Number, default: 10 },
     defense: { type: Number, default: 5 },
     speed: { type: Number, default: 10 },
-    critChance: { type: Number, default: 0.05 },
-    critDamage: { type: Number, default: 1.5 },
-    dodgeChance: { type: Number, default: 0.05 },
+    critChance: { type: Number, default: 0.05, min: 0, max: 1 },
+    critDamage: { type: Number, default: 1.5, min: 1 },
+    dodgeChance: { type: Number, default: 0.05, min: 0, max: 1 },
     resistance: { type: Number, default: 0 }
   },
   effects: [{
+    _id: false,
     effectId: String,
     name: String,
     durationTurns: Number,
     power: Number,
     preventsCombat: { type: Boolean, default: false },
     hpRegenModifier: { type: Number, default: 0 }, // e.g., -1 (ngăn chặn), 0.5 (tăng 50%)
-    energyRegenModifier: { type: Number, default: 0 } // e.g., -1 (ngăn chặn), 0.5 (tăng 50%)
+    energyRegenModifier: { type: Number, default: 0 }, // e.g., -1 (ngăn chặn), 0.5 (tăng 50%)
+    expiresAt: { type: Date }
   }],
   reputation: { type: Number, default: 0 },
   karma: { type: Number, default: 0 },
   inCombat: { type: Boolean, default: false },
-  combat: {
-    monsterId: { type: String, default: null },
-    monsterHp: { type: Number, default: 0 },
-    monsterName: { type: String, default: '' }
+  combat: { // Sửa lại schema combat
+    type: {
+      monsterId: { type: String },
+      monsterHp: { type: Number },
+      monsterName: { type: String }
+    },
+    default: null, // Cho phép combat là null khi không chiến đấu
+    _id: false
   },
   activeQuests: [{
-    questId: { type: String },
+    _id: false,
+    questId: String,
+    status: { type: String, enum: ['active', 'completed', 'claimed'], default: 'active' },
     objectives: [{
-      type: { type: String },
-      target: { type: String },
-      count: { type: Number },
+      type: String,
+      target: String,
+      count: Number,
       current: { type: Number, default: 0 }
     }],
-    completed: { type: Boolean, default: false }
+    startedAt: { type: Date, default: Date.now }
   }],
+  completedQuests: [String], // Lưu ID quest đã hoàn thành
   exploration: {
     type: Map,
     of: {
-      progress: { type: Number, default: 0 }, // 0-100%
+      _id: false, // Thêm _id: false
+      progress: { type: Number, default: 0 },
       discoveredQuests: [String]
     },
     default: {}

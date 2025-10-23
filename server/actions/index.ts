@@ -12,9 +12,10 @@ export const actions: Record<string, unknown> = {
   'combat/initiate': combat.initiate,
   'combat/attack': combat.attack,
   'npc/talk': npc.talk,
-  'quest/accept': quest.accept,
   'character/breakthrough': character.breakthrough,
   'character/updateAvatar': character.updateAvatar,
   'character/passiveRecoveryTick': character.passiveRecoveryTick,
-  'character/meditate': character.meditate
+  'character/meditate': character.meditate,
+  'quest/claim': quest.claim,
+  'quest/accept': quest.accept
 }
