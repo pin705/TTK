@@ -1,7 +1,7 @@
 import type { ActionHandler } from '../types'
 
 // Xử lý khi người chơi chiến thắng
-function handleVictory(character: any, monsterData: any, monsterTemplate: any) {
+async function handleVictory(character: any, monsterData: any, monsterTemplate: any, monsterKey) {
   character.inCombat = false
   character.cultivation.exp += monsterTemplate.expReward
 
@@ -12,6 +12,10 @@ function handleVictory(character: any, monsterData: any, monsterTemplate: any) {
     logs.push({ message: 'Một nhiệm vụ đã hoàn thành mục tiêu!', type: 'info' })
   }
 
+  // 2. ✨ KIỂM TRA TĂNG LEVEL ✨
+  const levelUpLogs = checkAndApplyLevelUp(character)
+  logs.push(...levelUpLogs) // Thêm log lên cấp (nếu có)
+
   monsterTemplate.drops.forEach((drop: any) => {
     if (Math.random() < drop.chance) {
       const quantity = Math.floor(Math.random() * (drop.quantity[1] - drop.quantity[0] + 1)) + drop.quantity[0]
@@ -20,6 +24,7 @@ function handleVictory(character: any, monsterData: any, monsterTemplate: any) {
     }
   })
 
+  await redis.del(monsterKey)
   return logs
 }
 
@@ -102,9 +107,8 @@ export const attack: ActionHandler = async ({ character }) => {
   // 3. KIỂM TRA KẾT QUẢ
   if (newHp <= 0) {
     // Người chơi thắng
-    const victoryLogs = handleVictory(character, monsterData, monsterTemplate)
+    const victoryLogs = await handleVictory(character, monsterData, monsterTemplate, monsterKey)
     turnLogs.push(...victoryLogs)
-    await redis.del(monsterKey)
   } else {
     // Quái vật còn sống, cập nhật HP và phản công
     await redis.hset(monsterKey, 'hp', newHp)

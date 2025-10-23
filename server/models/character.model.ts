@@ -19,6 +19,14 @@ export interface ICharacter {
   _id: string
   avatar?: string
   level: number
+  statPoints: number // <-- Điểm tiềm năng chưa phân phối
+  allocatedStats: { // <-- Điểm đã cộng vào chỉ số
+    attack: number
+    defense: number
+    speed: number
+    hpMax: number
+    energyMax: number
+  }
   userId: Schema.Types.ObjectId
   name: string
   hp: number
@@ -79,6 +87,18 @@ export const Character = defineMongooseModel<ICharacter>('Character', {
   userId: { type: Schema.Types.ObjectId, ref: 'User', required: true, index: true },
   avatar: { type: String, default: '' },
   level: { type: Number, default: 1, index: true },
+  statPoints: { type: Number, default: 0 }, // <-- Thêm điểm tiềm năng
+  allocatedStats: { // <-- Thêm điểm đã cộng
+    type: {
+      attack: { type: Number, default: 0 },
+      defense: { type: Number, default: 0 },
+      speed: { type: Number, default: 0 },
+      hpMax: { type: Number, default: 0 },
+      energyMax: { type: Number, default: 0 }
+    },
+    default: () => ({}), // Giá trị mặc định là object rỗng
+    _id: false
+  },
   name: { type: String, required: true },
   hp: { type: Number, default: 100 },
   hpMax: { type: Number, default: 100 },

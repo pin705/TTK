@@ -28,12 +28,12 @@ export const cultivate: ActionHandler = async ({ character }) => {
   const baseExpPerTick = 1 // 1 EXP mỗi 5 giây
 
   // Hệ số từ Tâm Cảnh (stateOfMind)
-  const stateOfMindMultiplier = character.cultivation.stateOfMind
+  const stateOfMindMultiplier = character.cultivation.stateOfMind || 1.0
 
   // Hệ số từ Linh khí khu vực (energyFluctuation)
   const zoneMultiplier = zone.energyFluctuation || 1.0
 
-  const expGained = Math.floor(baseExpPerTick * stateOfMindMultiplier * zoneMultiplier)
+  const expGained = Math.max(1, Math.floor(baseExpPerTick * stateOfMindMultiplier * zoneMultiplier))
 
   if (expGained > 0) {
     character.cultivation.exp += expGained

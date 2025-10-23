@@ -5,6 +5,7 @@ export * from './monsters'
 export * from './npcs'
 export * from './quests'
 export * from './events'
+export * from './leveling'
 
 export type { RealmId } from './cultivation'
 export type { ZoneId } from './zones'

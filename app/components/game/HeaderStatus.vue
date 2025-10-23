@@ -41,7 +41,7 @@
           {{ playerStore.character.name }}
         </h2>
         <p class="text-yellow-400 text-xs md:text-sm">
-          {{ playerStore.character.realm }}
+          Lv.{{ playerStore.character.level }} - {{ playerStore.character.cultivation.stage }}
         </p>
         <div
           v-if="isWounded"

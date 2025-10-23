@@ -32,10 +32,10 @@ export const talk: ActionHandler = async ({ character, payload }) => {
   const availableQuests: { id: QuestId, template: QuestTemplate }[] = []
   Object.entries(QuestManager.getAllQuests()).forEach(([id, quest]) => {
     const questId = id as QuestId
-    if (quest.npcId === npc.npcId // Đúng NPC
+    if (quest.npcId === npcId // Đúng NPC
       && (!quest.requiredLevel || character.level >= quest.requiredLevel) // Đủ cấp độ (cần thêm level vào character)
       && !character.activeQuests.some(q => q.questId === questId) // Chưa nhận
-      && (quest.isRepeatable || !character.completedQuests.includes(questId)) // Có thể lặp lại hoặc chưa hoàn thành
+      && (!character.completedQuests.includes(questId)) // Có thể lặp lại hoặc chưa hoàn thành
     ) {
       availableQuests.push({ id: questId, template: quest })
     }

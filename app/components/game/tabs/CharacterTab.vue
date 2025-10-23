@@ -11,8 +11,17 @@
         /> Tu Luyện & Cảnh Giới
       </h3>
       <div class="grid grid-cols-2 gap-x-4 mb-2">
+        <p>Cấp Độ: <span class="text-white font-bold">Lv.{{ playerStore.character.level }}</span></p>
         <p>Cảnh Giới Hiện Tại: <span class="text-white font-bold">{{ playerStore.character.cultivation.stage }}</span></p>
         <p>Ngộ Đạo: <span class="text-white">{{ playerStore.character.cultivation.comprehension }}</span></p>
+        <p class="text-sm">
+          Tâm Cảnh:
+          <span
+            :class="mindStateColor"
+            class="font-semibold"
+          >{{ mindStateText }}</span>
+          <span class="text-xs text-gray-400"> ({{ playerStore.character.cultivation.stateOfMind.toFixed(1) }})</span>
+        </p>
       </div>
 
       <div class="mb-2">
@@ -27,16 +36,6 @@
           />
         </div>
       </div>
-
-      <p class="text-sm">
-        Tâm Cảnh:
-        <span
-          :class="mindStateColor"
-          class="font-semibold"
-        >{{ mindStateText }}</span>
-        <span class="text-xs text-gray-400"> ({{ playerStore.character.cultivation.stateOfMind.toFixed(1) }})</span>
-      </p>
-
       <div
         v-if="canBreakthrough"
         class="mt-3 text-center"
@@ -74,6 +73,56 @@
         <p class="text-xs text-gray-500 italic">
           Cần thêm {{ expNeeded }} Tu Vi để đột phá lên {{ nextRealm.name }}
         </p>
+      </div>
+    </div>
+
+    <div class="p-3 bg-gray-900/50 rounded-lg border border-gray-700 shadow-inner">
+      <h3 class="text-emerald-400 border-b border-emerald-700/50 pb-1 mb-2 font-semibold flex items-center justify-between">
+        <span class="flex items-center">
+          <Icon
+            name="lucide:gem"
+            class="mr-2 h-4 w-4 text-emerald-500"
+          /> Phân Phối Tiềm Năng
+        </span>
+        <span class="text-xs text-gray-400">Điểm còn lại:
+          <span class="text-white font-bold text-base ml-1">{{ playerStore.character.statPoints }}</span>
+        </span>
+      </h3>
+      <div
+        v-if="playerStore.character.statPoints > 0"
+        class="space-y-2"
+      >
+        <div
+          v-for="statKey in allocatableStats"
+          :key="statKey"
+          class="flex items-center justify-between bg-gray-800/50 p-1.5 rounded border border-gray-700/50"
+        >
+          <span class="flex items-center text-xs uppercase tracking-wider">
+            <Icon
+              :name="statIcon(statKey)"
+              class="mr-1.5 h-4 w-4"
+              :class="statColor(statKey)"
+            />
+            {{ statName(statKey) }}
+            <span class="text-gray-400 ml-1">({{ playerStore.character.allocatedStats[statKey] || 0 }})</span> </span>
+          <button
+            class="bg-emerald-700/70 hover:bg-emerald-600/70 text-emerald-100 px-2 py-0.5 rounded text-xs border border-emerald-600/50 disabled:opacity-50 disabled:cursor-not-allowed"
+            :disabled="isLoading"
+            title="Cộng 1 điểm"
+            @click="allocate(statKey, 1)"
+          >
+            <Icon
+              name="lucide:plus"
+              class="h-4 w-4"
+            />
+          </button>
+        </div>
+      </div>
+      <div
+        v-else
+        class="text-sm text-gray-500 italic text-center py-2"
+      >
+        Không có điểm tiềm năng để phân phối. Hãy lên cấp để nhận thêm!
       </div>
     </div>
 
@@ -178,6 +227,7 @@ import { usePlayerStore } from '~/stores/player' // Sửa đường dẫn nếu 
 import { formatDistanceToNowStrict } from 'date-fns'
 import { vi } from 'date-fns/locale'
 import { realms } from '~~/shared/config'
+import { ALLOCATABLE_STATS, type AllocatableStat } from '~~/shared/config' // Import config điểm tiềm năng
 
 const { execute, isLoading } = useGameAction()
 const playerStore = usePlayerStore()
@@ -216,7 +266,49 @@ const canBreakthrough = computed(() => {
   return !!nextRealm.value && playerStore.character.cultivation.exp >= currentRealm.value.expRequired
 })
 
-async function performBreakthrough() { await execute('character/breakthrough') }
+async function performBreakthrough() {
+  await execute('character/breakthrough')
+}
+
+// Danh sách các chỉ số có thể cộng điểm
+const allocatableStats = ALLOCATABLE_STATS
+
+// Hàm gọi action cộng điểm
+async function allocate(stat: AllocatableStat, amount: number) {
+  await execute('character/allocateStat', { stat, amount })
+}
+
+// --- Hàm tiện ích cho giao diện điểm tiềm năng ---
+function statName(statKey: AllocatableStat): string {
+  switch (statKey) {
+    case 'attack': return 'Tấn Công'
+    case 'defense': return 'Phòng Thủ'
+    case 'speed': return 'Tốc Độ'
+    case 'hpMax': return 'Sinh Lực Tối Đa'
+    case 'energyMax': return 'Năng Lượng Tối Đa'
+    default: return statKey
+  }
+}
+function statIcon(statKey: AllocatableStat): string {
+  switch (statKey) {
+    case 'attack': return 'lucide:sword'
+    case 'defense': return 'lucide:shield'
+    case 'speed': return 'lucide:wind'
+    case 'hpMax': return 'lucide:heart-pulse'
+    case 'energyMax': return 'lucide:zap'
+    default: return 'lucide:gem'
+  }
+}
+function statColor(statKey: AllocatableStat): string {
+  switch (statKey) {
+    case 'attack': return 'text-red-400'
+    case 'defense': return 'text-blue-400'
+    case 'speed': return 'text-green-400'
+    case 'hpMax': return 'text-red-400'
+    case 'energyMax': return 'text-sky-400'
+    default: return 'text-gray-400'
+  }
+}
 
 // --- Hiển thị Tâm Cảnh ---
 const mindStateText = computed(() => {

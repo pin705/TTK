@@ -93,6 +93,10 @@ export const QuestManager = {
     if (questTemplate.rewards.exp) {
       character.cultivation.exp += questTemplate.rewards.exp
       rewardLogs.push({ message: `Nhận được ${questTemplate.rewards.exp} EXP.`, type: 'reward' })
+
+      // 2. ✨ KIỂM TRA TĂNG LEVEL SAU KHI NHẬN EXP NHIỆM VỤ ✨
+      const levelUpLogs = checkAndApplyLevelUp(character)
+      rewardLogs.push(...levelUpLogs) // Thêm log lên cấp (nếu có)
     }
     if (questTemplate.rewards.reputation) {
       character.reputation += questTemplate.rewards.reputation
