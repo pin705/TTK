@@ -46,6 +46,7 @@ export interface ICharacter {
     stateOfMind: number
     comprehension: number
     stageId: string
+    isCultivating: boolean
   }
   stats: {
     attack: number
@@ -83,6 +84,22 @@ export interface ICharacter {
   lastCultivateTick: Date
 }
 
+// --- Định nghĩa Schema con cho Objective ---
+const ObjectiveSchema = new Schema({
+  type: { type: String, required: true },
+  target: { type: String, required: true },
+  count: { type: Number, required: true },
+  current: { type: Number, default: 0 }
+}, { _id: false }); // _id: false để không tự tạo _id cho objective
+
+// --- Định nghĩa Schema con cho ActiveQuest ---
+const ActiveQuestSchema = new Schema({
+    questId: { type: String, required: true },
+    status: { type: String, enum: ['active', 'completed', 'claimed'], default: 'active' },
+    objectives: [ObjectiveSchema], // <-- Sử dụng Schema con ở đây
+    startedAt: { type: Date, default: Date.now }
+}, { _id: false }); // _id: false để không tự tạo _id cho activeQuest
+
 export const Character = defineMongooseModel<ICharacter>('Character', {
   userId: { type: Schema.Types.ObjectId, ref: 'User', required: true, index: true },
   avatar: { type: String, default: '' },
@@ -116,7 +133,8 @@ export const Character = defineMongooseModel<ICharacter>('Character', {
     exp: { type: Number, default: 0 },
     stateOfMind: { type: Number, default: 1.0, min: 0.1, max: 2.0 },
     comprehension: { type: Number, default: 10 },
-    stageId: { type: String, default: 'apprentice_low' }
+    stageId: { type: String, default: 'apprentice_low' },
+    isCultivating: { type: Boolean, default: false }
   },
   stats: {
     attack: { type: Number, default: 10 },
@@ -150,18 +168,7 @@ export const Character = defineMongooseModel<ICharacter>('Character', {
     default: null, // Cho phép combat là null khi không chiến đấu
     _id: false
   },
-  activeQuests: [{
-    _id: false,
-    questId: String,
-    status: { type: String, enum: ['active', 'completed', 'claimed'], default: 'active' },
-    objectives: [{
-      type: String,
-      target: String,
-      count: Number,
-      current: { type: Number, default: 0 }
-    }],
-    startedAt: { type: Date, default: Date.now }
-  }],
+  activeQuests: [ActiveQuestSchema], // Nhiệm vụ đang hoạt động
   completedQuests: [String], // Lưu ID quest đã hoàn thành
   exploration: {
     type: Map,

@@ -313,6 +313,7 @@ function statColor(statKey: AllocatableStat): string {
 // --- Hiển thị Tâm Cảnh ---
 const mindStateText = computed(() => {
   const mind = playerStore.character?.cultivation.stateOfMind || 1.0
+  console.log('Tâm Cảnh:', playerStore.character?.cultivation.stateOfMind)
   if (mind >= 1.5) return 'Tâm Như Minh Kính'
   if (mind >= 1.1) return 'Tâm Thần Bình Tĩnh'
   if (mind >= 0.9) return 'Tâm Trạng Bình Thường'

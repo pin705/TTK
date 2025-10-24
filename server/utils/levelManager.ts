@@ -48,3 +48,36 @@ export function checkAndApplyLevelUp(character: ICharacter): LogPayload[] {
 
   return levelUpLogs
 }
+
+/**
+ * Tính toán lại chỉ số tổng hợp của nhân vật.
+ * Nên được gọi sau khi lên cấp, cộng điểm tiềm năng, hoặc thay đổi trang bị.
+ */
+export function recalculateStats(character: ICharacter) {
+  // Logic tính toán base stats từ level (nếu cần)
+  const baseAttack = 10 + (character.level - 1) * STAT_GAINS_PER_LEVEL.attack
+  const baseDefense = 5 + (character.level - 1) * STAT_GAINS_PER_LEVEL.defense
+  // Tương tự cho speed...
+
+  // Logic tính chỉ số từ trang bị (equipment) - cần lấy data item từ config
+  const equipmentAttack = 0
+  const equipmentDefense = 0
+  // ...
+
+  // Tính tổng
+  character.stats.attack = baseAttack + character.allocatedStats.attack + equipmentAttack
+  character.stats.defense = baseDefense + character.allocatedStats.defense + equipmentDefense
+  // Tương tự cho các chỉ số khác...
+
+  // Cập nhật lại HP/Energy Max từ điểm cộng
+  character.hpMax = (100 + (character.level - 1) * STAT_GAINS_PER_LEVEL.hpMax) + character.allocatedStats.hpMax // Giả sử base HP là 100
+  character.energyMax = (500 + (character.level - 1) * STAT_GAINS_PER_LEVEL.energyMax) + character.allocatedStats.energyMax // Giả sử base Energy là 500
+
+  // Đảm bảo HP/Energy hiện tại không vượt quá max mới
+  character.hp = Math.min(character.hp, character.hpMax)
+  character.energy = Math.min(character.energy, character.energyMax)
+
+  character.markModified('stats')
+  character.markModified('hpMax')
+  character.markModified('energyMax')
+}

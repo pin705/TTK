@@ -80,30 +80,13 @@
       />
     </div>
 
-    <div class="grid grid-cols-2 gap-x-4 gap-y-2 mt-3 border-t border-cyan-700/30 pt-3 text-xs">
-      <div class="col-span-2 md:col-span-1 grid grid-cols-3 gap-1 text-center">
-        <UiStatDisplay
-          icon="lucide:sword"
-          :value="playerStore.character.stats?.attack || 0"
-          label="T.Công"
-        />
-        <UiStatDisplay
-          icon="lucide:shield"
-          :value="playerStore.character.stats?.defense || 0"
-          label="P.Thủ"
-        />
-        <UiStatDisplay
-          icon="lucide:wind"
-          :value="playerStore.character.stats?.speed || 0"
-          label="T.Độ"
-        />
-      </div>
+    <div class="grid grid-cols-1 gap-x-4 gap-y-2 mt-3 border-t border-cyan-700/30 pt-3 text-xs">
       <div class="col-span-2 md:col-span-1 text-center md:text-right mt-2 md:mt-0 border-t border-cyan-700/30 md:border-none pt-2 md:pt-0">
         <p class="text-[10px] text-gray-400 uppercase tracking-wider">
           Vị Trí Hiện Tại
         </p>
         <p
-          class="text-cyan-300 font-medium text-sm truncate"
+          class="text-cyan-300 font-medium text-sm"
           :title="mapStore.currentZone?.name"
         >
           <Icon

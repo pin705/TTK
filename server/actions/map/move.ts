@@ -9,7 +9,7 @@ export const move: ActionHandler = async ({ character, payload }) => {
   const currentZoneData = ZoneManager.getZone(character.currentZoneId as ZoneId)
 
   if (!currentZoneData) throw new Error('Không tìm thấy khu vực hiện tại.')
-    console.log('currentZoneData', character.currentZoneId,currentZoneData)
+  console.log('currentZoneData', character.currentZoneId, currentZoneData)
   const exit = currentZoneData.connectedZones?.find(z => z.direction === direction)
   if (!exit) throw new Error('Không thể đi theo hướng này.')
 
@@ -26,8 +26,19 @@ export const move: ActionHandler = async ({ character, payload }) => {
     monsters: activeMonsters // Gắn danh sách quái vật động
   }
 
+  const logs = [{ message: `Bạn đã di chuyển đến khu vực [${newZone.name}].`, type: 'info' }]
+  const updates = { zone: newZone, character: { currentZoneId: character.currentZoneId } }
+
+  // --- ✨ TỰ ĐỘNG DỪNG TU LUYỆN KHI DI CHUYỂN ✨ ---
+  // Dừng cả khi di chuyển vào vùng an toàn VÀ vùng không an toàn
+  if (character.cultivation.isCultivating) {
+    character.cultivation.isCultivating = false
+    logs.push({ message: 'Bạn di chuyển, làm gián đoạn quá trình tu luyện.', type: 'warning' })
+    updates.character.cultivation = character.cultivation
+  }
+
   return {
-    log: [{ message: `Bạn đã di chuyển đến khu vực [${newZone.name}].`, type: 'info' }],
+    log: logs,
     updates: {
       zone: newZone,
       character: { currentZoneId: character.currentZoneId }

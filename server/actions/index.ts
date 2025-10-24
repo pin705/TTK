@@ -18,5 +18,6 @@ export const actions: Record<string, unknown> = {
   'character/meditate': character.meditate,
   'character/allocateStat': character.allocateStat,
   'quest/claim': quest.claim,
-  'quest/accept': quest.accept
+  'quest/accept': quest.accept,
+  'character/cultivationTick': character.cultivationTick,
 }

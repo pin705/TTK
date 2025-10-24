@@ -6,6 +6,8 @@ const commandList = [
   { command: '/map', description: 'Hiển thị thông tin và các lối đi của khu vực hiện tại.' },
   { command: '/events', description: 'Hiển thị các sự kiện đang diễn ra trong khu vực.' },
   { command: '/npc', description: 'Liệt kê các NPC có mặt trong khu vực.' },
+  { command: '/tuluyen', description: 'Bắt đầu hoặc dừng quá trình tu luyện (chỉ ở nơi an toàn).' },
+  { command: '/datoa', description: 'Đả tọa để hồi phục HP và Năng lượng (chỉ ở nơi an toàn).' },
   { command: '/quest accept <quest_id>', description: 'Nhận nhiệm vụ có ID tương ứng từ NPC bạn đang nói chuyện.' },
   { command: '/quest claim <quest_id>', description: 'Trả nhiệm vụ đã hoàn thành (status: completed) cho NPC yêu cầu.' },
   { command: '/quest list', description: 'Xem danh sách nhiệm vụ đang hoạt động (tương tự Tab Nhiệm Vụ).' },
@@ -54,12 +56,28 @@ export function useCommandHandler() {
       case 'quest':
         handleQuestCommand(args)
         break
+
+        case 'tuluyen':
+        handleCultivateCommand();
+        break
+      case 'datoa':
+        handleMeditateCommand();
+         break
       default:
         addLog(`Lệnh không tồn tại: /${command}. Gõ /help để xem danh sách lệnh.`, 'error')
     }
   }
 
   // --- Các hàm xử lý cho từng lệnh ---
+
+  async function handleCultivateCommand() {
+    // Chỉ gọi action, backend sẽ xử lý logic bật/tắt
+    await execute('character/cultivate')
+  }
+
+  async function handleMeditateCommand() {
+    await execute('character/meditate')
+  }
 
   function showHelp() {
     addLog('--- [ DANH SÁCH LỆNH ] ---', 'info')

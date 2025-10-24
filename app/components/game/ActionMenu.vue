@@ -33,11 +33,12 @@
         /> Thu thập [{{ resource.itemId }}]
       </button>
 
-      <button
-        v-if="canCultivate"
-        class="bg-sky-800/60 hover:bg-sky-700/60 px-3 py-1 rounded disabled:opacity-50 border border-sky-700 text-sm flex items-center"
+      <!-- <button
+        v-if="canDisplayCultivateButton"
+        class="px-3 py-1 rounded disabled:opacity-50 border text-sm flex items-center"
+        :class="isCultivating ? 'bg-red-800/60 hover:bg-red-700/60 border-red-700 text-red-100' : 'bg-sky-800/60 hover:bg-sky-700/60 border-sky-700 text-sky-100'"
         :disabled="isLoading"
-        @click="performCultivate"
+        @click="performCultivateToggle"
       >
         <Icon
           v-if="isCultivating"
@@ -49,7 +50,7 @@
           name="lucide:brain-circuit"
           class="inline-block mr-1 -mt-px"
         />
-        Tu Luyện
+        {{ isCultivating ? 'Dừng Tu Luyện' : 'Bắt Đầu Tu Luyện' }}
       </button>
 
       <button
@@ -62,7 +63,7 @@
           name="lucide:heart-pulse"
           class="inline-block mr-1 -mt-px"
         /> Đả Tọa
-      </button>
+      </button> -->
     </div>
 
     <p
@@ -102,6 +103,20 @@ async function performGather(itemId: string) {
 
 async function performMeditate() {
   execute('character/meditate')
+}
+
+const canDisplayCultivateButton = computed(() => {
+  // Hiển thị nút nếu đang tu luyện (để có thể dừng)
+  if (isCultivating.value) return true
+  // Hoặc nếu ở khu vực cho phép và không bị thương
+  return mapStore.currentZone?.allowCultivation && !isWounded.value
+})
+
+async function performCultivateToggle() {
+  // Chỉ gọi action 'character/cultivate'
+  // Action này sẽ tự động bật hoặc tắt tu luyện
+  await execute('character/cultivate')
+  // Không cần setTimeout nữa
 }
 
 async function performCultivate() {

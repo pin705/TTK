@@ -2,57 +2,46 @@ import type { ActionHandler } from '../types'
 
 export const cultivate: ActionHandler = async ({ character }) => {
   const now = new Date()
-  const lastTick = new Date(character.lastCultivateTick)
-  const secondsPassed = Math.floor((now.getTime() - lastTick.getTime()) / 1000)
+  const zone = ZoneManager.getZone(character.currentZoneId as any)
+  const logs: LogPayload[] = []
 
-  if (secondsPassed < 5)
-    return { log: { message: 'Bạn cần chờ thêm một chút trước khi tu luyện tiếp.', type: 'info' }, updates: {} }
+  // --- XỬ LÝ DỪNG TU LUYỆN ---
+  if (character.cultivation.isCultivating) {
+    character.cultivation.isCultivating = false
+    character.lastCultivateTick = now // Cập nhật tick lần cuối
+    logs.push({ message: 'Bạn đã dừng tu luyện.', type: 'info' })
+    return {
+      log: logs,
+      updates: {
+        character: {
+          cultivation: character.cultivation,
+          lastCultivateTick: character.lastCultivateTick
+        }
+      }
+    }
+  }
 
-  // **KIỂM TRA ĐIỀU KIỆN TU LUYỆN - SỬA LỖI Ở ĐÂY**
-  // Lấy dữ liệu zone từ file config, không cần `await`
-  const zone = ZoneManager.getZone(character.currentZoneId)
-  if (!zone)
-    throw new Error('Lỗi: Không tìm thấy khu vực hiện tại.')
+  // --- XỬ LÝ BẮT ĐẦU TU LUYỆN ---
 
+  // 1. Kiểm tra điều kiện bắt đầu
+  if (!zone) throw new Error('Lỗi: Không tìm thấy khu vực hiện tại.')
   if (!zone.allowCultivation) {
-    return {
-      log: {
-        message: 'Nơi này linh khí hỗn loạn, không thích hợp để tu luyện.',
-        type: 'warning'
-      },
-      updates: {}
-    }
+    throw new Error('Nơi này linh khí hỗn loạn, không thích hợp để tu luyện.')
+  }
+  if (character.inCombat) {
+    throw new Error('Không thể tu luyện khi đang giao chiến.')
+  }
+  if (character.effects.some(e => e.effectId === 'heavy_wound' && (!e.expiresAt || new Date(e.expiresAt) > new Date()))) {
+    throw new Error('Đang Trọng Thương, không thể tập trung tu luyện.')
   }
 
-  // **TÍNH TOÁN EXP NHẬN ĐƯỢC**
-  const baseExpPerTick = 1 // 1 EXP mỗi 5 giây
-
-  // Hệ số từ Tâm Cảnh (stateOfMind)
-  const stateOfMindMultiplier = character.cultivation.stateOfMind || 1.0
-
-  // Hệ số từ Linh khí khu vực (energyFluctuation)
-  const zoneMultiplier = zone.energyFluctuation || 1.0
-
-  const expGained = Math.max(1, Math.floor(baseExpPerTick * stateOfMindMultiplier * zoneMultiplier))
-
-  if (expGained > 0) {
-    character.cultivation.exp += expGained
-    character.lastCultivateTick = now
-  } else {
-    return {
-      log: {
-        message: 'Tâm cảnh bất ổn, không thể hấp thụ linh khí.',
-        type: 'warning'
-      },
-      updates: {}
-    }
-  }
+  // 2. Bắt đầu tu luyện
+  character.cultivation.isCultivating = true
+  character.lastCultivateTick = now
+  logs.push({ message: 'Bạn bắt đầu tiến vào trạng thái tu luyện...', type: 'success' })
 
   return {
-    log: {
-      message: `Bạn tu luyện và nhận được ${expGained} điểm tu vi.`,
-      type: 'info'
-    },
+    log: logs,
     updates: {
       character: {
         cultivation: character.cultivation,
