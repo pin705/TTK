@@ -1,6 +1,6 @@
 import { zones, npcs } from '~~/shared/config'
 
-const commandList = [
+export const commandList = [
   { command: '/help', alias: '/lenh', description: 'Hiển thị danh sách các lệnh có sẵn.' },
   { command: '/status', alias: '/st', description: 'Hiển thị trạng thái hiện tại của nhân vật.' },
   { command: '/map', description: 'Hiển thị thông tin và các lối đi của khu vực hiện tại.' },

@@ -11,7 +11,7 @@
         v-for="(log, index) in logs"
         :key="index"
       >
-        <span class="text-gray-500 mr-2">{{ formatTime(log.timestamp) }}</span>
+        <span class="text-gray-500 mr-2 text-xs">{{ formatTime(log.timestamp) }}</span>
         <span :class="logColor(log.type)">{{ log.message }}</span>
       </p>
     </div>
