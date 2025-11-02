@@ -19,6 +19,7 @@ export interface ICharacter {
   _id: string
   avatar?: string
   level: number
+  class: 'Warrior' | 'SpiritReader' // Character class selection
   statPoints: number // <-- Điểm tiềm năng chưa phân phối
   allocatedStats: { // <-- Điểm đã cộng vào chỉ số
     attack: number
@@ -39,7 +40,15 @@ export interface ICharacter {
     weapon: string | null
     armor: string | null
     accessory: string | null
+    moduleSlot1: string | null // Module system slots
+    moduleSlot2: string | null
+    moduleSlot3: string | null
   }
+  knownBlueprints: string[] // Crafting system - learned blueprints
+  guildId: Schema.Types.ObjectId | null // Guild membership
+  activePetId: Schema.Types.ObjectId | null // Active pet
+  currentShipId: Schema.Types.ObjectId | null // Space travel system
+  locationType: 'Planet' | 'Space' // Location type for space travel
   cultivation: {
     stage: string
     exp: number
@@ -67,6 +76,7 @@ export interface ICharacter {
     attack: number
     defense: number
     speed: number
+    spirit: number // Spirit Reader primary stat
     critChance: number
     critDamage: number
     dodgeChance: number
@@ -119,6 +129,7 @@ export const Character = defineMongooseModel<ICharacter>('Character', {
   userId: { type: Schema.Types.ObjectId, ref: 'User', required: true, index: true },
   avatar: { type: String, default: '' },
   level: { type: Number, default: 1, index: true },
+  class: { type: String, enum: ['Warrior', 'SpiritReader'], default: 'Warrior' }, // Character class
   statPoints: { type: Number, default: 0 }, // <-- Thêm điểm tiềm năng
   allocatedStats: { // <-- Thêm điểm đã cộng
     type: {
@@ -141,8 +152,16 @@ export const Character = defineMongooseModel<ICharacter>('Character', {
   equipment: {
     weapon: { type: String, default: null },
     armor: { type: String, default: null },
-    accessory: { type: String, default: null }
+    accessory: { type: String, default: null },
+    moduleSlot1: { type: String, default: null }, // Module slots
+    moduleSlot2: { type: String, default: null },
+    moduleSlot3: { type: String, default: null }
   },
+  knownBlueprints: [String], // Crafting system
+  guildId: { type: Schema.Types.ObjectId, ref: 'Guild', default: null }, // Guild system
+  activePetId: { type: Schema.Types.ObjectId, ref: 'Pet', default: null }, // Pet system
+  currentShipId: { type: Schema.Types.ObjectId, ref: 'Ship', default: null }, // Space travel
+  locationType: { type: String, enum: ['Planet', 'Space'], default: 'Planet' }, // Location type
   cultivation: {
     stage: { type: String, default: 'Học Đồ Cấp Thấp' },
     exp: { type: Number, default: 0 },
@@ -170,6 +189,7 @@ export const Character = defineMongooseModel<ICharacter>('Character', {
     attack: { type: Number, default: 10 },
     defense: { type: Number, default: 5 },
     speed: { type: Number, default: 10 },
+    spirit: { type: Number, default: 10 }, // Spirit Reader primary stat
     critChance: { type: Number, default: 0.05, min: 0, max: 1 },
     critDamage: { type: Number, default: 1.5, min: 1 },
     dodgeChance: { type: Number, default: 0.05, min: 0, max: 1 },

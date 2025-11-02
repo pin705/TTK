@@ -4,6 +4,12 @@ import * as character from './character'
 import * as combat from './combat'
 import * as npc from './npc'
 import * as quest from './quest'
+import * as guild from './guild'
+import * as market from './market'
+import * as pet from './pet'
+import * as ship from './ship'
+import * as party from './party'
+import * as crafting from './crafting'
 
 export const actions: Record<string, unknown> = {
   'map/move': map.move,
@@ -24,4 +30,26 @@ export const actions: Record<string, unknown> = {
   'character/absorbEnergy': character.absorbEnergy,
   'character/geneBreakthrough': character.geneBreakthrough,
   'character/equipModule': character.equipModule,
+  'character/activateModule': character.activateModule,
+  // Guild system actions
+  'guild/create': guild.create,
+  'guild/invite': guild.invite,
+  // Market system actions
+  'market/sell': market.sell,
+  'market/search': market.search,
+  'market/buy': market.buy,
+  // Pet system actions
+  'pet/tame': pet.tame,
+  'pet/activate': pet.activate,
+  'pet/setMode': pet.setMode,
+  // Ship/Space travel actions
+  'ship/travelTo': ship.travelTo,
+  'ship/refuel': ship.refuel,
+  // Party system actions
+  'party/invite': party.invite,
+  // Crafting system actions
+  'crafting/craft': crafting.craft,
+  'crafting/research': crafting.research,
+  // Spirit Reader combat
+  'combat/spiritAttack': combat.spiritAttack,
 }

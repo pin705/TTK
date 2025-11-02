@@ -3,7 +3,7 @@ import redis from './redis'
 const LOG_LIST_PREFIX = 'logs:'
 const MAX_LOGS = 15 // Giới hạn chỉ lưu 50 log mới nhất
 
-export type LogType = 'default' | 'error' | 'info' | 'command' | 'success' | 'warning' | 'attack' | 'victory' | 'reward' | 'defeat'
+export type LogType = 'default' | 'error' | 'info' | 'command' | 'success' | 'warning' | 'attack' | 'victory' | 'reward' | 'defeat' | 'system' | 'combat' | 'guild' | 'market' | 'party' | 'event'
 
 export interface LogPayload {
   message: string
