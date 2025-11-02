@@ -125,6 +125,94 @@ export const items = {
     description: 'Tăng 100% tốc độ hấp thụ Tinh Thể Năng Lượng',
     stats: { cultivationSpeed: 2.0 }
   },
+  
+  // --- Spirit Reader Weapons ---
+  spirit_blade_basic: {
+    name: 'Phi Đao Cơ Bản', type: 'spirit_weapon', rarity: 'common',
+    description: 'Phi đao niệm lực, tấn công từ xa bằng tinh thần',
+    stats: { spirit: 8 }
+  },
+  spirit_blade_advanced: {
+    name: 'Phi Đao Cao Cấp', type: 'spirit_weapon', rarity: 'uncommon',
+    description: 'Phi đao niệm lực mạnh mẽ, có thể tấn công nhiều mục tiêu',
+    stats: { spirit: 15, aoe: 3 }
+  },
+  energy_shield_basic: {
+    name: 'Khiên Năng Lượng Cơ Bản', type: 'spirit_weapon', rarity: 'uncommon',
+    description: 'Khiên năng lượng niệm lực, tăng phòng thủ',
+    stats: { spirit: 5, defense: 10 }
+  },
+  
+  // --- Active Modules ---
+  module_energy_shield: {
+    name: 'Module: Khiên Năng Lượng', type: 'module_active', rarity: 'rare',
+    description: 'Kích hoạt để tạo lá chắn HP ảo, tiêu hao 50 năng lượng',
+    stats: { shieldPower: 100, energyCost: 50 }
+  },
+  module_counter_strike: {
+    name: 'Module: Phản Chấn', type: 'module_passive', rarity: 'rare',
+    description: 'Bị động: Phản lại 20% sát thương nhận vào',
+    stats: { counterDamage: 0.2 }
+  },
+  
+  // --- Pet Items ---
+  slave_ring: {
+    name: 'Vòng Nô Dịch', type: 'consumable', rarity: 'uncommon',
+    description: 'Dùng để thuần hóa hung thú làm thú cưng',
+    effect: { type: 'tame_beast', successRate: 0.5 }
+  },
+  mechanical_pet_basic: {
+    name: 'Pet Cơ Giới Cơ Bản', type: 'consumable', rarity: 'rare',
+    description: 'Robot chiến đấu cơ bản, có thể triệu hồi làm pet',
+    effect: { type: 'summon_pet', petType: 'robot_basic' }
+  },
+  
+  // --- Blueprints (Crafting) ---
+  blueprint_alloy_armor: {
+    name: 'Công Thức: Giáp Hợp Kim', type: 'blueprint', rarity: 'uncommon',
+    description: 'Công thức chế tạo giáp hợp kim',
+    recipe: {
+      required: [
+        { itemId: 'alloy_ore', qty: 10 },
+        { itemId: 'monster_hide_mid', qty: 5 }
+      ],
+      result: { itemId: 'alloy_armor', qty: 1 }
+    }
+  },
+  blueprint_gene_solution: {
+    name: 'Công Thức: Dung Dịch Tiến Hóa', type: 'blueprint', rarity: 'rare',
+    description: 'Công thức chế tạo dung dịch tiến hóa cơ bản',
+    recipe: {
+      required: [
+        { itemId: 'cosmic_herb_low', qty: 5 },
+        { itemId: 'energy_crystal', qty: 20 }
+      ],
+      result: { itemId: 'gene_solution_basic', qty: 1 }
+    }
+  },
+  
+  // --- Crafting Resources ---
+  ruin_fragment: {
+    name: 'Mảnh Tàn Tích', type: 'resource', rarity: 'uncommon',
+    description: 'Mảnh tàn tích cổ đại, dùng để nghiên cứu công thức'
+  },
+  alloy_armor: {
+    name: 'Giáp Hợp Kim', type: 'armor', rarity: 'uncommon',
+    description: 'Giáp được chế tạo từ hợp kim',
+    stats: { defense: 15 }
+  },
+  
+  // --- Space Travel Items ---
+  basic_shuttle: {
+    name: 'Phi Thuyền Tàn Tích (Cấp 1)', type: 'ship', rarity: 'epic',
+    description: 'Phi thuyền cơ bản để du hành vũ trụ',
+    stats: { fuel: 100, cargo: 50, speed: 10, hp: 100 }
+  },
+  fuel_cell: {
+    name: 'Tế Bào Năng Lượng', type: 'consumable', rarity: 'common',
+    description: 'Nhiên liệu cho phi thuyền, hồi phục 50 nhiên liệu',
+    effect: { type: 'fuel_restore', power: 50 }
+  },
 } as const
 
 export type ItemId = keyof typeof items;

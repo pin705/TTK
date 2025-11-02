@@ -2,7 +2,8 @@
 import { z } from 'zod'
 
 const bodySchema = z.object({
-  name: z.string().min(3, 'Tên phải có ít nhất 3 ký tự').max(20, 'Tên không quá 20 ký tự')
+  name: z.string().min(3, 'Tên phải có ít nhất 3 ký tự').max(20, 'Tên không quá 20 ký tự'),
+  class: z.enum(['Warrior', 'SpiritReader']).default('Warrior')
 })
 
 export default defineEventHandler(async (event) => {
@@ -22,7 +23,8 @@ export default defineEventHandler(async (event) => {
   // Bắt đầu tạo nhân vật và nông trại
   const character = await Character.create({
     userId: session.user.userId,
-    name: body.name
+    name: body.name,
+    class: body.class
   })
 
   await replaceUserSession(event, {
