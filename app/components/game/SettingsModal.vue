@@ -227,7 +227,3 @@ function resetSettings() {
   settings.sfxVolume = 70
 }
 </script>
-
-<script setup lang="ts">
-// Setting Toggle Component (inline)
-</script>
