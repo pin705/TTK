@@ -1,8 +1,10 @@
 // server/api/character/create.post.ts
 import { z } from 'zod'
+import { races } from '~/shared/config/races'
 
 const bodySchema = z.object({
   name: z.string().min(3, 'Tên phải có ít nhất 3 ký tự').max(20, 'Tên không quá 20 ký tự'),
+  race: z.enum(['human', 'mutant', 'esper', 'cyborg', 'beastkin', 'voidwalker']),
   class: z.enum(['Warrior', 'SpiritReader']).default('Warrior')
 })
 
@@ -20,11 +22,30 @@ export default defineEventHandler(async (event) => {
 
   const body = await readValidatedBody(event, bodySchema.parse)
 
-  // Bắt đầu tạo nhân vật và nông trại
+  // Get race config for base stats
+  const raceConfig = races[body.race]
+
+  // Bắt đầu tạo nhân vật với stats dựa theo chủng tộc
   const character = await Character.create({
     userId: session.user.userId,
     name: body.name,
-    class: body.class
+    race: body.race,
+    class: body.class,
+    hp: raceConfig.baseStats.hp,
+    hpMax: raceConfig.baseStats.hp,
+    energy: raceConfig.baseStats.energy,
+    energyMax: raceConfig.baseStats.energy,
+    currentZoneId: raceConfig.startingZone,
+    stats: {
+      attack: raceConfig.baseStats.attack,
+      defense: raceConfig.baseStats.defense,
+      speed: raceConfig.baseStats.speed,
+      spirit: raceConfig.baseStats.spirit,
+      critChance: raceConfig.racialBonuses.critChance || 0.05,
+      critDamage: raceConfig.racialBonuses.critDamage ? 1.5 + raceConfig.racialBonuses.critDamage : 1.5,
+      dodgeChance: raceConfig.racialBonuses.dodgeChance || 0.05,
+      resistance: raceConfig.racialBonuses.resistance || 0
+    }
   })
 
   await replaceUserSession(event, {

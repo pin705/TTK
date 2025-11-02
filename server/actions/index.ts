@@ -10,6 +10,7 @@ import * as pet from './pet'
 import * as ship from './ship'
 import * as party from './party'
 import * as crafting from './crafting'
+import * as equipment from './equipment'
 
 export const actions: Record<string, unknown> = {
   'map/move': map.move,
@@ -52,4 +53,8 @@ export const actions: Record<string, unknown> = {
   'crafting/research': crafting.research,
   // Spirit Reader combat
   'combat/spiritAttack': combat.spiritAttack,
+  // Equipment enhancement
+  'equipment/enhance': equipment.enhanceEquipment,
+  // Racial skills
+  'character/useRacialSkill': character.useRacialSkill,
 }

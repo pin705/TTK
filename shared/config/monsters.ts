@@ -111,6 +111,327 @@ export const monsters = {
       critDamage: 2.0,
       resistance: 25
     }
+  },
+
+  // === NEW MONSTERS - EXPANDED CONTENT ===
+  
+  // Forest/Jungle Monsters (Hoang Da 0203)
+  venomous_spider: {
+    name: 'Nhện Độc', level: 15, expReward: 180,
+    tier: 'beast_general_low' as const,
+    drops: [
+      { itemId: 'venom_sac', chance: 0.6, quantity: [1, 2] },
+      { itemId: 'monster_hide_mid', chance: 0.4, quantity: [1, 2] },
+      { itemId: 'energy_crystal', chance: 0.5, quantity: [6, 10] }
+    ],
+    stats: {
+      hp: 600,
+      attack: 60,
+      defense: 25,
+      critChance: 0.15,
+      critDamage: 1.7,
+      resistance: 10
+    }
+  },
+
+  mutant_mantis: {
+    name: 'Bọ Ngựa Biến Dị', level: 16, expReward: 200,
+    tier: 'beast_general_low' as const,
+    drops: [
+      { itemId: 'sharp_blade_limb', chance: 0.5, quantity: [1, 1] },
+      { itemId: 'monster_tendon_mid', chance: 0.4, quantity: [1, 2] },
+      { itemId: 'energy_crystal', chance: 0.6, quantity: [7, 11] }
+    ],
+    stats: {
+      hp: 650,
+      attack: 75,
+      defense: 20,
+      critChance: 0.25,
+      critDamage: 2.0,
+      resistance: 8
+    }
+  },
+
+  toxic_vine: {
+    name: 'Dây Leo Độc', level: 14, expReward: 150,
+    tier: 'beast_soldier_high' as const,
+    drops: [
+      { itemId: 'toxic_extract', chance: 0.7, quantity: [1, 3] },
+      { itemId: 'cosmic_herb_low', chance: 0.3, quantity: [1, 1] },
+      { itemId: 'energy_crystal', chance: 0.4, quantity: [5, 8] }
+    ],
+    stats: {
+      hp: 400,
+      attack: 40,
+      defense: 15,
+      critChance: 0.1,
+      critDamage: 1.5,
+      resistance: 12
+    }
+  },
+
+  // Rocky Area Monsters (Hoang Da 0204)
+  razor_hawk: {
+    name: 'Diều Hâu Dao Cạnh', level: 20, expReward: 250,
+    tier: 'beast_general_mid' as const,
+    drops: [
+      { itemId: 'razor_feather', chance: 0.6, quantity: [2, 4] },
+      { itemId: 'monster_hide_mid', chance: 0.5, quantity: [2, 3] },
+      { itemId: 'energy_crystal', chance: 0.7, quantity: [10, 15] }
+    ],
+    stats: {
+      hp: 850,
+      attack: 85,
+      defense: 35,
+      critChance: 0.22,
+      critDamage: 1.9,
+      resistance: 15
+    }
+  },
+
+  rock_lizard: {
+    name: 'Thằn Lằn Đá', level: 19, expReward: 230,
+    tier: 'beast_general_low' as const,
+    drops: [
+      { itemId: 'stone_scale', chance: 0.7, quantity: [2, 4] },
+      { itemId: 'blue_gold_ore', chance: 0.2, quantity: [1, 2] },
+      { itemId: 'energy_crystal', chance: 0.6, quantity: [9, 14] }
+    ],
+    stats: {
+      hp: 950,
+      attack: 65,
+      defense: 55,
+      critChance: 0.15,
+      critDamage: 1.6,
+      resistance: 25
+    }
+  },
+
+  crystal_scorpion: {
+    name: 'Bọ Cạp Tinh Thể', level: 21, expReward: 280,
+    tier: 'beast_general_mid' as const,
+    drops: [
+      { itemId: 'crystal_shard', chance: 0.5, quantity: [1, 2] },
+      { itemId: 'venom_sac', chance: 0.4, quantity: [1, 2] },
+      { itemId: 'energy_crystal', chance: 0.8, quantity: [12, 18] }
+    ],
+    stats: {
+      hp: 900,
+      attack: 80,
+      defense: 45,
+      critChance: 0.18,
+      critDamage: 1.8,
+      resistance: 20
+    }
+  },
+
+  // Boss Monsters
+  poison_spider_queen: {
+    name: 'Nữ Vương Nhện Độc (Boss)', level: 18, expReward: 800,
+    tier: 'beast_king' as const,
+    drops: [
+      { itemId: 'spider_queen_fang', chance: 0.8, quantity: [1, 1] },
+      { itemId: 'venom_sac', chance: 1.0, quantity: [5, 8] },
+      { itemId: 'energy_crystal', chance: 1.0, quantity: [20, 30] },
+      { itemId: 'cosmic_herb_mid', chance: 0.3, quantity: [2, 3] },
+      { itemId: 'gene_solution_basic', chance: 0.08, quantity: [1, 1] }
+    ],
+    stats: {
+      hp: 2000,
+      attack: 110,
+      defense: 50,
+      critChance: 0.2,
+      critDamage: 2.0,
+      resistance: 20
+    }
+  },
+
+  toxic_treant: {
+    name: 'Cây Tinh Độc Dược (Boss)', level: 17, expReward: 700,
+    tier: 'beast_king' as const,
+    drops: [
+      { itemId: 'treant_heart', chance: 0.9, quantity: [1, 1] },
+      { itemId: 'toxic_extract', chance: 1.0, quantity: [4, 7] },
+      { itemId: 'energy_crystal', chance: 1.0, quantity: [18, 28] },
+      { itemId: 'cosmic_herb_low', chance: 0.5, quantity: [3, 5] }
+    ],
+    stats: {
+      hp: 2200,
+      attack: 90,
+      defense: 70,
+      critChance: 0.15,
+      critDamage: 1.8,
+      resistance: 30
+    }
+  },
+
+  stone_golem_king: {
+    name: 'Vua Golem Đá (Boss)', level: 22, expReward: 900,
+    tier: 'beast_king' as const,
+    drops: [
+      { itemId: 'golem_core', chance: 0.85, quantity: [1, 1] },
+      { itemId: 'ancient_stone', chance: 1.0, quantity: [3, 6] },
+      { itemId: 'kele_metal_fragment', chance: 0.2, quantity: [1, 2] },
+      { itemId: 'energy_crystal', chance: 1.0, quantity: [25, 35] },
+      { itemId: 'gene_solution_basic', chance: 0.1, quantity: [1, 2] }
+    ],
+    stats: {
+      hp: 2800,
+      attack: 120,
+      defense: 90,
+      critChance: 0.18,
+      critDamage: 2.0,
+      resistance: 35
+    }
+  },
+
+  // Chaos Zone Monsters
+  steel_beast: {
+    name: 'Dã Thú Thép', level: 25, expReward: 350,
+    tier: 'beast_general_mid' as const,
+    drops: [
+      { itemId: 'steel_plate', chance: 0.6, quantity: [1, 3] },
+      { itemId: 'alloy_ore', chance: 0.4, quantity: [2, 4] },
+      { itemId: 'energy_crystal', chance: 0.7, quantity: [12, 20] }
+    ],
+    stats: {
+      hp: 1100,
+      attack: 95,
+      defense: 60,
+      critChance: 0.2,
+      critDamage: 1.9,
+      resistance: 25
+    }
+  },
+
+  electric_wolf: {
+    name: 'Sói Điện', level: 26, expReward: 380,
+    tier: 'beast_general_mid' as const,
+    drops: [
+      { itemId: 'electric_core', chance: 0.5, quantity: [1, 2] },
+      { itemId: 'monster_tendon_mid', chance: 0.5, quantity: [2, 3] },
+      { itemId: 'energy_crystal', chance: 0.8, quantity: [15, 22] }
+    ],
+    stats: {
+      hp: 1000,
+      attack: 110,
+      defense: 45,
+      critChance: 0.25,
+      critDamage: 2.0,
+      resistance: 18
+    }
+  },
+
+  // Advanced Secret Realm Monsters
+  ancient_guardian: {
+    name: 'Vệ Binh Cổ Đại', level: 35, expReward: 600,
+    tier: 'beast_general_high' as const,
+    drops: [
+      { itemId: 'ancient_relic', chance: 0.4, quantity: [1, 2] },
+      { itemId: 'ruin_module', chance: 0.3, quantity: [1, 2] },
+      { itemId: 'energy_crystal', chance: 0.9, quantity: [20, 30] }
+    ],
+    stats: {
+      hp: 1800,
+      attack: 140,
+      defense: 80,
+      critChance: 0.22,
+      critDamage: 2.0,
+      resistance: 30
+    }
+  },
+
+  ruin_sentinel: {
+    name: 'Canh Gác Tàn Tích', level: 34, expReward: 580,
+    tier: 'beast_general_high' as const,
+    drops: [
+      { itemId: 'ancient_relic', chance: 0.35, quantity: [1, 1] },
+      { itemId: 'alloy_ore', chance: 0.5, quantity: [4, 7] },
+      { itemId: 'energy_crystal', chance: 0.85, quantity: [18, 28] }
+    ],
+    stats: {
+      hp: 1650,
+      attack: 135,
+      defense: 75,
+      critChance: 0.2,
+      critDamage: 1.9,
+      resistance: 28
+    }
+  },
+
+  // Underground Monsters
+  tunnel_crawler: {
+    name: 'Sinh Vật Bò Hầm', level: 28, expReward: 420,
+    tier: 'beast_general_mid' as const,
+    drops: [
+      { itemId: 'bio_sample', chance: 0.5, quantity: [1, 2] },
+      { itemId: 'monster_hide_mid', chance: 0.4, quantity: [2, 4] },
+      { itemId: 'energy_crystal', chance: 0.7, quantity: [14, 22] }
+    ],
+    stats: {
+      hp: 1200,
+      attack: 100,
+      defense: 50,
+      critChance: 0.18,
+      critDamage: 1.8,
+      resistance: 22
+    }
+  },
+
+  aberration_spawn: {
+    name: 'Đẻ Dị Hình', level: 29, expReward: 450,
+    tier: 'beast_general_mid' as const,
+    drops: [
+      { itemId: 'bio_sample', chance: 0.6, quantity: [2, 3] },
+      { itemId: 'aberration_tissue', chance: 0.4, quantity: [1, 2] },
+      { itemId: 'energy_crystal', chance: 0.75, quantity: [16, 24] }
+    ],
+    stats: {
+      hp: 1150,
+      attack: 105,
+      defense: 45,
+      critChance: 0.2,
+      critDamage: 1.9,
+      resistance: 20
+    }
+  },
+
+  mutant_fungus: {
+    name: 'Nấm Độc Biến Dị', level: 27, expReward: 400,
+    tier: 'beast_general_low' as const,
+    drops: [
+      { itemId: 'fungal_spore', chance: 0.7, quantity: [2, 4] },
+      { itemId: 'toxic_extract', chance: 0.3, quantity: [1, 2] },
+      { itemId: 'energy_crystal', chance: 0.6, quantity: [13, 20] }
+    ],
+    stats: {
+      hp: 1300,
+      attack: 85,
+      defense: 65,
+      critChance: 0.15,
+      critDamage: 1.7,
+      resistance: 28
+    }
+  },
+
+  aberration_lord: {
+    name: 'Chúa Tể Dị Hình (Boss)', level: 32, expReward: 1200,
+    tier: 'beast_king' as const,
+    drops: [
+      { itemId: 'aberration_core', chance: 0.95, quantity: [1, 1] },
+      { itemId: 'bio_sample', chance: 1.0, quantity: [5, 10] },
+      { itemId: 'gene_solution_advanced', chance: 0.12, quantity: [1, 1] },
+      { itemId: 'energy_crystal', chance: 1.0, quantity: [35, 50] },
+      { itemId: 'ruin_module', chance: 0.4, quantity: [1, 3] }
+    ],
+    stats: {
+      hp: 3500,
+      attack: 150,
+      defense: 70,
+      critChance: 0.25,
+      critDamage: 2.2,
+      resistance: 25
+    }
   }
 } as const
 

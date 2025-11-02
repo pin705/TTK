@@ -19,6 +19,7 @@ export interface ICharacter {
   _id: string
   avatar?: string
   level: number
+  race: 'human' | 'mutant' | 'esper' | 'cyborg' | 'beastkin' | 'voidwalker' // Race - immutable after creation
   class: 'Warrior' | 'SpiritReader' // Character class selection
   statPoints: number // <-- Điểm tiềm năng chưa phân phối
   allocatedStats: { // <-- Điểm đã cộng vào chỉ số
@@ -129,6 +130,7 @@ export const Character = defineMongooseModel<ICharacter>('Character', {
   userId: { type: Schema.Types.ObjectId, ref: 'User', required: true, index: true },
   avatar: { type: String, default: '' },
   level: { type: Number, default: 1, index: true },
+  race: { type: String, enum: ['human', 'mutant', 'esper', 'cyborg', 'beastkin', 'voidwalker'], required: true, immutable: true }, // Race - cannot be changed after creation
   class: { type: String, enum: ['Warrior', 'SpiritReader'], default: 'Warrior' }, // Character class
   statPoints: { type: Number, default: 0 }, // <-- Thêm điểm tiềm năng
   allocatedStats: { // <-- Thêm điểm đã cộng

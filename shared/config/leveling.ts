@@ -1,3 +1,6 @@
+import type { RaceId } from './races'
+import { races } from './races'
+
 // === CÔNG THỨC TÍNH EXP CẦN THIẾT CHO MỖI LEVEL ===
 // Ví dụ: EXP(level) = base * (level ^ exponent)
 const BASE_EXP = 100
@@ -20,3 +23,52 @@ export const STAT_GAINS_PER_LEVEL = {
 
 export const ALLOCATABLE_STATS = ['attack', 'defense', 'speed', 'hpMax', 'energyMax'] as const
 export type AllocatableStat = typeof ALLOCATABLE_STATS[number]
+
+// === RACE-BASED STAT GROWTH ===
+/**
+ * Calculate stat gains on level up based on character race
+ * Each race has different growth rates
+ */
+export function getRaceStatGains(race: RaceId) {
+  const raceConfig = races[race]
+  return {
+    hpMax: Math.floor(STAT_GAINS_PER_LEVEL.hpMax * (raceConfig.statGrowth.hp / 10)),
+    energyMax: Math.floor(STAT_GAINS_PER_LEVEL.energyMax * (raceConfig.statGrowth.energy / 20)),
+    attack: STAT_GAINS_PER_LEVEL.attack * (raceConfig.statGrowth.attack / 1.5),
+    defense: STAT_GAINS_PER_LEVEL.defense * (raceConfig.statGrowth.defense / 1.2),
+    speed: raceConfig.statGrowth.speed,
+    spirit: raceConfig.statGrowth.spirit,
+    statPoints: STAT_GAINS_PER_LEVEL.statPoints
+  }
+}
+
+/**
+ * Interface for character base stats
+ */
+export interface CharacterBaseStats {
+  attack: number
+  defense: number
+  speed: number
+  spirit: number
+  critChance: number
+  critDamage: number
+  dodgeChance: number
+  resistance: number
+}
+
+/**
+ * Apply racial bonuses to a character's stats
+ * This includes passive bonuses from race configuration
+ */
+export function applyRacialBonuses(baseStats: CharacterBaseStats, race: RaceId): CharacterBaseStats {
+  const raceConfig = races[race]
+  const bonuses = raceConfig.racialBonuses
+  
+  return {
+    ...baseStats,
+    critChance: (baseStats.critChance || 0) + (bonuses.critChance || 0),
+    critDamage: (baseStats.critDamage || 1.5) + (bonuses.critDamage || 0),
+    dodgeChance: (baseStats.dodgeChance || 0) + (bonuses.dodgeChance || 0),
+    resistance: (baseStats.resistance || 0) + (bonuses.resistance || 0)
+  }
+}

@@ -213,6 +213,239 @@ export const items = {
     description: 'Nhiên liệu cho phi thuyền, hồi phục 50 nhiên liệu',
     effect: { type: 'fuel_restore', power: 50 }
   },
+
+  // === NEW ITEMS - EXPANDED CONTENT ===
+
+  // New Monster Drops
+  venom_sac: { name: 'Túi Nọc Độc', type: 'resource', rarity: 'uncommon' },
+  sharp_blade_limb: { name: 'Chi Kiếm Sắc', type: 'resource', rarity: 'uncommon' },
+  toxic_extract: { name: 'Chiết Xuất Độc', type: 'resource', rarity: 'common' },
+  razor_feather: { name: 'Lông Dao Cạnh', type: 'resource', rarity: 'uncommon' },
+  stone_scale: { name: 'Vảy Đá', type: 'resource', rarity: 'common' },
+  crystal_shard: { name: 'Mảnh Tinh Thể', type: 'resource', rarity: 'rare' },
+  spider_queen_fang: { name: 'Nanh Nữ Vương Nhện', type: 'resource', rarity: 'epic' },
+  treant_heart: { name: 'Trái Tim Cây Tinh', type: 'resource', rarity: 'epic' },
+  golem_core: { name: 'Lõi Golem', type: 'resource', rarity: 'epic' },
+  ancient_stone: { name: 'Đá Cổ Đại', type: 'resource', rarity: 'rare' },
+  steel_plate: { name: 'Tấm Thép', type: 'resource', rarity: 'uncommon' },
+  electric_core: { name: 'Lõi Điện', type: 'resource', rarity: 'rare' },
+  ancient_relic: { name: 'Thánh Vật Cổ Đại', type: 'resource', rarity: 'epic' },
+  bio_sample: { name: 'Mẫu Sinh Học', type: 'resource', rarity: 'uncommon' },
+  aberration_tissue: { name: 'Mô Dị Hình', type: 'resource', rarity: 'rare' },
+  fungal_spore: { name: 'Bào Tử Nấm', type: 'resource', rarity: 'common' },
+  aberration_core: { name: 'Lõi Dị Hình', type: 'resource', rarity: 'epic' },
+
+  // New Equipment - Weapons
+  venom_blade: {
+    name: 'Kiếm Nọc Độc', type: 'weapon', rarity: 'rare',
+    description: 'Kiếm được tẩm nọc độc nhện, gây thêm sát thương độc.',
+    stats: { attack: 25, critChance: 0.05 },
+    requirements: { level: 18 }
+  },
+
+  crystal_spear: {
+    name: 'Giáo Tinh Thể', type: 'weapon', rarity: 'rare',
+    description: 'Giáo làm từ tinh thể năng lượng, xuyên thủng phòng thủ địch.',
+    stats: { attack: 28, resistance: 5 },
+    requirements: { level: 21 }
+  },
+
+  golem_hammer: {
+    name: 'Búa Golem', type: 'weapon', rarity: 'epic',
+    description: 'Búa khổng lồ từ lõi Golem, gây sát thương cực lớn.',
+    stats: { attack: 35, defense: 10 },
+    requirements: { level: 22 }
+  },
+
+  electric_blade: {
+    name: 'Lưỡi Kiếm Điện', type: 'weapon', rarity: 'rare',
+    description: 'Kiếm chứa năng lượng điện, tăng tốc độ tấn công.',
+    stats: { attack: 30, speed: 5 },
+    requirements: { level: 26 }
+  },
+
+  aberration_claw: {
+    name: 'Móng Vuốt Dị Hình', type: 'weapon', rarity: 'epic',
+    description: 'Vũ khí từ Chúa Tể Dị Hình, có khả năng hút máu.',
+    stats: { attack: 38, critDamage: 0.3 },
+    requirements: { level: 32 }
+  },
+
+  // New Equipment - Armor
+  spider_silk_armor: {
+    name: 'Giáp Tơ Nhện', type: 'armor', rarity: 'rare',
+    description: 'Giáp nhẹ từ tơ nhện, tăng khả năng né tránh.',
+    stats: { defense: 18, dodgeChance: 0.08 },
+    requirements: { level: 18 }
+  },
+
+  stone_plate_armor: {
+    name: 'Giáp Tấm Đá', type: 'armor', rarity: 'rare',
+    description: 'Giáp nặng từ vảy đá, phòng thủ cực cao.',
+    stats: { defense: 28, resistance: 8 },
+    requirements: { level: 19 }
+  },
+
+  golem_shell: {
+    name: 'Mai Golem', type: 'armor', rarity: 'epic',
+    description: 'Vỏ giáp từ Vua Golem, phòng thủ tối thượng.',
+    stats: { defense: 35, hpMax: 200 },
+    requirements: { level: 22 }
+  },
+
+  steel_alloy_suit: {
+    name: 'Bộ Giáp Hợp Kim Thép', type: 'armor', rarity: 'rare',
+    description: 'Giáp chiến đấu công nghệ cao.',
+    stats: { defense: 25, resistance: 10 },
+    requirements: { level: 25 }
+  },
+
+  aberration_hide: {
+    name: 'Da Dị Hình', type: 'armor', rarity: 'epic',
+    description: 'Giáp từ da Dị Hình, tự hồi phục.',
+    stats: { defense: 30, hpMax: 150 },
+    requirements: { level: 32 }
+  },
+
+  // New Equipment - Accessories
+  venom_ring: {
+    name: 'Nhẫn Nọc Độc', type: 'accessory', rarity: 'rare',
+    description: 'Nhẫn chứa nọc độc, tăng sát thương chí mạng.',
+    stats: { critChance: 0.08, critDamage: 0.15 },
+    requirements: { level: 18 }
+  },
+
+  crystal_amulet: {
+    name: 'Bùa Hộ Tinh Thể', type: 'accessory', rarity: 'rare',
+    description: 'Bùa hộ mệnh từ tinh thể, tăng năng lượng.',
+    stats: { energyMax: 100, resistance: 5 },
+    requirements: { level: 20 }
+  },
+
+  ancient_medallion: {
+    name: 'Huy Hiệu Cổ Đại', type: 'accessory', rarity: 'epic',
+    description: 'Huy hiệu từ thời tiền Đại Niết Bàn.',
+    stats: { attack: 15, spirit: 15, defense: 10 },
+    requirements: { level: 35 }
+  },
+
+  golem_heart_stone: {
+    name: 'Đá Trái Tim Golem', type: 'accessory', rarity: 'epic',
+    description: 'Viên đá từ lõi Golem, tăng sức sống.',
+    stats: { hpMax: 300, defense: 15 },
+    requirements: { level: 22 }
+  },
+
+  aberration_eye: {
+    name: 'Mắt Dị Hình', type: 'accessory', rarity: 'legendary',
+    description: 'Mắt của Chúa Tể Dị Hình, cho phép nhìn thấu bản chất.',
+    stats: { spirit: 25, critChance: 0.1, dodgeChance: 0.05 },
+    requirements: { level: 32 }
+  },
+
+  // Equipment Enhancement Materials
+  enhancement_stone_basic: {
+    name: 'Đá Cường Hóa Cơ Bản', type: 'resource', rarity: 'common',
+    description: 'Dùng để nâng cấp trang bị cấp thấp'
+  },
+
+  enhancement_stone_advanced: {
+    name: 'Đá Cường Hóa Cao Cấp', type: 'resource', rarity: 'uncommon',
+    description: 'Dùng để nâng cấp trang bị cấp trung'
+  },
+
+  enhancement_stone_elite: {
+    name: 'Đá Cường Hóa Tinh Anh', type: 'resource', rarity: 'rare',
+    description: 'Dùng để nâng cấp trang bị cấp cao'
+  },
+
+  enhancement_stone_legendary: {
+    name: 'Đá Cường Hóa Huyền Thoại', type: 'resource', rarity: 'epic',
+    description: 'Dùng để nâng cấp trang bị huyền thoại'
+  },
+
+  // New Blueprints
+  blueprint_venom_blade: {
+    name: 'Công Thức: Kiếm Nọc Độc', type: 'blueprint', rarity: 'rare',
+    description: 'Công thức chế tạo Kiếm Nọc Độc',
+    recipe: {
+      required: [
+        { itemId: 'venom_sac', qty: 5 },
+        { itemId: 'alloy_ore', qty: 8 },
+        { itemId: 'monster_tendon_mid', qty: 3 }
+      ],
+      result: { itemId: 'venom_blade', qty: 1 }
+    }
+  },
+
+  blueprint_golem_hammer: {
+    name: 'Công Thức: Búa Golem', type: 'blueprint', rarity: 'epic',
+    description: 'Công thức chế tạo Búa Golem',
+    recipe: {
+      required: [
+        { itemId: 'golem_core', qty: 1 },
+        { itemId: 'ancient_stone', qty: 10 },
+        { itemId: 'kele_metal_fragment', qty: 3 }
+      ],
+      result: { itemId: 'golem_hammer', qty: 1 }
+    }
+  },
+
+  blueprint_spider_silk_armor: {
+    name: 'Công Thức: Giáp Tơ Nhện', type: 'blueprint', rarity: 'rare',
+    description: 'Công thức chế tạo Giáp Tơ Nhện',
+    recipe: {
+      required: [
+        { itemId: 'spider_queen_fang', qty: 1 },
+        { itemId: 'venom_sac', qty: 8 },
+        { itemId: 'monster_hide_mid', qty: 5 }
+      ],
+      result: { itemId: 'spider_silk_armor', qty: 1 }
+    }
+  },
+
+  // Race-specific Equipment
+  human_valor_badge: {
+    name: 'Huy Hiệu Dũng Khí Nhân Loại', type: 'accessory', rarity: 'rare',
+    description: 'Biểu tượng của ý chí con người. Chỉ dành cho chủng tộc Nhân Loại.',
+    stats: { attack: 10, defense: 10, hpMax: 100 },
+    requirements: { level: 15, race: 'human' }
+  },
+
+  mutant_power_gauntlet: {
+    name: 'Găng Tay Sức Mạnh Dị Nhân', type: 'accessory', rarity: 'rare',
+    description: 'Tăng cường sức mạnh đột biến. Chỉ dành cho Dị Nhân.',
+    stats: { attack: 20, critDamage: 0.2 },
+    requirements: { level: 15, race: 'mutant' }
+  },
+
+  esper_mind_crown: {
+    name: 'Vương Miện Tâm Linh', type: 'accessory', rarity: 'rare',
+    description: 'Tăng cường năng lực tinh thần. Chỉ dành cho Linh Năng Giả.',
+    stats: { spirit: 25, energyMax: 150 },
+    requirements: { level: 15, race: 'esper' }
+  },
+
+  cyborg_power_core: {
+    name: 'Lõi Năng Lượng Cơ Giới', type: 'accessory', rarity: 'rare',
+    description: 'Lõi năng lượng cơ giới hóa. Chỉ dành cho Cơ Giới Chiến Binh.',
+    stats: { defense: 15, resistance: 10, energyMax: 100 },
+    requirements: { level: 15, race: 'cyborg' }
+  },
+
+  beastkin_feral_totem: {
+    name: 'Vật Tổ Dã Tính', type: 'accessory', rarity: 'rare',
+    description: 'Thức tỉnh bản năng thú tính. Chỉ dành cho Thú Nhân.',
+    stats: { attack: 15, speed: 8, dodgeChance: 0.05 },
+    requirements: { level: 15, race: 'beastkin' }
+  },
+
+  voidwalker_shadow_cloak: {
+    name: 'Áo Choàng Bóng Đêm', type: 'accessory', rarity: 'rare',
+    description: 'Hòa nhập với bóng tối. Chỉ dành cho Hư Không Hành Giả.',
+    stats: { critChance: 0.1, dodgeChance: 0.08, speed: 5 },
+    requirements: { level: 15, race: 'voidwalker' }
+  },
 } as const
 
 export type ItemId = keyof typeof items;
