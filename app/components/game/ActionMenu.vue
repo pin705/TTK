@@ -95,13 +95,6 @@ function getResourceName(itemId: string): string {
 const isWounded = computed(() => {
   return playerStore.character?.effects?.some(e => e.effectId === 'heavy_wound' && (!e.expiresAt || new Date(e.expiresAt) > new Date())) || false
 })
-// Điều kiện hiển thị nút Tu Luyện
-const canCultivate = computed(() => mapStore.currentZone?.allowCultivation && !isWounded.value)
-const isFullHp = computed(() => {
-  return playerStore.character ? playerStore.character.hp >= playerStore.character.hpMax : false
-})
-// Điều kiện hiển thị nút Đả Tọa
-const canMeditate = computed(() => mapStore.currentZone?.allowCultivation && !isWounded.value && !isFullHp.value)
 
 async function performMove(direction: string) {
   await execute('map/move', { direction })
@@ -109,32 +102,5 @@ async function performMove(direction: string) {
 
 async function performGather(itemId: string) {
   await execute('resource/gather', { itemId })
-}
-
-async function performMeditate() {
-  execute('character/meditate')
-}
-
-const canDisplayCultivateButton = computed(() => {
-  // Hiển thị nút nếu đang tu luyện (để có thể dừng)
-  if (isCultivating.value) return true
-  // Hoặc nếu ở khu vực cho phép và không bị thương
-  return mapStore.currentZone?.allowCultivation && !isWounded.value
-})
-
-async function performCultivateToggle() {
-  // Chỉ gọi action 'character/cultivate'
-  // Action này sẽ tự động bật hoặc tắt tu luyện
-  await execute('character/cultivate')
-  // Không cần setTimeout nữa
-}
-
-async function performCultivate() {
-  isCultivating.value = true
-  await execute('character/cultivate')
-  // Dùng setTimeout để tạo cảm giác "đang tu luyện" và tránh spam click
-  setTimeout(() => {
-    isCultivating.value = false
-  }, 1000) // Hiệu ứng loading kéo dài 1 giây
 }
 </script>
