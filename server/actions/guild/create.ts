@@ -33,7 +33,7 @@ export const create: ActionHandler = async ({ character, payload }) => {
   })
   
   // Update character
-  character.guildId = guild._id
+  character.guildId = guild._id as any
   character.resources.energyCrystals -= requiredCost
   
   return {

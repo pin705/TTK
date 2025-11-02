@@ -27,10 +27,10 @@ export const invite: ActionHandler = async ({ character, payload }) => {
   }
   
   // Add member to guild
-  guild.members.push(targetCharacter._id)
+  guild.members.push(targetCharacter._id as any)
   await guild.save()
   
-  targetCharacter.guildId = guild._id
+  targetCharacter.guildId = guild._id as any
   await targetCharacter.save()
   
   return {

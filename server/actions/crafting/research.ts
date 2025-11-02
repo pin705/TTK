@@ -50,7 +50,7 @@ export const research: ActionHandler = async ({ character, payload }) => {
     return {
       log: [
         { type: 'system', message: `[NGHIÊN CỨU]: Nghiên cứu thành công!` },
-        { type: 'system', message: `[NGHIÊN CỨU]: Đã học công thức: [${blueprintItem.name}]` }
+        { type: 'system', message: `[NGHIÊN CỨU]: Đã học công thức: [${blueprintItem?.name || 'Unknown'}]` }
       ],
       updates: {
         inventory: character.inventory,

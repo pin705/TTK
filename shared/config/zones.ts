@@ -31,7 +31,11 @@ export const zones = {
     energyCostPerMove: 0,
     respawnLocation: 'giang_nam_khu_dan_cu_01',
     npcs: [{ npcId: 'thuong_nhan_vat_lieu' }, { npcId: 'tinh_bao_vien' }],
-    connectedZones: [{ direction: 'về Võ Quán', zoneId: 'giang_nam_vo_quan_01' }]
+    connectedZones: [
+      { direction: 'về Võ Quán', zoneId: 'giang_nam_vo_quan_01' },
+      { direction: 'đến Xưởng Rèn', zoneId: 'giang_nam_xuong_ren' },
+      { direction: 'đến Phòng Thí Nghiệm', zoneId: 'giang_nam_phong_thi_nghiem' }
+    ]
   },
   giang_nam_cong_can_cu_01: {
     name: 'Cổng Căn Cứ Phía Bắc',
@@ -42,7 +46,8 @@ export const zones = {
     respawnLocation: 'giang_nam_khu_dan_cu_01',
     connectedZones: [
       { direction: 'vào Võ Quán', zoneId: 'giang_nam_vo_quan_01' },
-      { direction: 'ra Hoang Dã', zoneId: 'hoang_da_0201' }
+      { direction: 'ra Hoang Dã', zoneId: 'hoang_da_0201' },
+      { direction: 'đến Bãi Đỗ Phi Thuyền', zoneId: 'earth_base' }
     ]
   },
 
@@ -133,40 +138,79 @@ export const zones = {
     ]
   },
 
-  // === VŨ TRỤ (SPACE - Future zones) ===
-  // These zones will be unlocked after reaching Wargod rank
-  /*
-  mat_trang_can_cu: {
+  // === CRAFTING ZONES (Base Zones for Crafting) ===
+  giang_nam_xuong_ren: {
+    name: 'Xưởng Rèn',
+    description: 'Tiếng búa đập trên đe vang vọng. Nơi các thợ rèn chế tạo vũ khí và giáp.',
+    recommendedLevel: 1, monsterDensity: 'none', allowCultivation: false,
+    zoneType: 'base' as const,
+    energyCostPerMove: 0,
+    respawnLocation: 'giang_nam_khu_dan_cu_01',
+    connectedZones: [{ direction: 'về Chợ Giao Dịch', zoneId: 'giang_nam_cho_giao_dich_01' }]
+  },
+  giang_nam_phong_thi_nghiem: {
+    name: 'Phòng Thí Nghiệm',
+    description: 'Phòng nghiên cứu đầy các thiết bị hiện đại. Nơi nghiên cứu công thức chế tạo.',
+    recommendedLevel: 5, monsterDensity: 'none', allowCultivation: false,
+    zoneType: 'base' as const,
+    energyCostPerMove: 0,
+    respawnLocation: 'giang_nam_khu_dan_cu_01',
+    connectedZones: [{ direction: 'về Chợ Giao Dịch', zoneId: 'giang_nam_cho_giao_dich_01' }]
+  },
+
+  // === VŨ TRỤ (SPACE - Endgame zones) ===
+  earth_base: {
+    name: 'Bãi Đỗ Phi Thuyền',
+    description: 'Bãi đỗ phi thuyền tại Trái Đất. Nơi xuất phát cho các chuyến du hành vũ trụ.',
+    recommendedLevel: 40, monsterDensity: 'none', allowCultivation: false,
+    zoneType: 'base' as const,
+    energyCostPerMove: 0,
+    respawnLocation: 'giang_nam_khu_dan_cu_01',
+    connectedZones: [
+      { direction: 'về Căn Cứ', zoneId: 'giang_nam_khu_dan_cu_01' }
+    ]
+  },
+  moon_base: {
     name: 'Căn Cứ Mặt Trăng',
     description: 'Trạm vũ trụ trên Mặt Trăng, nơi các Chiến Thần tập trung.',
     recommendedLevel: 50, monsterDensity: 'none', allowCultivation: true,
     zoneType: 'base' as const,
     energyCostPerMove: 0,
-    respawnLocation: 'mat_trang_can_cu',
-    requiresRank: 'wargod', // Must be Wargod to access
-    connectedZones: [
-      { direction: 'về Trái Đất', zoneId: 'giang_nam_khu_dan_cu_01', requiresItem: 'spaceship' },
-      { direction: 'đến Sao Hỏa', zoneId: 'sao_hoa_khai_thac' }
-    ]
+    respawnLocation: 'moon_base',
+    connectedZones: []
   },
-  sao_hoa_khai_thac: {
+  mars_mining: {
     name: 'Khu Khai Thác Sao Hỏa',
     description: 'Các mỏ khoáng quý hiếm trên Sao Hỏa.',
     recommendedLevel: 55, monsterDensity: 'medium', allowCultivation: false,
     zoneType: 'wilderness' as const,
     energyCostPerMove: 15,
     deathPenalty: { energyCrystalLoss: 0.25 },
-    respawnLocation: 'mat_trang_can_cu',
-    requiresRank: 'wargod',
+    respawnLocation: 'moon_base',
     resources: [
       { itemId: 'alloy_ore', spawnChance: 0.5, quantity: [3, 8] },
       { itemId: 'cosmic_herb_mid', spawnChance: 0.3, quantity: [2, 4] }
     ],
-    connectedZones: [
-      { direction: 'về Căn Cứ Mặt Trăng', zoneId: 'mat_trang_can_cu' }
-    ]
+    connectedZones: []
+  },
+  asteroid_belt: {
+    name: 'Vành Đai Tiểu Hành Tinh',
+    description: 'Khu vực nguy hiểm đầy các tiểu hành tinh và quái thú vũ trụ.',
+    recommendedLevel: 60, monsterDensity: 'high', allowCultivation: false,
+    zoneType: 'secret_realm' as const,
+    energyCostPerMove: 20,
+    deathPenalty: { energyCrystalLoss: 0.3, itemDropChance: 0.1 },
+    respawnLocation: 'moon_base',
+    monsters: [
+      { monsterId: 'space_beast', spawnChance: 0.5 },
+      { monsterId: 'asteroid_guardian', spawnChance: 0.3 }
+    ],
+    resources: [
+      { itemId: 'energy_crystal', spawnChance: 0.8, quantity: [10, 20] },
+      { itemId: 'ruin_module', spawnChance: 0.2, quantity: [1, 3] }
+    ],
+    connectedZones: []
   }
-  */
 } as const
 
 export type ZoneId = keyof typeof zones

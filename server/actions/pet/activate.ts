@@ -29,7 +29,7 @@ export const activate: ActionHandler = async ({ character, payload }) => {
     }
   }
   
-  character.activePetId = pet._id
+  character.activePetId = pet._id as any
   
   return {
     log: [

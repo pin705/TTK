@@ -28,8 +28,9 @@ export const search: ActionHandler = async ({ character, payload }) => {
   
   for (let i = 0; i < listings.length; i++) {
     const listing = listings[i]
+    if (!listing) continue
     const seller = await Character.findById(listing.sellerId)
-    const listingId = listing._id.toString().slice(-6)
+    const listingId = listing._id?.toString().slice(-6) || 'unknown'
     logMessages.push({
       type: 'market',
       message: `${i + 1}. [${seller?.name || 'Unknown'}] - Giá: ${listing.pricePerUnit} Tinh Thể - SL: ${listing.quantity} (ID: #${listingId})`
