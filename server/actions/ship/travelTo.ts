@@ -1,5 +1,6 @@
 import type { ActionHandler } from '../types'
 import { Ship } from '../../models/ship.model'
+import { gameSettings } from '../../../shared/config/gameSettings'
 
 export const travelTo: ActionHandler = async ({ character, payload }) => {
   const { target } = payload as { target: 'Moon' | 'Mars' | 'AsteroidBelt' | 'Earth' }
@@ -14,14 +15,7 @@ export const travelTo: ActionHandler = async ({ character, payload }) => {
   }
   
   // Calculate fuel cost based on destination
-  const fuelCosts: Record<string, number> = {
-    Moon: 20,
-    Mars: 50,
-    AsteroidBelt: 40,
-    Earth: 30
-  }
-  
-  const fuelCost = fuelCosts[target] || 30
+  const fuelCost = gameSettings.ship.fuelCosts[target] || 30
   
   if (ship.stats.fuel < fuelCost) {
     throw new Error(`Không đủ nhiên liệu (cần ${fuelCost}, có ${ship.stats.fuel})`)
@@ -29,20 +23,20 @@ export const travelTo: ActionHandler = async ({ character, payload }) => {
   
   // Random events (20% chance)
   const randomEvent = Math.random()
-  const logs: any[] = [
+  const logs: { type: string; message: string }[] = [
     { type: 'system', message: `[DU HÀNH]: Khởi hành đến ${target}...` }
   ]
   
   ship.stats.fuel -= fuelCost
   
-  if (randomEvent < 0.1) {
+  if (randomEvent < gameSettings.ship.energyStormChance) {
     // Energy storm
-    const fuelLoss = Math.floor(ship.stats.fuel * 0.3)
+    const fuelLoss = Math.floor(ship.stats.fuel * gameSettings.ship.energyStormFuelLoss)
     ship.stats.fuel = Math.max(0, ship.stats.fuel - fuelLoss)
     logs.push({ type: 'event', message: `[SỰ KIỆN]: Gặp Bão Năng Lượng! Mất ${fuelLoss} nhiên liệu.` })
-  } else if (randomEvent < 0.2) {
+  } else if (randomEvent < gameSettings.ship.randomEventChance) {
     // Space pirates
-    const hpLoss = Math.floor(ship.stats.hpMax * 0.2)
+    const hpLoss = Math.floor(ship.stats.hpMax * gameSettings.ship.pirateHpDamage)
     ship.stats.hp = Math.max(0, ship.stats.hp - hpLoss)
     logs.push({ type: 'event', message: `[SỰ KIỆN]: Gặp Cướp Bóc Vũ Trụ! Phi thuyền mất ${hpLoss} HP.` })
   }

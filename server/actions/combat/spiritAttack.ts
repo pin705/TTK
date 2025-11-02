@@ -25,7 +25,7 @@ export const spiritAttack: ActionHandler = async ({ character, payload }) => {
   const baseDamage = character.stats.spirit + (weapon.stats?.spirit || 0)
   const damage = Math.floor(baseDamage * (0.8 + Math.random() * 0.4))
   
-  const logs: any[] = []
+  const logs: { type: string; message: string }[] = []
   
   // Check if weapon has AoE capability
   const aoeTargets = (weapon.stats as any)?.aoe || 1
@@ -45,7 +45,7 @@ export const spiritAttack: ActionHandler = async ({ character, payload }) => {
   }
   
   // Consume spirit energy
-  const spiritCost = 10
+  const spiritCost = 10 // TODO: Move to gameSettings if needed
   character.energy = Math.max(0, character.energy - spiritCost)
   logs.push({ type: 'system', message: `[HỆ THỐNG]: Tiêu hao ${spiritCost} Niệm Lực.` })
   

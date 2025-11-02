@@ -1,5 +1,6 @@
 import type { ActionHandler } from '../types'
 import { Guild } from '../../models/guild.model'
+import { gameSettings } from '../../../shared/config/gameSettings'
 
 export const create: ActionHandler = async ({ character, payload }) => {
   const { name } = payload as { name: string }
@@ -20,7 +21,7 @@ export const create: ActionHandler = async ({ character, payload }) => {
   }
   
   // Check credits (cost to create guild)
-  const requiredCost = 10000
+  const requiredCost = gameSettings.guild.creationCost
   if (!character.resources?.energyCrystals || character.resources.energyCrystals < requiredCost) {
     throw new Error(`Cần ${requiredCost} Tinh Thể Năng Lượng để tạo guild`)
   }

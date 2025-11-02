@@ -1,5 +1,6 @@
 import type { ActionHandler } from '../types'
 import { Pet } from '../../models/pet.model'
+import { gameSettings } from '../../../shared/config/gameSettings'
 
 export const tame: ActionHandler = async ({ character, payload }) => {
   const { monsterId } = payload as { monsterId: string }
@@ -13,19 +14,21 @@ export const tame: ActionHandler = async ({ character, payload }) => {
   }
   
   // Check if has slave ring
-  const slaveRing = character.inventory.find(i => i.itemId === 'slave_ring')
-  if (!slaveRing || slaveRing.quantity < 1) {
-    throw new Error('Cần có [Vòng Nô Dịch] để thuần hóa')
+  if (gameSettings.pet.tameRingRequired) {
+    const slaveRing = character.inventory.find(i => i.itemId === 'slave_ring')
+    if (!slaveRing || slaveRing.quantity < 1) {
+      throw new Error('Cần có [Vòng Nô Dịch] để thuần hóa')
+    }
   }
   
   // Check class - only Spirit Reader can tame beasts
-  if (character.class !== 'SpiritReader') {
+  if (gameSettings.pet.spiritReaderOnly && character.class !== 'SpiritReader') {
     throw new Error('Chỉ Niệm Sư mới có thể thuần hóa hung thú')
   }
   
   // Success rate based on monster HP
   const hpPercent = character.combat.monsterHp / 100 // Assume monsters have ~100 HP base
-  const successRate = Math.max(0.1, 0.5 - (hpPercent * 0.4)) // Lower HP = higher success
+  const successRate = Math.max(0.1, gameSettings.pet.baseTameRate - (hpPercent * 0.4)) // Lower HP = higher success
   
   const success = Math.random() < successRate
   

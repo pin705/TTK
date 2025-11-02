@@ -1,5 +1,6 @@
 import type { ActionHandler } from '../types'
 import { items } from '../../../shared/config/items'
+import { gameSettings } from '../../../shared/config/gameSettings'
 
 export const activateModule: ActionHandler = async ({ character, payload }) => {
   const { slot } = payload as { slot: 'moduleSlot1' | 'moduleSlot2' | 'moduleSlot3' }
@@ -19,7 +20,7 @@ export const activateModule: ActionHandler = async ({ character, payload }) => {
   }
   
   const stats = (module as any).stats
-  const energyCost = stats?.energyCost || 50
+  const energyCost = stats?.energyCost || gameSettings.module.energyShieldCost
   
   if (character.energy < energyCost) {
     throw new Error(`Không đủ năng lượng (cần ${energyCost})`)
@@ -34,7 +35,7 @@ export const activateModule: ActionHandler = async ({ character, payload }) => {
     character.effects.push({
       effectId: 'energy_shield',
       name: 'Lá Chắn Năng Lượng',
-      power: stats.shieldPower,
+      power: stats.shieldPower || gameSettings.module.energyShieldPower,
       durationTurns: 3,
       expiresAt: new Date(Date.now() + 60000) // 1 minute
     })

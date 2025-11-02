@@ -34,7 +34,10 @@ export const craft: ActionHandler = async ({ character, payload }) => {
   
   // Consume materials
   for (const req of recipe.required) {
-    const inventoryItem = character.inventory.find(i => i.itemId === req.itemId)!
+    const inventoryItem = character.inventory.find(i => i.itemId === req.itemId)
+    if (!inventoryItem) {
+      throw new Error(`Lỗi hệ thống: không tìm thấy vật phẩm ${req.itemId}`)
+    }
     inventoryItem.quantity -= req.qty
     if (inventoryItem.quantity === 0) {
       character.inventory = character.inventory.filter(i => i.itemId !== req.itemId)

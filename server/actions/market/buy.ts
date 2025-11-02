@@ -1,6 +1,7 @@
 import type { ActionHandler } from '../types'
 import { MarketListing } from '../../models/marketListing.model'
 import { Character } from '../../models/character.model'
+import { gameSettings } from '../../../shared/config/gameSettings'
 
 export const buy: ActionHandler = async ({ character, payload }) => {
   const { listingId } = payload as { listingId: string }
@@ -15,7 +16,7 @@ export const buy: ActionHandler = async ({ character, payload }) => {
   }
   
   const totalCost = listing.pricePerUnit * listing.quantity
-  const tax = Math.ceil(totalCost * 0.05) // 5% tax
+  const tax = Math.ceil(totalCost * gameSettings.market.transactionTaxRate)
   const totalWithTax = totalCost + tax
   
   // Check if buyer has enough currency

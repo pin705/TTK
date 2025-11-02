@@ -1,5 +1,6 @@
 import type { ActionHandler } from '../types'
 import { items } from '../../../shared/config/items'
+import { gameSettings } from '../../../shared/config/gameSettings'
 
 export const research: ActionHandler = async ({ character, payload }) => {
   // Check if character has ruin fragments
@@ -28,8 +29,8 @@ export const research: ActionHandler = async ({ character, payload }) => {
     }
   }
   
-  // Random success (50% chance)
-  const success = Math.random() < 0.5
+  // Random success
+  const success = Math.random() < gameSettings.crafting.researchSuccessRate
   
   // Consume ruin fragment
   ruinFragment.quantity -= 1
