@@ -1,6 +1,6 @@
 // Equipment Enhancement System
 import type { ActionContext } from '../types'
-import { items } from '~/shared/config/items'
+import { items } from '~~/shared/config'
 
 interface EnhancePayload {
   itemId: string // Item in inventory to enhance

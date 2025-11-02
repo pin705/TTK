@@ -1,6 +1,6 @@
 // Racial Skill System
 import type { ActionContext } from '../types'
-import { races } from '~/shared/config/races'
+import { races } from '~~/shared/config'
 
 interface RacialSkillPayload {
   skillId: string

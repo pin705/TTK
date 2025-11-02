@@ -1,6 +1,6 @@
 // server/api/character/create.post.ts
 import { z } from 'zod'
-import { races } from '~/shared/config/races'
+import { races } from '~~/shared/config'
 
 const bodySchema = z.object({
   name: z.string().min(3, 'Tên phải có ít nhất 3 ký tự').max(20, 'Tên không quá 20 ký tự'),
