@@ -56,7 +56,7 @@ export async function absorbEnergy({ character, payload }: ActionContext) {
   let rankUpMessage = ''
   if (character.evolution.geneEnergy >= currentRank.geneEnergyRequired) {
     // Auto rank up if no breakthrough required
-    if (!currentRank.breakthrough) {
+    if (!(currentRank as any).breakthrough) {
       const nextRankId = getNextRank(currentRankId)
       if (nextRankId) {
         character.evolution.rank = nextRankId
@@ -74,7 +74,7 @@ export async function absorbEnergy({ character, payload }: ActionContext) {
         rankUpMessage = ` 🎉 Bạn đã đạt đến ${evolutionRanks[nextRankId as keyof typeof evolutionRanks].name}!`
       }
     } else {
-      rankUpMessage = ` ⚠️ Bạn đã đạt đủ năng lượng để đột phá. Hãy sử dụng ${currentRank.breakthrough.requiresItem} và thực hiện đột phá!`
+      rankUpMessage = ` ⚠️ Bạn đã đạt đủ năng lượng để đột phá. Hãy sử dụng ${(currentRank as any).breakthrough.requiresItem} và thực hiện đột phá!`
     }
   }
 
@@ -89,7 +89,7 @@ export async function absorbEnergy({ character, payload }: ActionContext) {
   }
 }
 
-function getNextRank(currentRank: string): string | null {
+function getNextRank(currentRank: string): string | null | undefined {
   const ranks = Object.keys(evolutionRanks)
   const currentIndex = ranks.indexOf(currentRank)
   return currentIndex < ranks.length - 1 ? ranks[currentIndex + 1] : null

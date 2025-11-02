@@ -18,7 +18,7 @@ export async function geneBreakthrough({ character }: ActionContext) {
   const currentRank = evolutionRanks[currentRankId]
 
   // Check if breakthrough is available for this rank
-  if (!currentRank.breakthrough) {
+  if (!(currentRank as any).breakthrough) {
     return {
       log: { message: 'Cấp bậc hiện tại không cần đột phá. Hãy tiếp tục hấp thụ Tinh Thể Năng Lượng.', type: 'error' }
     }
@@ -43,7 +43,7 @@ export async function geneBreakthrough({ character }: ActionContext) {
   }
 
   // Check if player has required breakthrough item
-  const requiredItem = currentRank.breakthrough.requiresItem
+  const requiredItem = (currentRank as any).breakthrough.requiresItem
   const hasItem = character.inventory.find(item => item.itemId === requiredItem && item.quantity > 0)
   
   if (!hasItem) {
@@ -56,7 +56,7 @@ export async function geneBreakthrough({ character }: ActionContext) {
   }
 
   // Calculate success chance
-  const baseChance = currentRank.breakthrough.baseSuccessChance
+  const baseChance = (currentRank as any).breakthrough.baseSuccessChance
   const geneIntegrityBonus = (character.evolution.geneIntegrity - 100) * 0.002 // +/-0.2% per point
   const successChance = Math.max(0.1, Math.min(1.0, baseChance + geneIntegrityBonus))
 
@@ -100,7 +100,7 @@ export async function geneBreakthrough({ character }: ActionContext) {
     }
   } else {
     // Failure: Apply penalty
-    const penalty = currentRank.breakthrough.failurePenalty
+    const penalty = (currentRank as any).breakthrough.failurePenalty
     if (penalty?.geneIntegrityLoss) {
       character.evolution.geneIntegrity = Math.max(0, character.evolution.geneIntegrity - penalty.geneIntegrityLoss)
       
@@ -136,7 +136,7 @@ export async function geneBreakthrough({ character }: ActionContext) {
   }
 }
 
-function getNextRank(currentRank: string): string | null {
+function getNextRank(currentRank: string): string | null | undefined {
   const ranks = Object.keys(evolutionRanks)
   const currentIndex = ranks.indexOf(currentRank)
   return currentIndex < ranks.length - 1 ? ranks[currentIndex + 1] : null
