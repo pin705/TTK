@@ -50,7 +50,7 @@
                     ? 'border-cyan-500 bg-cyan-900/30'
                     : 'border-gray-600 bg-gray-800/50 hover:border-gray-500'
                 ]"
-                @click="selectedRace = race.id as any"
+                @click="selectedRace = race.id"
               >
                 <div class="font-semibold text-white">{{ race.name }}</div>
                 <div class="text-xs text-gray-400 mt-1 line-clamp-2">{{ race.description }}</div>
@@ -141,20 +141,20 @@
 </template>
 
 <script setup lang="ts">
-import { races } from '~~/shared/config'
+import { races, type RaceId } from '~~/shared/config'
 
 definePageMeta({
   layout: false
 })
 
 const characterName = ref('')
-const selectedRace = ref<'human' | 'mutant' | 'esper' | 'cyborg' | 'beastkin' | 'voidwalker'>('human')
+const selectedRace = ref<RaceId>('human')
 const isLoading = ref(false)
 const errorMsg = ref('')
 
 // Get race options from the races config
 const raceOptions = Object.entries(races).map(([id, config]) => ({
-  id,
+  id: id as RaceId,
   name: config.nameVi,
   description: config.description,
   config
