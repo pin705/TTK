@@ -1,88 +1,86 @@
 <template>
   <div
     v-if="npcsInZoneDetails.length > 0"
-    class="border-t border-cyan-700/30 pt-3 mt-3"
+    class="p-3 bg-gray-900/50 rounded-lg border border-green-700/50 shadow-inner mt-3 space-y-3"
   >
-    <h3 class="text-green-400 font-semibold mb-2 flex items-center gap-1.5 text-base">
+    <h3 class="text-green-400 font-semibold flex items-center gap-2">
       <Icon
         name="lucide:users"
         class="h-4 w-4 text-green-500"
-      /> [ Nhân Vật Tương Tác ]
+      />
+      Nhân Vật Tương Tác
     </h3>
 
     <ul class="space-y-2">
       <li
         v-for="npc in npcsInZoneDetails"
         :key="npc.npcId"
-        class="p-2 bg-gray-800/60 rounded-md border border-gray-700/80 flex items-center justify-between hover:border-green-600/70 transition-colors duration-200 group"
+        class="p-3 bg-gradient-to-r from-gray-800/60 to-gray-900/60 rounded-md border border-gray-700/80 flex items-center justify-between hover:border-green-600/70 hover:shadow-md transition-all duration-200 group"
       >
         <div class="flex items-center space-x-3 overflow-hidden">
-          <span class="flex-shrink-0 w-6 text-center">
+          <!-- NPC Avatar/Icon -->
+          <div class="flex-shrink-0 w-10 h-10 bg-gradient-to-br from-green-700/40 to-emerald-700/40 rounded-full flex items-center justify-center border-2 border-green-600/50">
             <Icon
               name="lucide:user"
-              class="text-gray-400 h-5 w-5"
+              class="text-green-300 h-5 w-5"
             />
-          </span>
+          </div>
 
+          <!-- NPC Info -->
           <div class="flex-grow overflow-hidden">
             <span
-              class="font-medium text-green-300 group-hover:text-green-100 text-sm truncate block"
+              class="font-semibold text-green-300 group-hover:text-green-100 text-sm truncate block"
               :title="npc.name"
             >
               {{ npc.name }}
             </span>
-            <span
-              v-if="npc.hasCompletableQuest"
-              class="text-xs text-green-400 flex items-center gap-1 animate-pulse"
-              title="Có nhiệm vụ để trả"
-            >
-              <Icon
-                name="lucide:check-circle"
-                class="h-3.5 w-3.5"
-              /> Có thể trả N.Vụ
-            </span>
-            <span
-              v-else-if="npc.hasAvailableQuest"
-              class="text-xs text-yellow-400 flex items-center gap-1"
-              title="Có nhiệm vụ mới"
-            >
-              <Icon
-                name="lucide:message-square-plus"
-                class="h-3.5 w-3.5"
-              /> Nhiệm vụ mới
-            </span>
+            
+            <!-- Quest Status Badge -->
+            <div v-if="npc.hasCompletableQuest" class="mt-1">
+              <span class="inline-flex items-center gap-1 px-2 py-0.5 bg-green-900/50 border border-green-600/50 rounded-full text-xs text-green-400 animate-pulse">
+                <Icon name="lucide:check-circle-2" class="h-3 w-3" />
+                Có thể trả N.Vụ
+              </span>
+            </div>
+            <div v-else-if="npc.hasAvailableQuest" class="mt-1">
+              <span class="inline-flex items-center gap-1 px-2 py-0.5 bg-yellow-900/50 border border-yellow-600/50 rounded-full text-xs text-yellow-400">
+                <Icon name="lucide:sparkles" class="h-3 w-3" />
+                Nhiệm vụ mới
+              </span>
+            </div>
             <span
               v-else
-              class="text-xs text-gray-500 italic"
+              class="text-xs text-gray-500 italic mt-1 block"
             >
-              (Không có nhiệm vụ)
+              Có thể trò chuyện
             </span>
           </div>
         </div>
 
         <button
-          class="bg-blue-800/60 hover:bg-blue-700/70 px-2.5 py-1 rounded text-xs text-blue-100 flex-shrink-0 border border-blue-700/50 flex items-center gap-1 transition-all"
+          class="bg-gradient-to-r from-blue-700/70 to-blue-800/70 hover:from-blue-600/70 hover:to-blue-700/70 px-3 py-2 rounded-md text-xs text-blue-100 flex-shrink-0 border border-blue-600/50 flex items-center gap-1.5 transition-all hover:scale-105 disabled:opacity-50"
           :disabled="isLoading"
           title="Nói chuyện"
           @click="talkToNpc(npc.npcId)"
         >
           <Icon
             name="lucide:message-circle"
-            class="h-3.5 w-3.5"
+            class="h-4 w-4"
           />
-          <span class="hidden sm:inline">Nói</span>
+          <span class="hidden sm:inline font-medium">Nói Chuyện</span>
         </button>
       </li>
     </ul>
   </div>
   <div
     v-else
-    class="border-t border-cyan-700/30 pt-3 mt-3 text-sm text-gray-500 italic px-2"
+    class="p-3 bg-gray-900/50 rounded-lg border border-gray-700/50 mt-3 text-center"
   >
     <Icon
       name="lucide:user-x"
-      class="inline-block mr-1 h-4 w-4"
-    /> Không có NPC nào trong khu vực này.
+      class="h-8 w-8 mx-auto mb-2 text-gray-600"
+    />
+    <p class="text-sm text-gray-500 italic">Không có NPC nào trong khu vực này</p>
   </div>
 </template>
 

@@ -30,6 +30,7 @@
         <button 
           class="p-2 hover:bg-gray-700/50 rounded-lg transition-colors"
           title="Cài đặt"
+          @click="showSettings = true"
         >
           <Icon name="lucide:settings" class="h-5 w-5 text-gray-400 hover:text-gray-300" />
         </button>
@@ -42,6 +43,9 @@
         </button>
       </div>
     </div>
+
+    <!-- Settings Modal -->
+    <GameSettingsModal :is-open="showSettings" @close="showSettings = false" />
 
     <!-- Main Game Area -->
     <div class="flex-grow overflow-hidden">
@@ -67,6 +71,7 @@
 
 <script setup lang="ts">
 const playerStore = usePlayerStore()
+const showSettings = ref(false)
 
 async function handleLogout() {
   try {
