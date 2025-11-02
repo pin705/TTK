@@ -55,4 +55,6 @@ export const actions: Record<string, unknown> = {
   'combat/spiritAttack': combat.spiritAttack,
   // Equipment enhancement
   'equipment/enhance': equipment.enhanceEquipment,
+  // Racial skills
+  'character/useRacialSkill': character.useRacialSkill,
 }

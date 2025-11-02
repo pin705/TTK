@@ -7,7 +7,8 @@ interface EnhancePayload {
 }
 
 export async function enhanceEquipment(context: ActionContext, payload: EnhancePayload) {
-  const { character, logs } = context
+  const { character } = context
+  const logs: string[] = []
 
   // Find the item in inventory
   const itemSlot = character.inventory.find(slot => slot.itemId === payload.itemId)
@@ -117,4 +118,6 @@ export async function enhanceEquipment(context: ActionContext, payload: EnhanceP
   }
 
   logs.push(`[INFO]: Tỷ lệ thành công: ${(successRate * 100).toFixed(0)}%`)
+  
+  return { logs }
 }
