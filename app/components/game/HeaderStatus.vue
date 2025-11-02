@@ -1,15 +1,22 @@
 <template>
   <div
     v-if="playerStore.character"
-    class="p-3 border border-cyan-700/50 rounded-lg bg-gradient-to-br from-gray-900/70 via-black/50 to-gray-900/70 backdrop-blur-sm shadow-lg text-sm"
+    class="relative text-sm"
   >
-    <div class="flex items-center space-x-3 md:space-x-4 mb-3">
+    <!-- Decorative corner ornaments -->
+    <div class="absolute -top-1 -left-1 w-4 h-4 border-t-2 border-l-2 border-cultivation-gold-500/60"></div>
+    <div class="absolute -top-1 -right-1 w-4 h-4 border-t-2 border-r-2 border-cultivation-gold-500/60"></div>
+    <div class="absolute -bottom-1 -left-1 w-4 h-4 border-b-2 border-l-2 border-cultivation-gold-500/60"></div>
+    <div class="absolute -bottom-1 -right-1 w-4 h-4 border-b-2 border-r-2 border-cultivation-gold-500/60"></div>
+    
+    <div class="flex items-center space-x-3 md:space-x-4 mb-4">
       <div class="relative group flex-shrink-0">
+        <div class="absolute inset-0 rounded-full bg-gradient-to-br from-cultivation-gold-500/20 to-cultivation-mystic-500/20 blur-lg animate-pulse"></div>
         <img
           :src="playerStore.character.avatar || '/default-avatar.png'"
           alt="Avatar"
-          class="h-16 w-16 md:h-20 md:w-20 rounded-full border-2 object-cover transition-all duration-300 shadow-md"
-          :class="isWounded ? 'border-red-500/70 grayscale-[70%]' : 'border-cyan-500/70'"
+          class="h-16 w-16 md:h-20 md:w-20 rounded-full border-3 object-cover transition-all duration-300 shadow-xl relative z-10"
+          :class="isWounded ? 'border-red-500/70 grayscale-[70%] shadow-red-500/50' : 'border-cultivation-gold-500/70 shadow-cultivation-gold-500/50'"
         >
         <label
           for="avatar-upload"
@@ -35,17 +42,18 @@
       </div>
       <div class="flex-grow overflow-hidden">
         <h2
-          class="text-base md:text-lg text-cyan-200 font-bold truncate uppercase tracking-wide"
+          class="text-base md:text-lg text-transparent bg-clip-text bg-gradient-to-r from-cultivation-gold-300 via-cultivation-gold-200 to-cultivation-jade-300 font-bold truncate uppercase tracking-wider drop-shadow-lg"
           :title="playerStore.character.name"
         >
           {{ playerStore.character.name }}
         </h2>
-        <p class="text-yellow-400 text-xs md:text-sm">
-          Lv.{{ playerStore.character.level }} - {{ playerStore.character.cultivation.stage }}
+        <p class="text-cultivation-gold-400 text-xs md:text-sm font-semibold flex items-center gap-1.5 mt-1">
+          <span class="bg-cultivation-gold-900/40 px-2 py-0.5 rounded border border-cultivation-gold-600/40">Lv.{{ playerStore.character.level }}</span>
+          <span class="text-cultivation-jade-400">{{ playerStore.character.cultivation.stage }}</span>
         </p>
         <div
           v-if="isWounded"
-          class="text-red-500 text-xs font-semibold animate-pulse mt-1 flex items-center gap-1 bg-red-900/30 px-1.5 py-0.5 rounded border border-red-700/50 w-fit"
+          class="text-red-400 text-xs font-semibold animate-pulse mt-2 flex items-center gap-1.5 bg-gradient-to-r from-red-900/40 to-red-800/40 px-2 py-1 rounded-lg border border-red-600/50 w-fit shadow-lg"
         >
           <Icon
             name="lucide:heart-crack"
@@ -55,19 +63,19 @@
       </div>
     </div>
 
-    <div class="space-y-2">
+    <div class="space-y-2.5 mt-4">
       <UiStatusBar
         label="HP"
         :current="playerStore.character.hp"
         :max="playerStore.character.hpMax"
-        :color-class="isWounded ? 'bg-gradient-to-r from-red-700 to-red-900 border-red-700/50 text-red-300' : 'bg-gradient-to-r from-red-500 to-orange-500 border-red-600/50 text-red-200'"
+        :color-class="isWounded ? 'bg-gradient-to-r from-red-600 via-red-700 to-red-800 border-red-600/60 text-red-200' : 'bg-gradient-to-r from-red-500 via-red-600 to-orange-600 border-red-500/60 text-red-100'"
         icon="lucide:heart-pulse"
       />
       <UiStatusBar
         label="N.Lượng"
         :current="playerStore.character.energy"
         :max="playerStore.character.energyMax"
-        color-class="bg-gradient-to-r from-blue-500 to-sky-500 border-blue-600/50 text-blue-200"
+        color-class="bg-gradient-to-r from-cultivation-celestial-500 via-cultivation-celestial-600 to-cultivation-celestial-700 border-cultivation-celestial-500/60 text-cultivation-celestial-100"
         icon="lucide:zap"
       />
       <UiStatusBar
@@ -75,23 +83,27 @@
         label="Tu Vi"
         :current="playerStore.character.cultivation.exp"
         :max="currentRealm.expRequired"
-        color-class="bg-gradient-to-r from-purple-500 to-indigo-500 border-purple-600/50 text-purple-200"
-        icon="lucide:book-up"
+        color-class="bg-gradient-to-r from-cultivation-mystic-500 via-cultivation-mystic-600 to-indigo-600 border-cultivation-mystic-500/60 text-cultivation-mystic-100"
+        icon="lucide:sparkles"
       />
     </div>
 
-    <div class="grid grid-cols-1 gap-x-4 gap-y-2 mt-3 border-t border-cyan-700/30 pt-3 text-xs">
-      <div class="col-span-2 md:col-span-1 text-center md:text-right mt-2 md:mt-0 border-t border-cyan-700/30 md:border-none pt-2 md:pt-0">
-        <p class="text-[10px] text-gray-400 uppercase tracking-wider">
+    <div class="grid grid-cols-1 gap-x-4 gap-y-2 mt-4 border-t border-cultivation-gold-700/30 pt-3 text-xs relative">
+      <!-- Decorative divider line -->
+      <div class="absolute top-0 left-1/2 -translate-x-1/2 w-16 h-px bg-gradient-to-r from-transparent via-cultivation-gold-500/50 to-transparent"></div>
+      
+      <div class="col-span-2 md:col-span-1 text-center md:text-left mt-2 md:mt-0">
+        <p class="text-[10px] text-cultivation-gold-500/70 uppercase tracking-widest mb-1 flex items-center justify-center md:justify-start gap-1">
+          <Icon name="lucide:map" class="h-3 w-3" />
           Vị Trí Hiện Tại
         </p>
         <p
-          class="text-cyan-300 font-medium text-sm"
+          class="text-cultivation-jade-300 font-medium text-sm bg-cultivation-gold-900/20 px-3 py-1.5 rounded-lg border border-cultivation-gold-600/30 inline-flex items-center gap-2"
           :title="mapStore.currentZone?.name"
         >
           <Icon
             name="lucide:map-pin"
-            class="inline-block mr-1 h-3.5 w-3.5 -mt-px"
+            class="h-3.5 w-3.5 text-cultivation-gold-400"
           /> {{ mapStore.currentZone?.name || 'Không xác định' }}
         </p>
       </div>

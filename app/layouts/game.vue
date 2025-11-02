@@ -1,41 +1,51 @@
 <template>
-  <div class="bg-black text-green-400 min-h-screen flex flex-col">
+  <div class="bg-gradient-to-br from-gray-950 via-cultivation-gold-950/10 to-gray-950 text-cultivation-gold-100 min-h-screen flex flex-col relative overflow-hidden">
+    <!-- Background pattern -->
+    <div class="fixed inset-0 bg-cultivation-pattern opacity-20 pointer-events-none"></div>
+    <div class="fixed inset-0 bg-dragon-scale opacity-10 pointer-events-none"></div>
+    
     <!-- Top Navigation Bar -->
-    <div class="bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 border-b border-cyan-700/50 px-4 py-2 flex items-center justify-between flex-shrink-0 shadow-lg">
+    <div class="relative z-20 bg-gradient-to-r from-gray-900/95 via-cultivation-gold-900/20 to-gray-900/95 border-b-2 border-cultivation-gold-600/40 px-4 py-3 flex items-center justify-between flex-shrink-0 shadow-2xl backdrop-blur-sm">
+      <!-- Decorative top border -->
+      <div class="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-cultivation-gold-500/50 to-transparent"></div>
+      
       <div class="flex items-center gap-3">
-        <Icon name="lucide:hexagon" class="h-6 w-6 text-cyan-400 animate-pulse" />
-        <h1 class="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-green-400 uppercase tracking-wider hidden sm:block">
+        <div class="relative">
+          <Icon name="lucide:sparkles" class="h-7 w-7 text-cultivation-gold-400 animate-pulse" />
+          <div class="absolute inset-0 blur-md bg-cultivation-gold-500/30 rounded-full"></div>
+        </div>
+        <h1 class="text-xl md:text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cultivation-gold-400 via-cultivation-gold-300 to-cultivation-jade-400 uppercase tracking-wider hidden sm:block drop-shadow-lg">
           Tinh Không Đạo Lộ
         </h1>
       </div>
       
       <!-- Quick Stats -->
-      <div v-if="playerStore.character" class="flex items-center gap-4 text-sm">
-        <div class="flex items-center gap-1.5 px-2 py-1 bg-red-900/30 rounded border border-red-700/50">
-          <Icon name="lucide:heart" class="h-4 w-4 text-red-500" />
-          <span class="text-red-300 font-semibold">{{ playerStore.character.hp }}/{{ playerStore.character.hpMax }}</span>
+      <div v-if="playerStore.character" class="flex items-center gap-2 md:gap-3 text-xs md:text-sm">
+        <div class="flex items-center gap-1.5 px-2 md:px-3 py-1.5 bg-gradient-to-br from-red-900/40 to-red-950/60 rounded-lg border border-red-600/50 backdrop-blur-sm shadow-lg">
+          <Icon name="lucide:heart" class="h-3 w-3 md:h-4 md:w-4 text-red-400" />
+          <span class="text-red-200 font-semibold">{{ playerStore.character.hp }}/{{ playerStore.character.hpMax }}</span>
         </div>
-        <div class="flex items-center gap-1.5 px-2 py-1 bg-blue-900/30 rounded border border-blue-700/50">
-          <Icon name="lucide:zap" class="h-4 w-4 text-blue-500" />
-          <span class="text-blue-300 font-semibold">{{ playerStore.character.energy }}/{{ playerStore.character.energyMax }}</span>
+        <div class="flex items-center gap-1.5 px-2 md:px-3 py-1.5 bg-gradient-to-br from-cultivation-celestial-900/40 to-cultivation-celestial-950/60 rounded-lg border border-cultivation-celestial-600/50 backdrop-blur-sm shadow-lg">
+          <Icon name="lucide:zap" class="h-3 w-3 md:h-4 md:w-4 text-cultivation-celestial-400" />
+          <span class="text-cultivation-celestial-200 font-semibold">{{ playerStore.character.energy }}/{{ playerStore.character.energyMax }}</span>
         </div>
-        <div class="hidden md:flex items-center gap-1.5 px-2 py-1 bg-cyan-900/30 rounded border border-cyan-700/50">
-          <Icon name="lucide:gem" class="h-4 w-4 text-cyan-500" />
-          <span class="text-cyan-300 font-semibold">{{ playerStore.character.resources?.energyCrystals || 0 }}</span>
+        <div class="hidden md:flex items-center gap-1.5 px-2 md:px-3 py-1.5 bg-gradient-to-br from-cultivation-gold-900/40 to-cultivation-gold-950/60 rounded-lg border border-cultivation-gold-600/50 backdrop-blur-sm shadow-lg">
+          <Icon name="lucide:gem" class="h-3 w-3 md:h-4 md:w-4 text-cultivation-gold-400" />
+          <span class="text-cultivation-gold-200 font-semibold">{{ playerStore.character.resources?.energyCrystals || 0 }}</span>
         </div>
       </div>
 
       <!-- Actions -->
       <div class="flex items-center gap-2">
         <button 
-          class="p-2 hover:bg-gray-700/50 rounded-lg transition-colors"
+          class="p-2 hover:bg-cultivation-gold-800/30 rounded-lg transition-all hover:scale-105 border border-transparent hover:border-cultivation-gold-600/30"
           title="Cài đặt"
           @click="showSettings = true"
         >
-          <Icon name="lucide:settings" class="h-5 w-5 text-gray-400 hover:text-gray-300" />
+          <Icon name="lucide:settings" class="h-5 w-5 text-cultivation-gold-400 hover:text-cultivation-gold-300" />
         </button>
         <button 
-          class="p-2 hover:bg-red-700/50 rounded-lg transition-colors"
+          class="p-2 hover:bg-red-800/30 rounded-lg transition-all hover:scale-105 border border-transparent hover:border-red-600/30"
           title="Đăng xuất"
           @click="handleLogout"
         >
@@ -51,11 +61,11 @@
     <GameTutorialHint />
 
     <!-- Main Game Area -->
-    <div class="flex-grow overflow-hidden">
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 h-full p-4 overflow-hidden md:p-6 lg:p-8">
+    <div class="flex-grow overflow-hidden relative z-10">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-3 md:gap-4 h-full p-3 md:p-4 lg:p-6 overflow-hidden">
         <!-- Left Panel - Character Status -->
-        <div class="col-span-1 lg:col-span-3 space-y-4 overflow-y-auto">
-          <GameHeaderStatus class="border border-cyan-700/50 p-3 rounded-lg bg-gray-900/50 backdrop-blur-sm shadow-lg" />
+        <div class="col-span-1 lg:col-span-3 space-y-3 md:space-y-4 overflow-y-auto custom-scrollbar">
+          <GameHeaderStatus class="border-2 border-cultivation-gold-600/40 p-3 md:p-4 rounded-xl bg-gradient-to-br from-gray-900/80 via-gray-900/70 to-cultivation-gold-900/30 backdrop-blur-md shadow-2xl relative overflow-hidden" />
         </div>
 
         <!-- Center Panel - Main Game View -->
@@ -65,12 +75,36 @@
 
         <!-- Right Panel - Game Log & Commands -->
         <div class="col-span-1 lg:col-span-3 flex flex-col overflow-hidden">
-          <GameLog class="border border-gray-600/50 p-3 rounded-lg flex-grow bg-gray-900/50 backdrop-blur-sm shadow-lg overflow-hidden" />
+          <GameLog class="border-2 border-cultivation-gold-700/30 p-3 rounded-xl flex-grow bg-gradient-to-br from-gray-900/70 via-gray-900/60 to-gray-800/70 backdrop-blur-md shadow-2xl overflow-hidden" />
         </div>
       </div>
     </div>
   </div>
 </template>
+
+<style scoped>
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(251, 191, 36, 0.4) transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: linear-gradient(to bottom, rgba(251, 191, 36, 0.4), rgba(217, 119, 6, 0.4));
+  border-radius: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(to bottom, rgba(251, 191, 36, 0.6), rgba(217, 119, 6, 0.6));
+}
+</style>
 
 <script setup lang="ts">
 const playerStore = usePlayerStore()
