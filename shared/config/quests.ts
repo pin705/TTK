@@ -395,8 +395,8 @@ export const quests = {
 
   weekly_boss_raid: {
     title: '[Hàng Tuần] Đột Kích Boss Hang Động',
-    description: 'Nhiệm vụ hàng tuần: Tiêu diệt Boss khó trong Bí Cảnh để nhận phần thưởng khủng.',
-    type: 'daily', // Use daily type but can be marked as weekly
+    description: 'Nhiệm vụ có thể lặp lại: Tiêu diệt Boss khó trong Bí Cảnh để nhận phần thưởng khủng.',
+    type: 'side', // Repeatable side quest for boss farming
     npcId: 'tinh_bao_vien',
     requiredLevel: 18,
     objectives: [

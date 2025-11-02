@@ -112,7 +112,14 @@ const currentQuestObjective = computed(() => {
   const incompleteObj = tutorialQuest.objectives.find((obj: any) => obj.current < obj.count)
   if (!incompleteObj) return null
 
-  return `${incompleteObj.type === 'kill' ? 'Hạ gục' : incompleteObj.type === 'gather' ? 'Thu thập' : incompleteObj.type === 'talk' ? 'Nói chuyện với' : 'Khám phá'} ${incompleteObj.target} (${incompleteObj.current}/${incompleteObj.count})`
+  const typeLabels: Record<string, string> = {
+    kill: 'Hạ gục',
+    gather: 'Thu thập',
+    talk: 'Nói chuyện với',
+    explore: 'Khám phá'
+  }
+  const label = typeLabels[incompleteObj.type] || incompleteObj.type
+  return `${label} ${incompleteObj.target} (${incompleteObj.current}/${incompleteObj.count})`
 })
 
 function nextHint() {
