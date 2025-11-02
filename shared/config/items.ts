@@ -98,6 +98,33 @@ export const items = {
     description: 'Chiến kỹ bị động, tăng 10% sức mạnh',
     skill: { type: 'passive', name: 'Bát Cực Quyền', attackBoost: 0.1 }
   },
+  skill_iron_body: {
+    name: 'Sách Chiến Kỹ: Kim Cang Thân', type: 'skill_book', rarity: 'rare',
+    description: 'Chiến kỹ bị động, tăng 15% phòng thủ',
+    skill: { type: 'passive', name: 'Kim Cang Thân', defenseBoost: 0.15 }
+  },
+  skill_rapid_strike: {
+    name: 'Sách Chiến Kỹ: Liên Hoàn Chưởng', type: 'skill_book', rarity: 'uncommon',
+    description: 'Chiến kỹ chủ động, tấn công 3 lần liên tiếp với 60% sát thương',
+    skill: { type: 'active', name: 'Liên Hoàn Chưởng', hits: 3, damageMultiplier: 0.6 }
+  },
+  
+  // --- Advanced Modules ---
+  combat_module_critical: {
+    name: 'Module Chiến Đấu - Chí Mạng', type: 'module_combat', rarity: 'rare',
+    description: 'Tăng 10% tỷ lệ chí mạng',
+    stats: { critChance: 0.1 }
+  },
+  survival_module_shield: {
+    name: 'Module Sinh Tồn - Lá Chắn', type: 'module_survival', rarity: 'rare',
+    description: 'Giảm 15% sát thương nhận vào',
+    stats: { damageReduction: 0.15 }
+  },
+  cultivation_chip_elite: {
+    name: 'Chip Tu Luyện Tinh Anh', type: 'module_cultivation', rarity: 'epic',
+    description: 'Tăng 100% tốc độ hấp thụ Tinh Thể Năng Lượng',
+    stats: { cultivationSpeed: 2.0 }
+  },
 } as const
 
 export type ItemId = keyof typeof items;

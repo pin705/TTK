@@ -105,7 +105,68 @@ export const zones = {
     monsters: [{ monsterId: 'armored_tiger', spawnChance: 1 }],
     resources: [{ itemId: 'kele_metal_fragment', spawnChance: 0.02, quantity: [1, 1] }],
     connectedZones: [{ direction: 'rời khỏi sào huyệt', zoneId: 'hoang_da_0202' }]
+  },
+
+  // === KHU HỖN LOẠN (CHAOS ZONE - PVP) ===
+  khu_hon_loan_mo_tinh_the: {
+    name: 'Mỏ Tinh Thể Tranh Chấp',
+    description: 'Khu vực tranh chấp tài nguyên. Người chơi có thể tấn công lẫn nhau để chiếm đoạt Tinh Thể Năng Lượng.',
+    recommendedLevel: 15, monsterDensity: 'low', allowCultivation: false,
+    zoneType: 'chaos' as const, // PVP zone
+    energyCostPerMove: 10,
+    deathPenalty: { 
+      energyCrystalLoss: 0.3, // 30% loss
+      itemDropChance: 0.1 // 10% chance to drop random inventory item
+    },
+    respawnLocation: 'giang_nam_khu_dan_cu_01',
+    pvpEnabled: true,
+    monsters: [
+      { monsterId: 'shadow_cat', spawnChance: 0.4 },
+      { monsterId: 'iron_fist_ape', spawnChance: 0.2 }
+    ],
+    resources: [
+      { itemId: 'energy_crystal', spawnChance: 0.3, quantity: [5, 10] },
+      { itemId: 'cosmic_herb_mid', spawnChance: 0.1, quantity: [1, 2] }
+    ],
+    connectedZones: [
+      { direction: 'lùi về Hoang Dã', zoneId: 'hoang_da_0202' }
+    ]
+  },
+
+  // === VŨ TRỤ (SPACE - Future zones) ===
+  // These zones will be unlocked after reaching Wargod rank
+  /*
+  mat_trang_can_cu: {
+    name: 'Căn Cứ Mặt Trăng',
+    description: 'Trạm vũ trụ trên Mặt Trăng, nơi các Chiến Thần tập trung.',
+    recommendedLevel: 50, monsterDensity: 'none', allowCultivation: true,
+    zoneType: 'base' as const,
+    energyCostPerMove: 0,
+    respawnLocation: 'mat_trang_can_cu',
+    requiresRank: 'wargod', // Must be Wargod to access
+    connectedZones: [
+      { direction: 'về Trái Đất', zoneId: 'giang_nam_khu_dan_cu_01', requiresItem: 'spaceship' },
+      { direction: 'đến Sao Hỏa', zoneId: 'sao_hoa_khai_thac' }
+    ]
+  },
+  sao_hoa_khai_thac: {
+    name: 'Khu Khai Thác Sao Hỏa',
+    description: 'Các mỏ khoáng quý hiếm trên Sao Hỏa.',
+    recommendedLevel: 55, monsterDensity: 'medium', allowCultivation: false,
+    zoneType: 'wilderness' as const,
+    energyCostPerMove: 15,
+    deathPenalty: { energyCrystalLoss: 0.25 },
+    respawnLocation: 'mat_trang_can_cu',
+    requiresRank: 'wargod',
+    resources: [
+      { itemId: 'alloy_ore', spawnChance: 0.5, quantity: [3, 8] },
+      { itemId: 'cosmic_herb_mid', spawnChance: 0.3, quantity: [2, 4] }
+    ],
+    connectedZones: [
+      { direction: 'về Căn Cứ Mặt Trăng', zoneId: 'mat_trang_can_cu' }
+    ]
   }
+  */
 } as const
 
 export type ZoneId = keyof typeof zones
