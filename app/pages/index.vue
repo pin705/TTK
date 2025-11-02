@@ -51,7 +51,7 @@
       <button 
         type="submit" 
         :disabled="isLoading" 
-        class="w-full flex justify-center items-center gap-2 py-3 px-4 bg-gradient-to-br from-cultivation-gold-600 via-cultivation-gold-700 to-cultivation-gold-800 hover:from-cultivation-gold-500 hover:via-cultivation-gold-600 hover:to-cultivation-gold-700 border-2 border-cultivation-gold-500/60 rounded-lg text-white font-bold uppercase tracking-wider transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-2xl hover:shadow-cultivation-gold-500/50 transform hover:scale-[1.02] active:scale-95 relative overflow-hidden"
+        class="w-full flex justify-center items-center gap-2 py-3 px-4 bg-gradient-to-br from-cultivation-gold-600 via-cultivation-gold-700 to-cultivation-gold-800 hover:from-cultivation-gold-500 hover:via-cultivation-gold-600 hover:to-cultivation-gold-700 border-2 border-cultivation-gold-500/60 rounded-lg text-white font-bold uppercase tracking-wider transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-2xl hover:shadow-cultivation-gold-500/50 transform hover:scale-[1.02] active:scale-95 relative overflow-hidden group"
       >
         <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent group-hover:animate-shimmer"></div>
         <UiLoadingSpinner v-if="isLoading" class="h-5 w-5 relative z-10" />
@@ -96,7 +96,7 @@
       <button 
         type="submit" 
         :disabled="isLoading" 
-        class="w-full flex justify-center items-center gap-2 py-3 px-4 bg-gradient-to-br from-cultivation-jade-600 via-cultivation-jade-700 to-cultivation-jade-800 hover:from-cultivation-jade-500 hover:via-cultivation-jade-600 hover:to-cultivation-jade-700 border-2 border-cultivation-jade-500/60 rounded-lg text-white font-bold uppercase tracking-wider transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-2xl hover:shadow-cultivation-jade-500/50 transform hover:scale-[1.02] active:scale-95 relative overflow-hidden"
+        class="w-full flex justify-center items-center gap-2 py-3 px-4 bg-gradient-to-br from-cultivation-jade-600 via-cultivation-jade-700 to-cultivation-jade-800 hover:from-cultivation-jade-500 hover:via-cultivation-jade-600 hover:to-cultivation-jade-700 border-2 border-cultivation-jade-500/60 rounded-lg text-white font-bold uppercase tracking-wider transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-2xl hover:shadow-cultivation-jade-500/50 transform hover:scale-[1.02] active:scale-95 relative overflow-hidden group"
       >
         <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent group-hover:animate-shimmer"></div>
         <UiLoadingSpinner v-if="isLoading" class="h-5 w-5 relative z-10" />
