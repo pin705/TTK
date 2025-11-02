@@ -33,29 +33,62 @@
             </p>
           </div>
 
+          <!-- Race Selection -->
+          <div class="space-y-2">
+            <label class="text-sm font-medium text-gray-300 flex items-center gap-2">
+              <Icon name="lucide:users" class="h-4 w-4 text-cyan-500" />
+              Chủng Tộc (Không thể thay đổi)
+            </label>
+            <div class="grid grid-cols-2 gap-3">
+              <button
+                v-for="race in raceOptions"
+                :key="race.id"
+                type="button"
+                :class="[
+                  'p-3 rounded-lg border-2 text-left transition-all',
+                  selectedRace === race.id
+                    ? 'border-cyan-500 bg-cyan-900/30'
+                    : 'border-gray-600 bg-gray-800/50 hover:border-gray-500'
+                ]"
+                @click="selectedRace = race.id"
+              >
+                <div class="font-semibold text-white">{{ race.name }}</div>
+                <div class="text-xs text-gray-400 mt-1 line-clamp-2">{{ race.description }}</div>
+              </button>
+            </div>
+          </div>
+
           <!-- Character Preview -->
           <div class="p-6 bg-gradient-to-br from-gray-800/60 to-gray-900/60 rounded-lg border border-gray-700 space-y-4">
             <h3 class="text-lg font-semibold text-yellow-400 flex items-center gap-2">
               <Icon name="lucide:sparkles" class="h-5 w-5" />
-              Thông Tin Ban Đầu
+              Thông Tin Ban Đầu - {{ races[selectedRace].nameVi }}
             </h3>
             
             <div class="grid grid-cols-2 gap-4 text-sm">
               <div class="space-y-1">
-                <p class="text-gray-400">Cảnh Giới:</p>
-                <p class="text-white font-semibold">Học Đồ Cấp 1</p>
-              </div>
-              <div class="space-y-1">
-                <p class="text-gray-400">Vị Trí:</p>
-                <p class="text-white font-semibold">Khu Dân Cư</p>
-              </div>
-              <div class="space-y-1">
                 <p class="text-gray-400">Sinh Lực:</p>
-                <p class="text-red-400 font-semibold">100 / 100</p>
+                <p class="text-red-400 font-semibold">{{ races[selectedRace].baseStats.hp }} / {{ races[selectedRace].baseStats.hp }}</p>
               </div>
               <div class="space-y-1">
                 <p class="text-gray-400">Năng Lượng:</p>
-                <p class="text-blue-400 font-semibold">100 / 100</p>
+                <p class="text-blue-400 font-semibold">{{ races[selectedRace].baseStats.energy }} / {{ races[selectedRace].baseStats.energy }}</p>
+              </div>
+              <div class="space-y-1">
+                <p class="text-gray-400">Tấn Công:</p>
+                <p class="text-orange-400 font-semibold">{{ races[selectedRace].baseStats.attack }}</p>
+              </div>
+              <div class="space-y-1">
+                <p class="text-gray-400">Phòng Thủ:</p>
+                <p class="text-green-400 font-semibold">{{ races[selectedRace].baseStats.defense }}</p>
+              </div>
+              <div class="space-y-1">
+                <p class="text-gray-400">Tốc Độ:</p>
+                <p class="text-cyan-400 font-semibold">{{ races[selectedRace].baseStats.speed }}</p>
+              </div>
+              <div class="space-y-1">
+                <p class="text-gray-400">Tinh Thần:</p>
+                <p class="text-purple-400 font-semibold">{{ races[selectedRace].baseStats.spirit }}</p>
               </div>
             </div>
 
@@ -87,7 +120,7 @@
             </button>
             <button
               type="submit"
-              :disabled="isLoading || !characterName || characterName.length < 3"
+              :disabled="isLoading || !characterName || characterName.length < 3 || !selectedRace"
               class="flex-1 px-6 py-3 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 border-2 border-cyan-500 rounded-lg text-white font-bold transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-lg"
             >
               <UiLoadingSpinner v-if="isLoading" class="h-5 w-5" />
@@ -108,17 +141,33 @@
 </template>
 
 <script setup lang="ts">
+import { races, type RaceId } from '~~/shared/config'
+
 definePageMeta({
   layout: false
 })
 
 const characterName = ref('')
+const selectedRace = ref<RaceId>('human')
 const isLoading = ref(false)
 const errorMsg = ref('')
+
+// Get race options from the races config
+const raceOptions = Object.entries(races).map(([id, config]) => ({
+  id: id as RaceId,
+  name: config.nameVi,
+  description: config.description,
+  config
+}))
 
 async function handleCreateCharacter() {
   if (!characterName.value || characterName.value.length < 3) {
     errorMsg.value = 'Tên nhân vật phải có ít nhất 3 ký tự'
+    return
+  }
+
+  if (!selectedRace.value) {
+    errorMsg.value = 'Vui lòng chọn chủng tộc'
     return
   }
 
@@ -128,7 +177,10 @@ async function handleCreateCharacter() {
   try {
     const response = await $fetch('/api/character/create', {
       method: 'POST',
-      body: { name: characterName.value }
+      body: { 
+        name: characterName.value,
+        race: selectedRace.value
+      }
     })
 
     if (response.success) {
