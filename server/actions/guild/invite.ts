@@ -1,4 +1,6 @@
 import type { ActionHandler } from '../types'
+import { Guild } from '../../models/guild.model'
+import { Character } from '../../models/character.model'
 
 export const invite: ActionHandler = async ({ character, payload }) => {
   const { targetCharacterId } = payload as { targetCharacterId: string }

@@ -1,4 +1,5 @@
 import type { ActionHandler } from '../types'
+import { Ship } from '../../models/ship.model'
 
 export const refuel: ActionHandler = async ({ character, payload }) => {
   if (!character.currentShipId) {

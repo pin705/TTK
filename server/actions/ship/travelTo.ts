@@ -1,4 +1,5 @@
 import type { ActionHandler } from '../types'
+import { Ship } from '../../models/ship.model'
 
 export const travelTo: ActionHandler = async ({ character, payload }) => {
   const { target } = payload as { target: 'Moon' | 'Mars' | 'AsteroidBelt' | 'Earth' }

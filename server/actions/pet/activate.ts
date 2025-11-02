@@ -1,4 +1,5 @@
 import type { ActionHandler } from '../types'
+import { Pet } from '../../models/pet.model'
 
 export const activate: ActionHandler = async ({ character, payload }) => {
   const { petId } = payload as { petId: string }

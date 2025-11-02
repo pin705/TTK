@@ -1,4 +1,5 @@
 import type { ActionHandler } from '../types'
+import { Character } from '../../models/character.model'
 
 // Note: Full party system would need Redis or a Party model for real-time management
 // This is a simplified implementation showing the structure

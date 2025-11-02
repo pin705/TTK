@@ -1,4 +1,5 @@
 import type { ActionHandler } from '../types'
+import { Guild } from '../../models/guild.model'
 
 export const create: ActionHandler = async ({ character, payload }) => {
   const { name } = payload as { name: string }

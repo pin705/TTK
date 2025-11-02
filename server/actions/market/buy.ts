@@ -1,4 +1,6 @@
 import type { ActionHandler } from '../types'
+import { MarketListing } from '../../models/marketListing.model'
+import { Character } from '../../models/character.model'
 
 export const buy: ActionHandler = async ({ character, payload }) => {
   const { listingId } = payload as { listingId: string }

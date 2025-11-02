@@ -1,4 +1,5 @@
 import type { ActionHandler } from '../types'
+import { MarketListing } from '../../models/marketListing.model'
 
 export const sell: ActionHandler = async ({ character, payload }) => {
   const { itemId, quantity, pricePerUnit } = payload as { 

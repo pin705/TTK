@@ -1,4 +1,5 @@
 import type { ActionHandler } from '../types'
+import { Pet } from '../../models/pet.model'
 
 export const setMode: ActionHandler = async ({ character, payload }) => {
   const { mode } = payload as { mode: 'Combat' | 'Collect' }

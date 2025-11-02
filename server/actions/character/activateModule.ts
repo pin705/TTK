@@ -30,6 +30,7 @@ export const activateModule: ActionHandler = async ({ character, payload }) => {
   // Apply module effect
   if (stats?.shieldPower) {
     // Add temporary shield effect
+    if (!character.effects) character.effects = []
     character.effects.push({
       effectId: 'energy_shield',
       name: 'Lá Chắn Năng Lượng',

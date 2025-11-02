@@ -1,4 +1,5 @@
 import type { ActionHandler } from '../types'
+import { Pet } from '../../models/pet.model'
 
 export const tame: ActionHandler = async ({ character, payload }) => {
   const { monsterId } = payload as { monsterId: string }
