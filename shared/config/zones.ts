@@ -273,7 +273,7 @@ export const zones = {
   poison_cave_01: {
     name: 'Hang Động Độc Dược',
     description: 'Hang động tối tăm đầy khí độc, nơi cư ngụ của Thủ Lĩnh Nhện Độc.',
-    recommendedLevel: 18, monsterDensity: 'high', allowCultivation: false,
+    recommendedLevel: 18, monsterDensity: 5, allowCultivation: false,
     zoneType: 'secret_realm' as const,
     energyCostPerMove: 15,
     deathPenalty: { energyCrystalLoss: 0.22 },
@@ -291,7 +291,7 @@ export const zones = {
   ancient_quarry_01: {
     name: 'Mỏ Đá Cổ Đại',
     description: 'Mỏ đá từ thời tiền Đại Niết Bàn, giờ đây bị các Golem Đá chiếm cứ.',
-    recommendedLevel: 22, monsterDensity: 'high', allowCultivation: false,
+    recommendedLevel: 22, monsterDensity: 5, allowCultivation: false,
     zoneType: 'secret_realm' as const,
     energyCostPerMove: 15,
     deathPenalty: { energyCrystalLoss: 0.25 },
@@ -369,7 +369,7 @@ export const zones = {
   di_tich_thien_canh: {
     name: 'Di Tích Thiên Cảnh',
     description: 'Di tích cổ đại từ thời kỳ trước Đại Niết Bàn, ẩn chứa bí mật về nguồn gốc tiến hóa.',
-    recommendedLevel: 35, monsterDensity: 'high', allowCultivation: true,
+    recommendedLevel: 35, monsterDensity: 5, allowCultivation: true,
     zoneType: 'secret_realm' as const,
     energyCostPerMove: 18,
     deathPenalty: { energyCrystalLoss: 0.28 },
@@ -419,7 +419,7 @@ export const zones = {
   ham_ngam_bien_di_sau: {
     name: 'Hầm Ngầm Biến Dị - Tầng Sâu',
     description: 'Tầng sâu nhất của hầm ngầm, nơi sinh sống của Chúa Tể Dị Hình.',
-    recommendedLevel: 32, monsterDensity: 'high', allowCultivation: false,
+    recommendedLevel: 32, monsterDensity: 5, allowCultivation: false,
     zoneType: 'secret_realm' as const,
     energyCostPerMove: 16,
     deathPenalty: { energyCrystalLoss: 0.26 },

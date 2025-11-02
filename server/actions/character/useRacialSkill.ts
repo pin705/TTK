@@ -61,6 +61,9 @@ export async function useRacialSkill(context: ActionContext, payload: RacialSkil
       logs.push(`[HEAL]: Hồi phục ${healAmount} HP.`)
       
       // Add temporary defense buff (would need effect system to track duration)
+      if (!character.effects) {
+        character.effects = []
+      }
       character.effects.push({
         effectId: 'human_willpower_buff',
         name: 'Ý Chí Sắt Đá',
@@ -72,6 +75,9 @@ export async function useRacialSkill(context: ActionContext, payload: RacialSkil
 
     case 'mutant_rage':
       // Add rage buff (increased damage, reduced defense)
+      if (!character.effects) {
+        character.effects = []
+      }
       character.effects.push({
         effectId: 'mutant_rage',
         name: 'Cuồng Nộ',
@@ -99,6 +105,9 @@ export async function useRacialSkill(context: ActionContext, payload: RacialSkil
 
     case 'cyborg_overload':
       // Boost all modules
+      if (!character.effects) {
+        character.effects = []
+      }
       character.effects.push({
         effectId: 'cyborg_overload',
         name: 'Quá Tải Hệ Thống',
@@ -110,6 +119,9 @@ export async function useRacialSkill(context: ActionContext, payload: RacialSkil
 
     case 'beastkin_hunt':
       // Hunt mode - speed and damage boost
+      if (!character.effects) {
+        character.effects = []
+      }
       character.effects.push({
         effectId: 'beastkin_hunt',
         name: 'Bản Năng Săn Mồi',

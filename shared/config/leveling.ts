@@ -43,10 +43,24 @@ export function getRaceStatGains(race: RaceId) {
 }
 
 /**
+ * Interface for character base stats
+ */
+export interface CharacterBaseStats {
+  attack: number
+  defense: number
+  speed: number
+  spirit: number
+  critChance: number
+  critDamage: number
+  dodgeChance: number
+  resistance: number
+}
+
+/**
  * Apply racial bonuses to a character's stats
  * This includes passive bonuses from race configuration
  */
-export function applyRacialBonuses(baseStats: any, race: RaceId) {
+export function applyRacialBonuses(baseStats: CharacterBaseStats, race: RaceId): CharacterBaseStats {
   const raceConfig = races[race]
   const bonuses = raceConfig.racialBonuses
   

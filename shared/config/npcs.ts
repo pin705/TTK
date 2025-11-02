@@ -129,7 +129,7 @@ export const npcs = {
   },
 
   tho_ren_giap: {
-    name: 'Thợ Rèn Giáp Giáp Chuyên Nghiệp',
+    name: 'Thợ Rèn Giáp Chuyên Nghiệp',
     personality: 'craftsman',
     dialogues: {
       greeting: [
