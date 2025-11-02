@@ -1,19 +1,26 @@
 <template>
-  <div class="h-full flex flex-col">
-    <h2 class="text-lg text-gray-400 border-b border-gray-600/50 pb-1 mb-2 flex-shrink-0">
-      [ Log Hệ Thống ]
-    </h2>
+  <div class="h-full flex flex-col relative">
+    <!-- Decorative header -->
+    <div class="relative flex-shrink-0 mb-3">
+      <h2 class="text-lg font-bold text-transparent bg-clip-text bg-gradient-to-r from-cultivation-gold-400 to-cultivation-gold-300 border-b-2 border-cultivation-gold-700/30 pb-2 flex items-center gap-2 uppercase tracking-wider">
+        <Icon name="lucide:scroll-text" class="h-5 w-5 text-cultivation-gold-400" />
+        Log Hệ Thống
+      </h2>
+      <div class="absolute bottom-0 left-0 w-24 h-px bg-gradient-to-r from-cultivation-gold-500/50 to-transparent"></div>
+    </div>
+    
     <div
       ref="logContainer"
-      class="flex-grow overflow-auto space-y-1 pr-2 text-sm max-h-[calc(100vh-200px)]"
+      class="flex-grow overflow-auto space-y-1.5 pr-2 text-sm max-h-[calc(100vh-200px)] custom-scrollbar"
     >
-      <p
+      <div
         v-for="(log, index) in logs"
         :key="index"
+        class="hover:bg-cultivation-gold-900/10 px-2 py-1 rounded transition-colors"
       >
-        <span class="text-gray-500 mr-2 text-xs">{{ formatTime(log.timestamp) }}</span>
-        <span :class="logColor(log.type)">{{ log.message }}</span>
-      </p>
+        <span class="text-cultivation-gold-600/60 mr-2 text-xs font-mono">{{ formatTime(log.timestamp) }}</span>
+        <span :class="logColor(log.type)" class="leading-relaxed">{{ log.message }}</span>
+      </div>
     </div>
     <GameCommandInput />
   </div>
@@ -60,14 +67,38 @@ function formatTime(isoString: string): string {
  */
 function logColor(type?: string): string {
   switch (type) {
-    case 'error': case 'defeat': return 'text-red-500 font-semibold'
-    case 'warning': return 'text-yellow-400'
-    case 'success': case 'victory': return 'text-green-400 font-semibold'
-    case 'reward': return 'text-cyan-400'
-    case 'info': return 'text-blue-400'
-    case 'command': return 'text-purple-400'
+    case 'error': case 'defeat': return 'text-red-400 font-semibold'
+    case 'warning': return 'text-cultivation-gold-400 font-semibold'
+    case 'success': case 'victory': return 'text-cultivation-jade-400 font-semibold'
+    case 'reward': return 'text-cultivation-gold-300 font-semibold'
+    case 'info': return 'text-cultivation-celestial-400'
+    case 'command': return 'text-cultivation-mystic-400 font-semibold'
     case 'attack':
-    default: return 'text-gray-300'
+    default: return 'text-cultivation-gold-200/80'
   }
 }
 </script>
+
+<style scoped>
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(251, 191, 36, 0.4) transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: linear-gradient(to bottom, rgba(251, 191, 36, 0.4), rgba(217, 119, 6, 0.4));
+  border-radius: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(to bottom, rgba(251, 191, 36, 0.6), rgba(217, 119, 6, 0.6));
+}
+</style>

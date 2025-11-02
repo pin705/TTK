@@ -88,126 +88,135 @@ async function initiateCombat(monsterId: string) {
 <template>
   <div
     v-if="mapStore.currentZone"
-    class="p-3 md:p-4 space-y-4 text-sm border border-cyan-700/50 rounded-lg bg-gradient-to-b from-gray-900/50 via-black/30 to-gray-900/50 shadow-lg relative overflow-hidden backdrop-blur-sm"
+    class="p-3 md:p-4 space-y-4 text-sm border-2 border-cultivation-gold-700/40 rounded-xl bg-gradient-to-b from-gray-900/60 via-cultivation-gold-950/20 to-gray-900/60 shadow-xl relative overflow-hidden backdrop-blur-sm"
   >
-    <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-cyan-900/10 via-transparent to-transparent opacity-30 pointer-events-none" />
+    <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-cultivation-gold-900/10 via-transparent to-transparent opacity-30 pointer-events-none" />
+    
+    <!-- Decorative corners -->
+    <div class="absolute top-1 left-1 w-4 h-4 border-t-2 border-l-2 border-cultivation-gold-500/40"></div>
+    <div class="absolute top-1 right-1 w-4 h-4 border-t-2 border-r-2 border-cultivation-gold-500/40"></div>
+    <div class="absolute bottom-1 left-1 w-4 h-4 border-b-2 border-l-2 border-cultivation-gold-500/40"></div>
+    <div class="absolute bottom-1 right-1 w-4 h-4 border-b-2 border-r-2 border-cultivation-gold-500/40"></div>
 
     <div class="relative z-10">
-      <h2 class="text-lg md:text-xl text-cyan-300 font-bold uppercase tracking-wider flex items-center gap-2 border-b border-cyan-700/30 pb-1 mb-2">
+      <h2 class="text-lg md:text-xl text-transparent bg-clip-text bg-gradient-to-r from-cultivation-gold-300 to-cultivation-jade-300 font-bold uppercase tracking-wider flex items-center gap-2 border-b-2 border-cultivation-gold-700/40 pb-2 mb-2">
         <Icon
           name="lucide:map-pin"
-          class="h-5 w-5"
+          class="h-5 w-5 text-cultivation-gold-400"
         /> {{ mapStore.currentZone.name }}
       </h2>
-      <p class="text-gray-300 italic leading-relaxed text-xs md:text-sm">
+      <p class="text-cultivation-gold-200/80 italic leading-relaxed text-xs md:text-sm">
         {{ mapStore.currentZone.description }}
       </p>
     </div>
 
-    <div class="grid grid-cols-2 md:grid-cols-3 gap-x-3 gap-y-1 text-xs text-gray-400 relative z-10 border-t border-cyan-700/30 pt-2">
+    <div class="grid grid-cols-2 md:grid-cols-3 gap-2 text-xs text-cultivation-gold-300/90 relative z-10 border-t-2 border-cultivation-gold-700/30 pt-3">
       <span
-        class="flex items-center"
+        class="flex items-center gap-1.5 bg-cultivation-gold-900/20 px-2 py-1.5 rounded-lg border border-cultivation-gold-700/30"
         title="Cấp độ đề nghị"
       >
         <Icon
           name="lucide:bar-chart"
-          class="mr-1.5 h-3.5 w-3.5 text-yellow-500"
+          class="h-4 w-4 text-cultivation-gold-400"
         />
-        Lv. {{ mapStore.currentZone.recommendedLevel || '??' }}
+        <span class="font-semibold">Lv. {{ mapStore.currentZone.recommendedLevel || '??' }}</span>
       </span>
       <span
-        class="flex items-center"
+        class="flex items-center gap-1.5 bg-red-900/20 px-2 py-1.5 rounded-lg border border-red-700/30"
         title="Mật độ sinh vật"
       >
         <Icon
           name="lucide:bug"
-          class="mr-1.5 h-3.5 w-3.5 text-red-500"
+          class="h-4 w-4 text-red-400"
         />
-        {{ monsterDensityText }}
+        <span class="font-semibold text-red-300">{{ monsterDensityText }}</span>
       </span>
       <span
-        class="flex items-center"
+        class="flex items-center gap-1.5 bg-cultivation-celestial-900/20 px-2 py-1.5 rounded-lg border border-cultivation-celestial-700/30"
         title="Linh khí"
       >
         <Icon
           name="lucide:wind"
-          class="mr-1.5 h-3.5 w-3.5 text-blue-500"
+          class="h-4 w-4 text-cultivation-celestial-400"
         />
-        {{ energyFluctuationText }}
+        <span class="font-semibold text-cultivation-celestial-300">{{ energyFluctuationText }}</span>
       </span>
       <span
-        class="flex items-center col-span-2 md:col-span-1"
+        class="flex items-center gap-1.5 bg-cultivation-mystic-900/20 px-2 py-1.5 rounded-lg border border-cultivation-mystic-700/30 col-span-2 md:col-span-1"
         title="Tài nguyên"
       >
         <Icon
           name="lucide:gem"
-          class="mr-1.5 h-3.5 w-3.5 text-purple-500"
+          class="h-4 w-4 text-cultivation-mystic-400"
         />
-        {{ resourceRarityText }}
+        <span class="font-semibold text-cultivation-mystic-300">{{ resourceRarityText }}</span>
       </span>
       <span
         v-if="mapStore.currentZone.weatherEffect && mapStore.currentZone.weatherEffect !== 'none'"
-        class="flex items-center text-orange-400 col-span-2 md:col-span-2 animate-pulse"
+        class="flex items-center gap-1.5 bg-orange-900/20 px-2 py-1.5 rounded-lg border border-orange-700/30 col-span-2 md:col-span-2 animate-pulse"
         title="Hiệu ứng môi trường"
       >
         <Icon
           name="lucide:cloud-lightning"
-          class="mr-1.5 h-3.5 w-3.5"
+          class="h-4 w-4 text-orange-400"
         />
-        {{ mapStore.currentZone.weatherEffect }} </span>
+        <span class="font-semibold text-orange-300">{{ mapStore.currentZone.weatherEffect }}</span>
+      </span>
     </div>
 
-    <div class="relative z-10 border-t border-cyan-700/30 pt-3">
-      <h3 class="text-red-400 font-semibold mb-2 flex items-center gap-1.5">
+    <div class="relative z-10 border-t-2 border-cultivation-gold-700/30 pt-3">
+      <h3 class="text-red-400 font-bold mb-3 flex items-center gap-2 uppercase tracking-wide">
         <Icon
           name="lucide:radar"
-          class="h-4 w-4 animate-spin"
+          class="h-5 w-5 animate-spin"
           style="animation-duration: 3s;"
-        /> [ Quét Sinh Vật Thù Địch ]
+        /> Quét Sinh Vật Thù Địch
       </h3>
       <p
         v-if="!mapStore.currentZone.monsters?.length"
-        class="pl-2 text-sm text-gray-500 italic"
+        class="px-3 py-2 text-sm text-cultivation-jade-400 italic bg-cultivation-jade-900/20 rounded-lg border border-cultivation-jade-700/30"
       >
         <Icon
           name="lucide:shield-check"
-          class="inline-block mr-1 h-4 w-4 text-green-600"
+          class="inline-block mr-2 h-4 w-4"
         /> Tín hiệu an toàn. Không phát hiện mối đe dọa.
       </p>
       <ul
         v-else
-        class="space-y-2 max-h-[300px] overflow-y-auto pr-1 grid grid-cols-3 gap-2"
+        class="space-y-2 max-h-[300px] overflow-y-auto pr-1 custom-scrollbar"
       >
         <li
           v-for="monster in mapStore.currentZone.monsters"
           :key="monster.id"
-          class="p-2 bg-gray-800/60 rounded border border-gray-700/80 flex items-center justify-between hover:border-red-600/70 transition-colors duration-200 group"
+          class="p-3 bg-gradient-to-r from-gray-800/70 to-red-950/30 rounded-lg border-2 border-red-700/50 flex items-center justify-between hover:border-red-500/70 hover:shadow-lg hover:shadow-red-500/20 transition-all duration-200 group"
         >
           <div class="flex-grow pr-3 overflow-hidden">
-            <div class="flex justify-between items-baseline">
+            <div class="flex justify-between items-baseline mb-1">
               <span
-                class="font-medium text-red-400 truncate group-hover:text-red-300"
+                class="font-bold text-red-300 truncate group-hover:text-red-200"
                 :title="monster.name"
               >
                 <Icon
                   name="lucide:skull"
-                  class="inline-block mr-1 h-3.5 w-3.5 text-red-600 -mt-px"
+                  class="inline-block mr-1.5 h-4 w-4 text-red-500 -mt-px"
                 />{{ monster.name }}
               </span>
-              <span class="text-xs text-gray-400 flex-shrink-0 ml-2">Lv.{{ monster.level }}</span>
+              <span class="text-xs text-cultivation-gold-400 flex-shrink-0 ml-2 bg-cultivation-gold-900/30 px-2 py-0.5 rounded border border-cultivation-gold-700/40">Lv.{{ monster.level }}</span>
             </div>
-            <div class="w-full bg-gradient-to-r from-red-900/80 to-red-800/50 rounded-full h-2.5 mt-1 relative overflow-hidden border border-red-700/50 shadow-inner">
-              <div class="absolute inset-0 flex items-center justify-center text-[9px] font-bold text-white/90 z-10 tracking-tighter">
+            <div class="w-full bg-gradient-to-r from-red-950/80 to-red-900/80 rounded-lg h-3 relative overflow-hidden border-2 border-red-700/60 shadow-inner">
+              <div class="absolute inset-0 flex items-center justify-center text-[10px] font-bold text-white/90 z-10 tracking-tight">
                 {{ monster.hp }} / {{ monster.maxHp }}
               </div>
               <div
-                class="bg-gradient-to-r from-red-600 to-orange-500 h-full rounded-full transition-all duration-300 ease-in-out"
+                class="bg-gradient-to-r from-red-600 via-red-500 to-orange-500 h-full transition-all duration-500 ease-out relative"
                 :style="{ width: `${monsterHpPercent(monster)}%` }"
-              />
+              >
+                <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shimmer"></div>
+              </div>
             </div>
           </div>
           <button
-            class="bg-red-700/50 hover:bg-red-600/60 p-1.5 rounded text-xs text-red-100 flex-shrink-0 border border-red-600/50 disabled:opacity-50 disabled:cursor-not-allowed"
+            class="bg-gradient-to-br from-red-700 to-red-800 hover:from-red-600 hover:to-red-700 p-2 rounded-lg text-red-100 flex-shrink-0 border-2 border-red-500/60 disabled:opacity-50 disabled:cursor-not-allowed transition-all hover:scale-110 active:scale-95 shadow-lg"
             :disabled="isLoading || playerStore.character?.inCombat"
             title="Tấn công"
             @click="initiateCombat(monster.id)"
@@ -223,7 +232,7 @@ async function initiateCombat(monsterId: string) {
   </div>
   <div
     v-else
-    class="p-4 text-center text-gray-500 italic border border-gray-700/50 rounded-lg bg-gray-900/30"
+    class="p-4 text-center text-cultivation-gold-500 italic border-2 border-cultivation-gold-700/40 rounded-xl bg-gradient-to-br from-gray-900/60 to-cultivation-gold-950/20"
   >
     <UiLoadingSpinner class="h-5 w-5 inline mr-2" /> Đang tải dữ liệu khu vực...
   </div>
@@ -278,23 +287,25 @@ async function initiateCombat(monsterId: string) {
 </script>
 
 <style scoped>
-/* Thêm hiệu ứng cho viền khi hover quái vật */
-li:hover {
-  box-shadow: 0 0 10px rgba(239, 68, 68, 0.4); /* Màu đỏ red-500 */
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(251, 191, 36, 0.4) transparent;
 }
-/* Style cho scrollbar (Webkit) */
-::-webkit-scrollbar {
-  width: 4px;
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px;
 }
-::-webkit-scrollbar-track {
-  background: rgba(17, 24, 39, 0.5); /* gray-900/50 */
-  border-radius: 2px;
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
 }
-::-webkit-scrollbar-thumb {
-  background: rgba(55, 65, 81, 0.7); /* gray-700/70 */
-  border-radius: 2px;
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: linear-gradient(to bottom, rgba(251, 191, 36, 0.4), rgba(217, 119, 6, 0.4));
+  border-radius: 4px;
 }
-::-webkit-scrollbar-thumb:hover {
-   background: rgba(75, 85, 99, 0.9); /* gray-600/90 */
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(to bottom, rgba(251, 191, 36, 0.6), rgba(217, 119, 6, 0.6));
 }
 </style>

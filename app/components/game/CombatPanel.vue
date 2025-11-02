@@ -1,77 +1,111 @@
 <template>
-  <div v-if="playerStore.character?.inCombat && monster" class="p-3 md:p-4 space-y-4 border border-red-700/50 rounded-lg bg-gradient-to-b from-gray-900/50 via-black/30 to-gray-900/50 shadow-lg relative overflow-hidden">
-    <div class="absolute inset-0 bg-[url('/img/combat-bg.png')] bg-cover opacity-10 blur-sm pointer-events-none" />
+  <div v-if="playerStore.character?.inCombat && monster" class="p-3 md:p-4 space-y-4 border-2 border-red-600/60 rounded-xl bg-gradient-to-b from-red-950/40 via-gray-900/50 to-red-950/40 shadow-2xl relative overflow-hidden">
+    <!-- Animated background effects -->
+    <div class="absolute inset-0 bg-[url('/img/combat-bg.png')] bg-cover opacity-5 blur-sm pointer-events-none" />
+    <div class="absolute inset-0 bg-gradient-to-br from-red-900/20 via-transparent to-orange-900/20 animate-pulse pointer-events-none" style="animation-duration: 3s;"></div>
+    <div class="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-red-500/50 to-transparent"></div>
+    <div class="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-red-500/50 to-transparent"></div>
+    
+    <!-- Combat decorative corners -->
+    <div class="absolute top-2 left-2 w-6 h-6 border-t-2 border-l-2 border-red-500/50"></div>
+    <div class="absolute top-2 right-2 w-6 h-6 border-t-2 border-r-2 border-red-500/50"></div>
+    <div class="absolute bottom-2 left-2 w-6 h-6 border-b-2 border-l-2 border-red-500/50"></div>
+    <div class="absolute bottom-2 right-2 w-6 h-6 border-b-2 border-r-2 border-red-500/50"></div>
 
-    <h2 class="text-xl md:text-2xl text-red-400 font-bold text-center uppercase tracking-widest relative z-10 flex items-center justify-center gap-2 animate-softPulse">
-      <Icon name="lucide:swords" class="h-5 w-5 md:h-6 md:w-6" /> Giao Chiến <Icon name="lucide:swords" class="h-5 w-5 md:h-6 md:w-6" />
+    <h2 class="text-xl md:text-2xl text-transparent bg-clip-text bg-gradient-to-r from-red-400 via-orange-400 to-red-400 font-bold text-center uppercase tracking-widest relative z-10 flex items-center justify-center gap-3 animate-pulse drop-shadow-[0_0_10px_rgba(239,68,68,0.5)]">
+      <Icon name="lucide:swords" class="h-5 w-5 md:h-6 md:w-6 text-red-400 animate-pulse" /> Giao Chiến <Icon name="lucide:swords" class="h-5 w-5 md:h-6 md:w-6 text-red-400 animate-pulse" />
     </h2>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 relative z-10">
-      <div class="p-3 bg-gray-800/60 rounded border border-green-600/40 space-y-2 relative">
-        <div class="absolute top-1 right-1 px-1.5 py-0.5 bg-green-700/50 text-green-200 text-[10px] rounded font-semibold uppercase">
-          Bạn
+      <!-- Player Stats -->
+      <div class="p-4 bg-gradient-to-br from-cultivation-jade-900/40 via-gray-800/60 to-cultivation-jade-900/30 rounded-lg border-2 border-cultivation-jade-600/50 space-y-3 relative backdrop-blur-sm shadow-xl">
+        <div class="absolute -top-1 -right-1 px-2 py-1 bg-gradient-to-r from-cultivation-jade-600 to-cultivation-jade-700 text-white text-[10px] rounded-md font-bold uppercase shadow-lg border border-cultivation-jade-400/50">
+          <Icon name="lucide:user" class="h-2.5 w-2.5 inline mr-1" /> Bạn
         </div>
-        <p class="text-base md:text-lg text-green-300 font-semibold truncate" :title="playerStore.character.name">
-          {{ playerStore.character.name }}
-        </p>
-        <div class="w-full bg-green-900/70 rounded-full h-3 relative overflow-hidden border border-green-700/50">
-          <div class="absolute inset-0 flex items-center justify-between px-2 text-[9px] font-bold text-white/80 z-10">
+        <div class="flex items-center gap-2">
+          <div class="h-10 w-10 rounded-full bg-gradient-to-br from-cultivation-jade-500 to-cultivation-jade-700 flex items-center justify-center shadow-lg">
+            <Icon name="lucide:user" class="h-5 w-5 text-white" />
+          </div>
+          <div class="flex-1">
+            <p class="text-base md:text-lg text-cultivation-jade-200 font-bold truncate drop-shadow-lg" :title="playerStore.character.name">
+              {{ playerStore.character.name }}
+            </p>
+            <p class="text-xs text-cultivation-jade-400">Lv.{{ playerStore.character.level }}</p>
+          </div>
+        </div>
+        <div class="w-full bg-gradient-to-r from-red-950/80 to-red-900/80 rounded-lg h-4 relative overflow-hidden border-2 border-red-600/60 shadow-inner">
+          <div class="absolute inset-0 flex items-center justify-between px-2 text-[10px] font-bold text-white/90 z-10">
             <span>HP</span>
             <span>{{ playerStore.character.hp }} / {{ playerStore.character.hpMax }}</span>
           </div>
-          <div class="bg-gradient-to-r from-green-500 to-emerald-400 h-full rounded-full transition-all duration-300 ease-in-out shadow-inner" :style="{ width: `${playerHpPercent}%` }" />
+          <div class="bg-gradient-to-r from-red-500 via-red-600 to-orange-500 h-full transition-all duration-500 ease-in-out shadow-lg" :style="{ width: `${playerHpPercent}%` }" />
+          <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shimmer"></div>
         </div>
-        <div class="w-full bg-blue-900/70 rounded-full h-3 relative overflow-hidden border border-blue-700/50">
-          <div class="absolute inset-0 flex items-center justify-between px-2 text-[9px] font-bold text-white/80 z-10">
+        <div class="w-full bg-gradient-to-r from-cultivation-celestial-950/80 to-cultivation-celestial-900/80 rounded-lg h-4 relative overflow-hidden border-2 border-cultivation-celestial-600/60 shadow-inner">
+          <div class="absolute inset-0 flex items-center justify-between px-2 text-[10px] font-bold text-white/90 z-10">
             <span>Energy</span>
             <span>{{ playerStore.character.energy }} / {{ playerStore.character.energyMax }}</span>
           </div>
           <div
-            class="bg-gradient-to-r from-blue-500 to-sky-400 h-full rounded-full transition-all duration-300 ease-in-out shadow-inner"
+            class="bg-gradient-to-r from-cultivation-celestial-500 via-cultivation-celestial-600 to-sky-500 h-full transition-all duration-500 ease-in-out shadow-lg"
             :style="{ width: `${playerEnergyPercent}%` }"
           />
+          <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shimmer"></div>
         </div>
       </div>
 
-      <div class="p-3 bg-gray-800/60 rounded border border-red-600/40 space-y-2 relative">
-        <div class="absolute top-1 right-1 px-1.5 py-0.5 bg-red-700/50 text-red-200 text-[10px] rounded font-semibold uppercase">
-          Đối Thủ
+      <!-- Monster Stats -->
+      <div class="p-4 bg-gradient-to-br from-red-900/40 via-gray-800/60 to-orange-900/30 rounded-lg border-2 border-red-600/50 space-y-3 relative backdrop-blur-sm shadow-xl">
+        <div class="absolute -top-1 -right-1 px-2 py-1 bg-gradient-to-r from-red-600 to-orange-600 text-white text-[10px] rounded-md font-bold uppercase shadow-lg border border-red-400/50 animate-pulse">
+          <Icon name="lucide:skull" class="h-2.5 w-2.5 inline mr-1" /> Đối Thủ
         </div>
-        <p
-          class="text-base md:text-lg text-red-300 font-semibold truncate"
-          :title="monster.name"
-        >
-          {{ monster.name }}
-        </p>
-        <p class="text-xs text-gray-400 -mt-1">
-          Cấp {{ monster.level }}
-        </p>
-        <div class="w-full bg-red-900/70 rounded-full h-3 mt-1 relative overflow-hidden border border-red-700/50">
-          <div class="absolute inset-0 flex items-center justify-between px-2 text-[9px] font-bold text-white/80 z-10">
+        <div class="flex items-center gap-2">
+          <div class="h-10 w-10 rounded-full bg-gradient-to-br from-red-600 to-orange-700 flex items-center justify-center shadow-lg animate-pulse">
+            <Icon name="lucide:flame" class="h-5 w-5 text-white" />
+          </div>
+          <div class="flex-1">
+            <p
+              class="text-base md:text-lg text-red-200 font-bold truncate drop-shadow-lg"
+              :title="monster.name"
+            >
+              {{ monster.name }}
+            </p>
+            <p class="text-xs text-orange-400 font-semibold">
+              Cấp {{ monster.level }}
+            </p>
+          </div>
+        </div>
+        <div class="w-full bg-gradient-to-r from-red-950/80 to-red-900/80 rounded-lg h-4 relative overflow-hidden border-2 border-red-600/60 shadow-inner">
+          <div class="absolute inset-0 flex items-center justify-between px-2 text-[10px] font-bold text-white/90 z-10">
             <span>HP</span>
             <span>{{ monster.hp }} / {{ monster.maxHp }}</span>
           </div>
           <div
-            class="bg-gradient-to-r from-red-500 to-orange-400 h-full rounded-full transition-all duration-300 ease-in-out shadow-inner"
+            class="bg-gradient-to-r from-red-600 via-red-500 to-orange-500 h-full transition-all duration-500 ease-in-out shadow-lg"
             :style="{ width: `${monsterHpPercent}%` }"
           />
+          <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shimmer"></div>
         </div>
       </div>
     </div>
 
-    <div class="flex flex-col md:flex-row justify-center items-center gap-3 md:gap-4 pt-3 relative z-10 border-t border-gray-700/50">
+    <div class="flex flex-col md:flex-row justify-center items-center gap-3 md:gap-4 pt-4 relative z-10 border-t-2 border-cultivation-gold-700/30">
+      <!-- Decorative divider -->
+      <div class="absolute top-0 left-1/2 -translate-x-1/2 w-24 h-px bg-gradient-to-r from-transparent via-cultivation-gold-500/50 to-transparent"></div>
+      
       <button
-        class="w-full md:w-auto bg-gradient-to-b from-red-600 to-red-800 hover:from-red-500 hover:to-red-700 text-white px-6 py-3 rounded-lg font-bold border-2 border-red-500/80 shadow-lg disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center transform hover:scale-105 transition-all min-w-[140px] group"
+        class="w-full md:w-auto bg-gradient-to-br from-red-600 via-red-700 to-red-800 hover:from-red-500 hover:via-red-600 hover:to-red-700 text-white px-6 py-3 rounded-lg font-bold border-2 border-red-500/80 shadow-2xl disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center transform hover:scale-105 active:scale-95 transition-all min-w-[140px] group relative overflow-hidden uppercase tracking-wide"
         :disabled="isLoading"
         @click="performAttack"
       >
-        <UiLoadingSpinner v-if="isLoading" class="h-5 w-5 mr-2" />
-        <Icon v-else name="lucide:sword" class="h-5 w-5 mr-2 group-hover:animate-pulse" />
-        <span>Tấn Công</span>
+        <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent group-hover:animate-shimmer"></div>
+        <UiLoadingSpinner v-if="isLoading" class="h-5 w-5 mr-2 relative z-10" />
+        <Icon v-else name="lucide:sword" class="h-5 w-5 mr-2 group-hover:animate-pulse relative z-10" />
+        <span class="relative z-10">Tấn Công</span>
       </button>
 
       <button
-        class="w-full md:w-auto bg-gradient-to-b from-gray-600 to-gray-800 text-gray-400 px-6 py-3 rounded-lg font-bold border-2 border-gray-500/80 shadow-md opacity-60 cursor-not-allowed flex items-center justify-center min-w-[140px]"
+        class="w-full md:w-auto bg-gradient-to-br from-gray-700 via-gray-800 to-gray-900 text-gray-400 px-6 py-3 rounded-lg font-bold border-2 border-gray-600/80 shadow-lg opacity-60 cursor-not-allowed flex items-center justify-center min-w-[140px] uppercase tracking-wide"
         title="Tính năng đang phát triển"
       >
         <Icon name="lucide:sparkles" class="h-5 w-5 mr-2" />
@@ -79,11 +113,12 @@
       </button>
 
       <button
-        class="w-full md:w-auto bg-gradient-to-b from-yellow-600 to-yellow-800 hover:from-yellow-500 hover:to-yellow-700 text-white px-6 py-3 rounded-lg font-bold border-2 border-yellow-500/80 shadow-lg flex items-center justify-center transform hover:scale-105 transition-all min-w-[140px] group"
+        class="w-full md:w-auto bg-gradient-to-br from-cultivation-gold-600 via-cultivation-gold-700 to-yellow-800 hover:from-cultivation-gold-500 hover:via-cultivation-gold-600 hover:to-yellow-700 text-white px-6 py-3 rounded-lg font-bold border-2 border-cultivation-gold-500/80 shadow-2xl flex items-center justify-center transform hover:scale-105 active:scale-95 transition-all min-w-[140px] group relative overflow-hidden uppercase tracking-wide"
         title="Bỏ chạy khỏi trận đánh"
       >
-        <Icon name="lucide:shield-off" class="h-5 w-5 mr-2 group-hover:animate-bounce" />
-        <span>Bỏ Chạy</span>
+        <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent group-hover:animate-shimmer"></div>
+        <Icon name="lucide:shield-off" class="h-5 w-5 mr-2 group-hover:animate-bounce relative z-10" />
+        <span class="relative z-10">Bỏ Chạy</span>
       </button>
     </div>
   </div>

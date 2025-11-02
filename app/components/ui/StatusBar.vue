@@ -1,18 +1,22 @@
 <template>
   <div>
-    <div class="flex justify-between items-center text-xs mb-0.5" :class="labelColorClass">
-      <span class="font-semibold flex items-center">
-        <Icon v-if="icon" :name="icon" class="mr-1 h-3.5 w-3.5" /> {{ label }}
+    <div class="flex justify-between items-center text-xs mb-1" :class="labelColorClass">
+      <span class="font-bold flex items-center gap-1.5 uppercase tracking-wider">
+        <Icon v-if="icon" :name="icon" class="h-4 w-4" /> {{ label }}
       </span>
-      <span class="font-mono">{{ displayCurrent }} / {{ displayMax }}</span>
+      <span class="font-mono font-semibold">{{ displayCurrent }} / {{ displayMax }}</span>
     </div>
-    <div class="w-full bg-gray-800/60 rounded h-2.5 relative overflow-hidden border border-gray-700/50 shadow-inner">
+    <div class="w-full bg-gradient-to-r from-gray-900/80 via-gray-800/80 to-gray-900/80 rounded-lg h-3 relative overflow-hidden border-2 border-gray-700/50 shadow-inner">
       <div
-        class="h-full rounded transition-all duration-300 ease-in-out"
+        class="h-full transition-all duration-500 ease-out relative"
         :class="colorClass"
         :style="{ width: percent + '%' }"
-      />
-      <div class="absolute inset-0 bg-repeat bg-[length:100%_4px] opacity-10" style="background-image: linear-gradient(to bottom, rgba(0, 255, 255, 0.2) 1px, transparent 1px);" />
+      >
+        <!-- Shimmer effect on bar -->
+        <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-shimmer"></div>
+      </div>
+      <!-- Inner glow effect -->
+      <div class="absolute inset-0 bg-gradient-to-b from-white/10 to-transparent pointer-events-none"></div>
     </div>
   </div>
 </template>

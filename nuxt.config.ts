@@ -19,6 +19,23 @@ export default defineNuxtConfig({
 
   css: ['~/assets/css/tailwind.css'],
 
+  app: {
+    head: {
+      title: 'Tinh Không Đạo Lộ - Cultivation Game',
+      meta: [
+        { charset: 'utf-8' },
+        { name: 'viewport', content: 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' },
+        { name: 'description', content: 'Hành trình tu luyện trong thế giới hậu tận thế' },
+        { name: 'theme-color', content: '#0f0f0f' },
+        { name: 'apple-mobile-web-app-capable', content: 'yes' },
+        { name: 'apple-mobile-web-app-status-bar-style', content: 'black-translucent' }
+      ],
+      link: [
+        { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+      ]
+    }
+  },
+
   compatibilityDate: '2025-01-15',
   vite: {
     plugins: [tailwindcss()]
