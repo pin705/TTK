@@ -48,6 +48,21 @@ export interface ICharacter {
     stageId: string
     isCultivating: boolean
   }
+  // Evolution System (Gene-based progression)
+  evolution?: {
+    geneEnergy: number // Replaces cultivationExp
+    rank: string // e.g., 'apprentice_1', 'soldier_low'
+    rankLevel: number // 1-9 for Apprentice, then Low/Mid/High for others
+    modules: { // Body augmentation modules
+      cultivation?: string | null // Cultivation Chip ID
+      combat?: string | null // Combat Module ID
+      survival?: string | null // Survival Module ID
+    }
+    geneIntegrity: number // 0-100, reduced by failed breakthroughs
+  }
+  resources?: {
+    energyCrystals: number // Main currency and cultivation resource
+  }
   stats: {
     attack: number
     defense: number
@@ -135,6 +150,21 @@ export const Character = defineMongooseModel<ICharacter>('Character', {
     comprehension: { type: Number, default: 10 },
     stageId: { type: String, default: 'apprentice_low' },
     isCultivating: { type: Boolean, default: false }
+  },
+  evolution: {
+    geneEnergy: { type: Number, default: 0 },
+    rank: { type: String, default: 'apprentice_1' },
+    rankLevel: { type: Number, default: 1 },
+    modules: {
+      _id: false,
+      cultivation: { type: String, default: null },
+      combat: { type: String, default: null },
+      survival: { type: String, default: null }
+    },
+    geneIntegrity: { type: Number, default: 100, min: 0, max: 100 }
+  },
+  resources: {
+    energyCrystals: { type: Number, default: 0 }
   },
   stats: {
     attack: { type: Number, default: 10 },

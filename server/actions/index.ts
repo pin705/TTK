@@ -20,4 +20,8 @@ export const actions: Record<string, unknown> = {
   'quest/claim': quest.claim,
   'quest/accept': quest.accept,
   'character/cultivationTick': character.cultivationTick,
+  // Evolution system actions
+  'character/absorbEnergy': character.absorbEnergy,
+  'character/geneBreakthrough': character.geneBreakthrough,
+  'character/equipModule': character.equipModule,
 }

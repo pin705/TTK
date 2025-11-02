@@ -16,11 +16,23 @@ async function handleVictory(character: any, monsterData: any, monsterTemplate: 
   const levelUpLogs = checkAndApplyLevelUp(character)
   logs.push(...levelUpLogs) // Thêm log lên cấp (nếu có)
 
+  // Initialize resources if not exists
+  if (!character.resources) {
+    character.resources = { energyCrystals: 0 }
+  }
+
   monsterTemplate.drops.forEach((drop: any) => {
     if (Math.random() < drop.chance) {
       const quantity = Math.floor(Math.random() * (drop.quantity[1] - drop.quantity[0] + 1)) + drop.quantity[0]
-      addItemToInventory(character, drop.itemId, quantity)
-      logs.push({ message: `Bạn nhận được [${drop.itemId}] x${quantity}.`, type: 'reward' })
+      
+      // Special handling for energy crystals
+      if (drop.itemId === 'energy_crystal') {
+        character.resources.energyCrystals += quantity
+        logs.push({ message: `Bạn nhận được ${quantity} Tinh Thể Năng Lượng.`, type: 'reward' })
+      } else {
+        addItemToInventory(character, drop.itemId, quantity)
+        logs.push({ message: `Bạn nhận được [${drop.itemId}] x${quantity}.`, type: 'reward' })
+      }
     }
   })
 
@@ -35,8 +47,22 @@ function handleDefeat(character: ICharacter, monsterData: unknown) {
   character.hp = Math.max(1, Math.floor(character.hpMax * 0.05)) // Hồi sinh với 5% HP (tối thiểu 1)
   character.cultivation.stateOfMind = Math.max(0.1, character.cultivation.stateOfMind - 0.3) // Giảm mạnh tâm cảnh
 
-  // Đưa về khu vực hồi sinh mặc định
-  const respawnZoneId = 'giang_nam_khu_dan_cu_01' // Lấy từ config sau này
+  // Get death penalty from current zone
+  const currentZone = ZoneManager.getZone(character.currentZoneId as any)
+  let crystalLossMessage = ''
+  if (currentZone && (currentZone as any).deathPenalty?.energyCrystalLoss) {
+    const lossPercent = (currentZone as any).deathPenalty.energyCrystalLoss
+    if (character.resources?.energyCrystals) {
+      const crystalsLost = Math.floor(character.resources.energyCrystals * lossPercent)
+      if (crystalsLost > 0) {
+        character.resources.energyCrystals -= crystalsLost
+        crystalLossMessage = ` Bạn đã mất ${crystalsLost} Tinh Thể Năng Lượng (${Math.floor(lossPercent * 100)}%).`
+      }
+    }
+  }
+
+  // Đưa về khu vực hồi sinh
+  const respawnZoneId = (currentZone as any)?.respawnLocation || 'giang_nam_khu_dan_cu_01'
   character.currentZoneId = respawnZoneId
 
   // Áp dụng Debuff "Trọng Thương"
@@ -50,7 +76,7 @@ function handleDefeat(character: ICharacter, monsterData: unknown) {
   })
   // Xóa các buff có lợi khác nếu cần
 
-  return { message: `Bạn đã bị [${monsterData.name}] đánh bại! Bị đưa về ${ZoneManager.getZone(respawnZoneId)?.name}. Trạng thái Trọng Thương trong ${woundDurationSeconds} giây.`, type: 'defeat' }
+  return { message: `Bạn đã bị [${monsterData.name}] đánh bại! Bị đưa về ${ZoneManager.getZone(respawnZoneId)?.name}.${crystalLossMessage} Trạng thái Trọng Thương trong ${woundDurationSeconds} giây.`, type: 'defeat' }
 }
 
 // --- Action Attack chính ---

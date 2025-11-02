@@ -17,6 +17,24 @@ export const move: ActionHandler = async ({ character, payload }) => {
   const newZoneData = ZoneManager.getZone(newZoneId)
   if (!newZoneData) throw new Error(`Khu vực đích '${newZoneId}' không tồn tại.`)
 
+  // Check energy cost for movement
+  const energyCost = (newZoneData as any).energyCostPerMove || 0
+  if (energyCost > 0) {
+    // Calculate actual cost with module reduction if equipped
+    let actualCost = energyCost
+    if (character.evolution?.modules?.survival) {
+      // TODO: Get module stats from items config
+      // For now assume 20% reduction
+      actualCost = Math.floor(energyCost * 0.8)
+    }
+
+    if (character.energy < actualCost) {
+      throw new Error(`Không đủ năng lượng để di chuyển. Cần ${actualCost}, có ${character.energy}.`)
+    }
+
+    character.energy -= actualCost
+  }
+
   character.currentZoneId = newZoneId
   await MonsterEngine.spawnMonstersForZone(newZoneId) // Sinh quái
 
