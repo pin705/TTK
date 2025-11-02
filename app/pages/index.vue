@@ -1,47 +1,118 @@
 <template>
-  <div>
-    <h1 class="text-3xl font-bold text-center text-green-400 animate-pulse">
-      TINH KHÔNG ĐẠO LỘ
-    </h1>
+  <div class="space-y-6">
+    <!-- Title with animated effect -->
+    <div class="text-center space-y-2">
+      <h1 class="text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-green-400 to-blue-400 animate-pulse uppercase tracking-wider">
+        Tinh Không Đạo Lộ
+      </h1>
+      <p class="text-sm text-gray-400">
+        {{ mode === 'login' ? 'Hành trình tiến hóa trong thế giới hậu tận thế' : 'Bắt đầu cuộc phiêu lưu của bạn' }}
+      </p>
+    </div>
 
-    <form v-if="mode === 'login'" class="mt-8 space-y-6" @submit.prevent="handleLogin">
-      <div>
-        <label for="email" class="text-sm font-medium text-gray-300">Email</label>
-        <input id="email" v-model="form.email" type="email" required class="mt-1 block w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-green-500 focus:border-green-500">
+    <!-- Login Form -->
+    <form v-if="mode === 'login'" class="space-y-5" @submit.prevent="handleLogin">
+      <div class="space-y-2">
+        <label for="email" class="text-sm font-medium text-gray-300 flex items-center gap-2">
+          <Icon name="lucide:mail" class="h-4 w-4 text-cyan-500" />
+          Email
+        </label>
+        <input 
+          id="email" 
+          v-model="form.email" 
+          type="email" 
+          required 
+          autocomplete="email"
+          placeholder="example@email.com"
+          class="w-full px-4 py-3 bg-gray-800/80 border border-gray-600 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all"
+        >
       </div>
-      <div>
-        <label for="password" class="text-sm font-medium text-gray-300">Mật khẩu</label>
-        <input id="password" v-model="form.password" type="password" required class="mt-1 block w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-green-500 focus:border-green-500">
+      <div class="space-y-2">
+        <label for="password" class="text-sm font-medium text-gray-300 flex items-center gap-2">
+          <Icon name="lucide:lock" class="h-4 w-4 text-cyan-500" />
+          Mật khẩu
+        </label>
+        <input 
+          id="password" 
+          v-model="form.password" 
+          type="password" 
+          required 
+          autocomplete="current-password"
+          placeholder="••••••••"
+          class="w-full px-4 py-3 bg-gray-800/80 border border-gray-600 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all"
+        >
       </div>
-      <button type="submit" :disabled="isLoading" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-black bg-green-500 hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-50">
-        <UiLoadingSpinner v-if="isLoading" />
-        <span v-else>Đăng Nhập</span>
+      <button 
+        type="submit" 
+        :disabled="isLoading" 
+        class="w-full flex justify-center items-center gap-2 py-3 px-4 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 border-2 border-cyan-500 rounded-lg text-white font-bold transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg"
+      >
+        <UiLoadingSpinner v-if="isLoading" class="h-5 w-5" />
+        <Icon v-else name="lucide:log-in" class="h-5 w-5" />
+        <span>{{ isLoading ? 'Đang Đăng Nhập...' : 'Đăng Nhập' }}</span>
       </button>
     </form>
 
-    <form v-if="mode === 'register'" class="mt-8 space-y-6" @submit.prevent="handleRegister">
-      <div>
-        <label for="email-reg" class="text-sm font-medium text-gray-300">Email</label>
-        <input id="email-reg" v-model="form.email" type="email" required class="mt-1 block w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-green-500 focus:border-green-500">
+    <!-- Register Form -->
+    <form v-if="mode === 'register'" class="space-y-5" @submit.prevent="handleRegister">
+      <div class="space-y-2">
+        <label for="email-reg" class="text-sm font-medium text-gray-300 flex items-center gap-2">
+          <Icon name="lucide:mail" class="h-4 w-4 text-cyan-500" />
+          Email
+        </label>
+        <input 
+          id="email-reg" 
+          v-model="form.email" 
+          type="email" 
+          required 
+          autocomplete="email"
+          placeholder="example@email.com"
+          class="w-full px-4 py-3 bg-gray-800/80 border border-gray-600 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all"
+        >
       </div>
-      <div>
-        <label for="password-reg" class="text-sm font-medium text-gray-300">Mật khẩu</label>
-        <input id="password-reg" v-model="form.password" type="password" required class="mt-1 block w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-green-500 focus:border-green-500">
+      <div class="space-y-2">
+        <label for="password-reg" class="text-sm font-medium text-gray-300 flex items-center gap-2">
+          <Icon name="lucide:lock" class="h-4 w-4 text-cyan-500" />
+          Mật khẩu
+        </label>
+        <input 
+          id="password-reg" 
+          v-model="form.password" 
+          type="password" 
+          required 
+          autocomplete="new-password"
+          placeholder="••••••••"
+          class="w-full px-4 py-3 bg-gray-800/80 border border-gray-600 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all"
+        >
+        <p class="text-xs text-gray-500">Mật khẩu phải có ít nhất 6 ký tự</p>
       </div>
-      <button type="submit" :disabled="isLoading" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-black bg-green-500 hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-50">
-        <UiLoadingSpinner v-if="isLoading" />
-        <span v-else>Đăng Ký</span>
+      <button 
+        type="submit" 
+        :disabled="isLoading" 
+        class="w-full flex justify-center items-center gap-2 py-3 px-4 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-500 hover:to-emerald-500 border-2 border-green-500 rounded-lg text-white font-bold transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg"
+      >
+        <UiLoadingSpinner v-if="isLoading" class="h-5 w-5" />
+        <Icon v-else name="lucide:user-plus" class="h-5 w-5" />
+        <span>{{ isLoading ? 'Đang Đăng Ký...' : 'Đăng Ký Ngay' }}</span>
       </button>
     </form>
 
-    <div class="mt-6 text-center">
-      <a href="#" class="text-sm text-purple-400 hover:underline" @click.prevent="toggleMode">
+    <!-- Toggle Mode -->
+    <div class="text-center pt-4 border-t border-gray-700">
+      <a 
+        href="#" 
+        class="text-sm text-cyan-400 hover:text-cyan-300 transition-colors inline-flex items-center gap-1" 
+        @click.prevent="toggleMode"
+      >
+        <Icon name="lucide:repeat" class="h-4 w-4" />
         {{ mode === 'login' ? 'Chưa có tài khoản? Đăng ký ngay' : 'Đã có tài khoản? Đăng nhập' }}
       </a>
     </div>
 
-    <div v-if="errorMsg" class="mt-4 text-center text-red-500">
-      {{ errorMsg }}
+    <!-- Error Message -->
+    <div v-if="errorMsg" class="p-4 bg-red-900/30 border border-red-700/50 rounded-lg text-red-400 text-sm flex items-start gap-2">
+      <Icon name="lucide:alert-circle" class="h-5 w-5 flex-shrink-0 mt-0.5" />
+      <span>{{ errorMsg }}</span>
     </div>
   </div>
 </template>
