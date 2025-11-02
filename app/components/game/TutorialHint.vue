@@ -64,7 +64,7 @@ const hints = computed(() => {
     return []
   }
 
-  const tutorialQuest = character.activeQuests.find(q => 
+  const tutorialQuest = character.activeQuests.find((q: any) => 
     q.questId.startsWith('tutorial_')
   )
 
@@ -103,13 +103,13 @@ const currentQuestObjective = computed(() => {
   const character = playerStore.character
   if (!character?.activeQuests) return null
 
-  const tutorialQuest = character.activeQuests.find(q => 
+  const tutorialQuest = character.activeQuests.find((q: any) => 
     q.questId.startsWith('tutorial_')
   )
   if (!tutorialQuest || !tutorialQuest.objectives || tutorialQuest.objectives.length === 0) return null
 
   // Find first incomplete objective
-  const incompleteObj = tutorialQuest.objectives.find(obj => obj.current < obj.count)
+  const incompleteObj = tutorialQuest.objectives.find((obj: any) => obj.current < obj.count)
   if (!incompleteObj) return null
 
   return `${incompleteObj.type === 'kill' ? 'Hạ gục' : incompleteObj.type === 'gather' ? 'Thu thập' : incompleteObj.type === 'talk' ? 'Nói chuyện với' : 'Khám phá'} ${incompleteObj.target} (${incompleteObj.current}/${incompleteObj.count})`

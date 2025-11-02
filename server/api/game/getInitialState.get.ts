@@ -11,7 +11,7 @@ export default defineEventHandler(async (event) => {
   if (!character)
     throw createError({ statusCode: 404, statusMessage: 'Character not found' })
 
-  const currentZoneData = ZoneManager.getZone(character.currentZoneId)
+  const currentZoneData = ZoneManager.getZone(character.currentZoneId as any)
   if (!currentZoneData)
     throw createError({ statusCode: 404, statusMessage: `Khu vực '${character.currentZoneId}' không tồn tại.` })
 
