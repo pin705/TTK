@@ -446,6 +446,96 @@ export const items = {
     stats: { critChance: 0.1, dodgeChance: 0.08, speed: 5 },
     requirements: { level: 15, race: 'voidwalker' }
   },
+
+  // === LEGENDARY EQUIPMENT - ULTRA RARE DROPS ===
+  // These items have extremely low drop rates (0.1-1%) but incredible stats
+  
+  dragon_slayer_blade: {
+    name: 'Kiếm Đồ Long', type: 'weapon', rarity: 'legendary',
+    description: 'Vũ khí huyền thoại được rèn từ xương Rồng Thời Cổ. Chỉ rơi từ Boss cấp cao với tỉ lệ 0.5%.',
+    stats: { attack: 60, critChance: 0.15, critDamage: 0.5, spirit: 20 },
+    requirements: { level: 40 }
+  },
+
+  void_emperor_armor: {
+    name: 'Giáp Hư Không Đế Vương', type: 'armor', rarity: 'legendary',
+    description: 'Giáp tối thượng từ thời Đại Niết Bàn. Tỉ lệ rơi cực kỳ thấp (0.3%).',
+    stats: { defense: 50, hpMax: 500, resistance: 20, dodgeChance: 0.1 },
+    requirements: { level: 40 }
+  },
+
+  celestial_ring: {
+    name: 'Nhẫn Thiên Giới', type: 'accessory', rarity: 'legendary',
+    description: 'Nhẫn mang sức mạnh của các vì sao. Rơi từ Boss Bí Cảnh với tỉ lệ 0.8%.',
+    stats: { attack: 25, spirit: 30, energyMax: 200, critChance: 0.12 },
+    requirements: { level: 35 }
+  },
+
+  phoenix_feather_necklace: {
+    name: 'Vòng Cổ Lông Phượng', type: 'accessory', rarity: 'legendary',
+    description: 'Vật phẩm thần thoại, tự hồi sinh người đeo 1 lần/ngày. Cực kỳ hiếm (0.2%).',
+    stats: { hpMax: 400, defense: 20, resistance: 15 },
+    requirements: { level: 42 }
+  },
+
+  // EPIC TIER - RARE DROPS (1-3% drop rate)
+  
+  tiger_king_fang_blade: {
+    name: 'Kiếm Nanh Hổ Vương', type: 'weapon', rarity: 'epic',
+    description: 'Được rèn từ nanh Giáp Sắt Mãnh Hổ. Tỉ lệ rơi 2%.',
+    stats: { attack: 45, critChance: 0.12, speed: 8 },
+    requirements: { level: 30 }
+  },
+
+  shadow_assassin_dagger: {
+    name: 'Dao Ám Sát Bóng Đêm', type: 'weapon', rarity: 'epic',
+    description: 'Dao ám sát tốc độ cao. Rơi từ Boss bí ẩn với tỉ lệ 3%.',
+    stats: { attack: 40, critChance: 0.18, dodgeChance: 0.08, speed: 12 },
+    requirements: { level: 28 }
+  },
+
+  ancient_guardian_shield: {
+    name: 'Khiên Vệ Binh Cổ Đại', type: 'armor', rarity: 'epic',
+    description: 'Khiên của Vệ Binh Cổ Đại, phòng thủ tuyệt đối. Tỉ lệ rơi 1.5%.',
+    stats: { defense: 42, hpMax: 300, resistance: 15 },
+    requirements: { level: 35 }
+  },
+
+  thunder_god_gauntlet: {
+    name: 'Găng Tay Lôi Thần', type: 'accessory', rarity: 'epic',
+    description: 'Găng tay chứa sức mạnh sét. Boss Rừng Thép rơi với tỉ lệ 2%.',
+    stats: { attack: 22, speed: 10, critDamage: 0.25 },
+    requirements: { level: 26 }
+  },
+
+  beast_king_crown: {
+    name: 'Vương Miện Thú Vương', type: 'accessory', rarity: 'epic',
+    description: 'Biểu tượng của chúa tể mọi loài thú. Rơi từ Boss Thú Vương cấp với tỉ lệ 1%.',
+    stats: { attack: 18, defense: 18, hpMax: 200, critChance: 0.08 },
+    requirements: { level: 32 }
+  },
+
+  // Grinding/Farming Items - Boost drops and exp
+  
+  fortune_talisman: {
+    name: 'Bùa May Mắn', type: 'accessory', rarity: 'rare',
+    description: 'Tăng 20% tỉ lệ rơi vật phẩm quý hiếm. Phù hợp cho cày cuốc.',
+    stats: { dropRateBonus: 0.2 },
+    requirements: { level: 10 }
+  },
+
+  exp_boost_pill: {
+    name: 'Hoàn Tăng Kinh Nghiệm', type: 'consumable', rarity: 'uncommon',
+    description: 'Tăng 50% EXP nhận được trong 1 giờ. Lý tưởng cho grinding.',
+    effect: { type: 'exp_boost', power: 0.5, duration: 3600 }
+  },
+
+  treasure_hunter_compass: {
+    name: 'La Bàn Thợ Săn Kho Báu', type: 'accessory', rarity: 'uncommon',
+    description: 'Tăng 15% tỉ lệ tìm thấy vật phẩm hiếm khi khám phá.',
+    stats: { treasureFindBonus: 0.15 },
+    requirements: { level: 8 }
+  },
 } as const
 
 export type ItemId = keyof typeof items;

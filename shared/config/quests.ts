@@ -52,13 +52,65 @@ export interface QuestTemplate {
 
 // === DANH SÁCH NHIỆM VỤ ===
 export const quests = {
-  // Nhiệm vụ đầu tiên
+  // === TUTORIAL QUESTS (Auto-triggered) ===
+  tutorial_welcome: {
+    title: '[Hướng Dẫn] Chào Mừng Đến Với Tinh Không Đạo Lộ',
+    description: 'Bạn mới tỉnh dậy trong một thế giới hậu tận thế đầy nguy hiểm. Hãy làm quen với môi trường xung quanh và tìm hiểu cách sinh tồn.',
+    type: 'main',
+    requiredLevel: 1,
+    objectives: [
+      { type: 'explore', zoneId: 'giang_nam_vo_quan_01', description: 'Khám phá Võ Quán Cực Hạn' },
+      { type: 'talk', npcId: 'vo_su_truong', description: 'Gặp Võ Sư Trương để nhận hướng dẫn' }
+    ],
+    rewards: {
+      exp: 50,
+      items: [{ itemId: 'energy_crystal', quantity: 10 }]
+    }
+  },
+  tutorial_first_combat: {
+    title: '[Hướng Dẫn] Chiến Đấu Đầu Tiên',
+    description: 'Võ Sư Trương muốn kiểm tra khả năng chiến đấu của bạn. Hãy ra ngoài Hoang Dã và hạ gục một con quái thú.',
+    type: 'main',
+    npcId: 'vo_su_truong',
+    requiredLevel: 1,
+    objectives: [
+      { type: 'explore', zoneId: 'hoang_da_0201', description: 'Đến Hoang Dã Khu 0201' },
+      { type: 'kill', monsterId: 'bloodfang_boar', count: 1, description: 'Hạ gục 1 Lợn Rừng Nanh Máu' },
+      { type: 'talk', npcId: 'vo_su_truong', description: 'Báo cáo với Võ Sư Trương' }
+    ],
+    rewards: {
+      exp: 100,
+      items: [
+        { itemId: 'standard_combat_knife', quantity: 1 },
+        { itemId: 'energy_crystal', quantity: 20 }
+      ],
+      reputation: 5
+    }
+  },
+  tutorial_gather_resources: {
+    title: '[Hướng Dẫn] Thu Thập Tài Nguyên',
+    description: 'Sau khi chiến đấu, bạn cần học cách thu thập tài nguyên từ quái thú. Những tài nguyên này rất có giá trị.',
+    type: 'main',
+    npcId: 'vo_su_truong',
+    requiredLevel: 1,
+    objectives: [
+      { type: 'gather', itemId: 'monster_hide_low', count: 3, description: 'Thu thập 3 Da Thú (Hạ Cấp)' },
+      { type: 'talk', npcId: 'vo_su_truong', description: 'Báo cáo với Võ Sư Trương' }
+    ],
+    rewards: {
+      exp: 120,
+      items: [{ itemId: 'energy_crystal', quantity: 30 }],
+      reputation: 5
+    }
+  },
+  
+  // Nhiệm vụ đầu tiên (sau tutorial)
   first_hunt: {
     title: 'Chuyến Đi Săn Đầu Tiên',
     description: 'Võ Sư Trương ở Võ Quán muốn kiểm tra thực lực của võ giả mới. Hãy chứng minh khả năng sinh tồn của bạn ở khu hoang dã.',
     type: 'side',
     npcId: 'vo_su_truong',
-    requiredLevel: 1,
+    requiredLevel: 2,
     objectives: [
       { type: 'kill', monsterId: 'bloodfang_boar', count: 3, description: 'Hạ gục Lợn Rừng Nanh Máu' },
       { type: 'gather', itemId: 'monster_hide_low', count: 2, description: 'Thu thập Da Thú (Hạ Cấp)' },
@@ -278,6 +330,121 @@ export const quests = {
     rewards: {
       exp: 250,
       items: [{ itemId: 'energy_crystal', quantity: 15 }]
+    },
+    isRepeatable: true
+  },
+
+  // === GRINDING/FARMING QUESTS ===
+  
+  daily_boss_hunt: {
+    title: '[Hằng Ngày] Săn Boss',
+    description: 'Nhiệm vụ hàng ngày: Tiêu diệt Boss cấp để nhận thưởng lớn.',
+    type: 'daily',
+    npcId: 'vo_su_truong',
+    requiredLevel: 12,
+    objectives: [
+      { type: 'kill', monsterId: 'armored_tiger', count: 1, description: 'Tiêu diệt 1 Boss bất kỳ' }
+    ],
+    rewards: {
+      exp: 500,
+      items: [
+        { itemId: 'energy_crystal', quantity: 50 },
+        { itemId: 'enhancement_stone_basic', quantity: 3 }
+      ]
+    },
+    isRepeatable: true
+  },
+
+  daily_elite_hunt: {
+    title: '[Hằng Ngày] Săn Quái Tinh Anh',
+    description: 'Nhiệm vụ hàng ngày: Tiêu diệt quái thú cấp Tướng để luyện kỹ năng.',
+    type: 'daily',
+    npcId: 'vo_su_truong',
+    requiredLevel: 7,
+    objectives: [
+      { type: 'kill', monsterId: 'iron_fist_ape', count: 5, description: 'Tiêu diệt 5 Thú Tướng cấp' }
+    ],
+    rewards: {
+      exp: 400,
+      items: [
+        { itemId: 'energy_crystal', quantity: 30 },
+        { itemId: 'cosmic_herb_low', quantity: 2 }
+      ]
+    },
+    isRepeatable: true
+  },
+
+  daily_rare_material: {
+    title: '[Hằng Ngày] Thu Thập Nguyên Liệu Quý',
+    description: 'Nhiệm vụ hàng ngày: Thu thập nguyên liệu quý hiếm để chế tạo.',
+    type: 'daily',
+    npcId: 'thuong_nhan_vat_lieu',
+    requiredLevel: 15,
+    objectives: [
+      { type: 'gather', itemId: 'monster_tendon_mid', count: 10, description: 'Thu thập 10 Gân Thú Trung Cấp' }
+    ],
+    rewards: {
+      exp: 350,
+      items: [
+        { itemId: 'energy_crystal', quantity: 25 },
+        { itemId: 'alloy_ore', quantity: 5 }
+      ]
+    },
+    isRepeatable: true
+  },
+
+  weekly_boss_raid: {
+    title: '[Hàng Tuần] Đột Kích Boss Hang Động',
+    description: 'Nhiệm vụ hàng tuần: Tiêu diệt Boss khó trong Bí Cảnh để nhận phần thưởng khủng.',
+    type: 'daily', // Use daily type but can be marked as weekly
+    npcId: 'tinh_bao_vien',
+    requiredLevel: 18,
+    objectives: [
+      { type: 'kill', monsterId: 'poison_spider_queen', count: 1, description: 'Tiêu diệt Nữ Vương Nhện Độc' }
+    ],
+    rewards: {
+      exp: 1000,
+      items: [
+        { itemId: 'energy_crystal', quantity: 100 },
+        { itemId: 'gene_solution_basic', quantity: 1 },
+        { itemId: 'enhancement_stone_advanced', quantity: 5 },
+        { itemId: 'fortune_talisman', quantity: 1 }
+      ]
+    },
+    isRepeatable: true
+  },
+
+  grinding_energy_farm: {
+    title: '[Lặp Lại] Cày Tinh Thể Năng Lượng',
+    description: 'Nhiệm vụ có thể lặp lại: Cày cuốc để thu thập nhiều Tinh Thể Năng Lượng.',
+    type: 'side',
+    npcId: 'thuong_nhan_vat_lieu',
+    requiredLevel: 5,
+    objectives: [
+      { type: 'kill', monsterId: 'bloodfang_boar', count: 20, description: 'Hạ 20 Lợn Rừng để cày Tinh Thể' }
+    ],
+    rewards: {
+      exp: 200,
+      items: [{ itemId: 'energy_crystal', quantity: 40 }]
+    },
+    isRepeatable: true
+  },
+
+  grinding_equipment_farm: {
+    title: '[Lặp Lại] Cày Trang Bị',
+    description: 'Nhiệm vụ có thể lặp lại: Săn Boss để cày trang bị quý hiếm.',
+    type: 'side',
+    npcId: 'vo_su_truong',
+    requiredLevel: 22,
+    objectives: [
+      { type: 'kill', monsterId: 'stone_golem_king', count: 1, description: 'Hạ Vua Golem Đá để cày trang bị' }
+    ],
+    rewards: {
+      exp: 800,
+      items: [
+        { itemId: 'energy_crystal', quantity: 60 },
+        { itemId: 'exp_boost_pill', quantity: 1 }
+      ]
     },
     isRepeatable: true
   },

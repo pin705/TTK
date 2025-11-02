@@ -45,7 +45,17 @@ export default defineEventHandler(async (event) => {
       critDamage: raceConfig.racialBonuses.critDamage ? 1.5 + raceConfig.racialBonuses.critDamage : 1.5,
       dodgeChance: raceConfig.racialBonuses.dodgeChance || 0.05,
       resistance: raceConfig.racialBonuses.resistance || 0
-    }
+    },
+    // Auto-assign the welcome tutorial quest
+    activeQuests: [{
+      questId: 'tutorial_welcome',
+      status: 'active',
+      startedAt: new Date(),
+      objectives: [
+        { type: 'explore', target: 'giang_nam_vo_quan_01', count: 1, current: 0 },
+        { type: 'talk', target: 'vo_su_truong', count: 1, current: 0 }
+      ]
+    }]
   })
 
   await replaceUserSession(event, {
