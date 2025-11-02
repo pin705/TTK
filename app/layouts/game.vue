@@ -47,6 +47,9 @@
     <!-- Settings Modal -->
     <GameSettingsModal :is-open="showSettings" @close="showSettings = false" />
 
+    <!-- Tutorial Hint Component -->
+    <GameTutorialHint />
+
     <!-- Main Game Area -->
     <div class="flex-grow overflow-hidden">
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 h-full p-4 overflow-hidden md:p-6 lg:p-8">

@@ -28,8 +28,15 @@ if (error.value) {
 } else if (data.value) {
   playerStore.setCharacter(data.value.character)
   mapStore.setCurrentZone(data.value.currentZone)
-  addLog('Chào mừng đến với Tinh Không Đạo Lộ.', 'info') // Đổi type
+  addLog('Chào mừng đến với Tinh Không Đạo Lộ.', 'info')
   await fetchInitialLogs()
+  
+  // Display tutorial hints if available
+  if (data.value.tutorialHints && data.value.tutorialHints.length > 0) {
+    for (const hint of data.value.tutorialHints) {
+      addLog(hint, 'info')
+    }
+  }
 }
 
 // === LOGIC HỒI PHỤC TỰ NHIÊN ===

@@ -101,7 +101,10 @@ export const monsters = {
       { itemId: 'life_essence_low', chance: 0.2, quantity: [1, 2] },
       { itemId: 'energy_crystal', chance: 1.0, quantity: [15, 25] },
       { itemId: 'cosmic_herb_mid', chance: 0.2, quantity: [1, 2] },
-      { itemId: 'gene_solution_basic', chance: 0.05, quantity: [1, 1] }
+      { itemId: 'gene_solution_basic', chance: 0.05, quantity: [1, 1] },
+      // Epic equipment drops
+      { itemId: 'tiger_king_fang_blade', chance: 0.02, quantity: [1, 1] },
+      { itemId: 'beast_king_crown', chance: 0.01, quantity: [1, 1] }
     ],
     stats: {
       hp: 1500,
@@ -234,7 +237,11 @@ export const monsters = {
       { itemId: 'venom_sac', chance: 1.0, quantity: [5, 8] },
       { itemId: 'energy_crystal', chance: 1.0, quantity: [20, 30] },
       { itemId: 'cosmic_herb_mid', chance: 0.3, quantity: [2, 3] },
-      { itemId: 'gene_solution_basic', chance: 0.08, quantity: [1, 1] }
+      { itemId: 'gene_solution_basic', chance: 0.08, quantity: [1, 1] },
+      // Rare equipment drops
+      { itemId: 'venom_blade', chance: 0.03, quantity: [1, 1] },
+      { itemId: 'spider_silk_armor', chance: 0.025, quantity: [1, 1] },
+      { itemId: 'venom_ring', chance: 0.02, quantity: [1, 1] }
     ],
     stats: {
       hp: 2000,
@@ -273,7 +280,11 @@ export const monsters = {
       { itemId: 'ancient_stone', chance: 1.0, quantity: [3, 6] },
       { itemId: 'kele_metal_fragment', chance: 0.2, quantity: [1, 2] },
       { itemId: 'energy_crystal', chance: 1.0, quantity: [25, 35] },
-      { itemId: 'gene_solution_basic', chance: 0.1, quantity: [1, 2] }
+      { itemId: 'gene_solution_basic', chance: 0.1, quantity: [1, 2] },
+      // Epic equipment drops
+      { itemId: 'golem_hammer', chance: 0.02, quantity: [1, 1] },
+      { itemId: 'golem_shell', chance: 0.015, quantity: [1, 1] },
+      { itemId: 'golem_heart_stone', chance: 0.01, quantity: [1, 1] }
     ],
     stats: {
       hp: 2800,
@@ -422,7 +433,13 @@ export const monsters = {
       { itemId: 'bio_sample', chance: 1.0, quantity: [5, 10] },
       { itemId: 'gene_solution_advanced', chance: 0.12, quantity: [1, 1] },
       { itemId: 'energy_crystal', chance: 1.0, quantity: [35, 50] },
-      { itemId: 'ruin_module', chance: 0.4, quantity: [1, 3] }
+      { itemId: 'ruin_module', chance: 0.4, quantity: [1, 3] },
+      // Epic and Legendary equipment drops
+      { itemId: 'aberration_claw', chance: 0.015, quantity: [1, 1] },
+      { itemId: 'aberration_hide', chance: 0.012, quantity: [1, 1] },
+      { itemId: 'aberration_eye', chance: 0.003, quantity: [1, 1] }, // Legendary!
+      { itemId: 'ancient_guardian_shield', chance: 0.015, quantity: [1, 1] },
+      { itemId: 'celestial_ring', chance: 0.008, quantity: [1, 1] }
     ],
     stats: {
       hp: 3500,
