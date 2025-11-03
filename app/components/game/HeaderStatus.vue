@@ -20,17 +20,10 @@
         >
         <label
           for="avatar-upload"
-          class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-75 rounded-full cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+          class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-75 rounded-full cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity duration-300 font-mono"
         >
-          <UiLoadingSpinner
-            v-if="isUploading"
-            class="h-6 w-6 text-white"
-          />
-          <Icon
-            v-else
-            name="lucide:camera"
-            class="h-5 w-5 text-gray-300 group-hover:text-white"
-          />
+          <span v-if="isUploading" class="text-white animate-spin text-2xl">⟳</span>
+          <span v-else class="text-gray-300 group-hover:text-white text-2xl">📷</span>
         </label>
         <input
           id="avatar-upload"
@@ -53,12 +46,9 @@
         </p>
         <div
           v-if="isWounded"
-          class="text-red-400 text-xs font-semibold animate-pulse mt-2 flex items-center gap-1.5 bg-gradient-to-r from-red-900/40 to-red-800/40 px-2 py-1 rounded-lg border border-red-600/50 w-fit shadow-lg"
+          class="text-red-400 text-xs font-bold mt-2 flex items-center gap-1.5 bg-gradient-to-r from-red-900/40 to-red-800/40 px-2 py-1 border border-red-600/50 w-fit shadow-lg uppercase font-mono"
         >
-          <Icon
-            name="lucide:heart-crack"
-            class="h-3 w-3"
-          /> Trọng Thương
+          ✗ TRỌNG THƯƠNG
         </div>
       </div>
     </div>
@@ -69,14 +59,12 @@
         :current="playerStore.character.hp"
         :max="playerStore.character.hpMax"
         :color-class="isWounded ? 'bg-gradient-to-r from-red-600 via-red-700 to-red-800 border-red-600/60 text-red-200' : 'bg-gradient-to-r from-red-500 via-red-600 to-orange-600 border-red-500/60 text-red-100'"
-        icon="lucide:heart-pulse"
       />
       <UiStatusBar
-        label="N.Lượng"
+        label="NL"
         :current="playerStore.character.energy"
         :max="playerStore.character.energyMax"
         color-class="bg-gradient-to-r from-cultivation-celestial-500 via-cultivation-celestial-600 to-cultivation-celestial-700 border-cultivation-celestial-500/60 text-cultivation-celestial-100"
-        icon="lucide:zap"
       />
       <UiStatusBar
         v-if="currentRealm"
