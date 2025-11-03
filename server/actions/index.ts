@@ -11,6 +11,7 @@ import * as ship from './ship'
 import * as party from './party'
 import * as crafting from './crafting'
 import * as equipment from './equipment'
+import * as housing from './housing'
 
 export const actions: Record<string, unknown> = {
   'map/move': map.move,
@@ -35,6 +36,7 @@ export const actions: Record<string, unknown> = {
   // Guild system actions
   'guild/create': guild.create,
   'guild/invite': guild.invite,
+  'guild/declareWar': guild.declareWar,
   // Market system actions
   'market/sell': market.sell,
   'market/search': market.search,
@@ -43,6 +45,8 @@ export const actions: Record<string, unknown> = {
   'pet/tame': pet.tame,
   'pet/activate': pet.activate,
   'pet/setMode': pet.setMode,
+  'pet/breed': pet.breed,
+  'pet/evolve': pet.evolve,
   // Ship/Space travel actions
   'ship/travelTo': ship.travelTo,
   'ship/refuel': ship.refuel,
@@ -57,4 +61,10 @@ export const actions: Record<string, unknown> = {
   'equipment/enhance': equipment.enhanceEquipment,
   // Racial skills
   'character/useRacialSkill': character.useRacialSkill,
+  // Transformation (Feature 3)
+  'character/transform': character.transform,
+  // Housing (Feature 8)
+  'housing/unlockHousing': housing.unlockHousing,
+  'housing/build': housing.build,
+  'housing/furnish': housing.furnish,
 }

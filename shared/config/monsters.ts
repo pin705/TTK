@@ -449,6 +449,179 @@ export const monsters = {
       critDamage: 2.2,
       resistance: 25
     }
+  },
+
+  // === NEW BOSSES (Feature 1) ===
+  
+  ice_wraith: {
+    name: 'Linh Hồn Băng', level: 35, expReward: 400,
+    tier: 'beast_general_high' as const,
+    drops: [
+      { itemId: 'frozen_crystal', chance: 0.8, quantity: [1, 2] },
+      { itemId: 'ice_essence', chance: 0.3, quantity: [1, 1] },
+      { itemId: 'energy_crystal', chance: 1.0, quantity: [20, 35] }
+    ],
+    stats: { hp: 1800, attack: 110, defense: 50, critChance: 0.2, critDamage: 1.9, resistance: 30 }
+  },
+
+  frost_golem: {
+    name: 'Golem Băng', level: 36, expReward: 420,
+    tier: 'beast_general_high' as const,
+    drops: [
+      { itemId: 'frozen_crystal', chance: 0.9, quantity: [2, 3] },
+      { itemId: 'ice_essence', chance: 0.4, quantity: [1, 2] },
+      { itemId: 'energy_crystal', chance: 1.0, quantity: [22, 38] }
+    ],
+    stats: { hp: 2200, attack: 95, defense: 80, critChance: 0.15, critDamage: 1.8, resistance: 40 }
+  },
+
+  ice_queen_boss: {
+    name: 'Nữ Hoàng Băng (Boss)', level: 40, expReward: 1200,
+    tier: 'beast_king' as const,
+    drops: [
+      { itemId: 'ice_crown', chance: 0.15, quantity: [1, 1] },
+      { itemId: 'ice_scepter', chance: 0.12, quantity: [1, 1] },
+      { itemId: 'frozen_heart', chance: 0.08, quantity: [1, 1] },
+      { itemId: 'gene_solution_elite', chance: 0.1, quantity: [1, 1] },
+      { itemId: 'energy_crystal', chance: 1.0, quantity: [50, 80] }
+    ],
+    stats: { hp: 5000, attack: 180, defense: 90, critChance: 0.28, critDamage: 2.3, resistance: 35 }
+  },
+
+  lava_serpent: {
+    name: 'Xà Nha Nham', level: 45, expReward: 550,
+    tier: 'beast_general_high' as const,
+    drops: [
+      { itemId: 'lava_stone', chance: 0.8, quantity: [1, 3] },
+      { itemId: 'fire_essence', chance: 0.4, quantity: [1, 2] },
+      { itemId: 'energy_crystal', chance: 1.0, quantity: [28, 45] }
+    ],
+    stats: { hp: 2500, attack: 130, defense: 60, critChance: 0.22, critDamage: 2.0, resistance: 35 }
+  },
+
+  fire_elemental: {
+    name: 'Nguyên Tố Lửa', level: 46, expReward: 580,
+    tier: 'beast_general_high' as const,
+    drops: [
+      { itemId: 'lava_stone', chance: 0.7, quantity: [2, 4] },
+      { itemId: 'fire_essence', chance: 0.5, quantity: [1, 2] },
+      { itemId: 'energy_crystal', chance: 1.0, quantity: [30, 48] }
+    ],
+    stats: { hp: 2200, attack: 145, defense: 50, critChance: 0.25, critDamage: 2.1, resistance: 30 }
+  },
+
+  fire_phoenix_boss: {
+    name: 'Hỏa Phượng (Boss)', level: 50, expReward: 1500,
+    tier: 'beast_king' as const,
+    drops: [
+      { itemId: 'phoenix_feather', chance: 0.2, quantity: [1, 1] },
+      { itemId: 'phoenix_heart', chance: 0.1, quantity: [1, 1] },
+      { itemId: 'flame_wing', chance: 0.15, quantity: [1, 1] },
+      { itemId: 'gene_solution_elite', chance: 0.12, quantity: [1, 1] },
+      { itemId: 'energy_crystal', chance: 1.0, quantity: [60, 100] }
+    ],
+    stats: { hp: 6000, attack: 200, defense: 100, critChance: 0.3, critDamage: 2.4, resistance: 40 }
+  },
+
+  void_demon: {
+    name: 'Quỷ Hư Không', level: 55, expReward: 700,
+    tier: 'beast_general_high' as const,
+    drops: [
+      { itemId: 'void_crystal', chance: 0.6, quantity: [1, 2] },
+      { itemId: 'dimensional_essence', chance: 0.25, quantity: [1, 1] },
+      { itemId: 'energy_crystal', chance: 1.0, quantity: [35, 55] }
+    ],
+    stats: { hp: 3000, attack: 160, defense: 70, critChance: 0.27, critDamage: 2.2, resistance: 45 }
+  },
+
+  rift_horror: {
+    name: 'Kinh Hoàng Khe Nứt', level: 56, expReward: 750,
+    tier: 'beast_general_high' as const,
+    drops: [
+      { itemId: 'void_crystal', chance: 0.7, quantity: [2, 3] },
+      { itemId: 'dimensional_essence', chance: 0.3, quantity: [1, 1] },
+      { itemId: 'energy_crystal', chance: 1.0, quantity: [38, 58] }
+    ],
+    stats: { hp: 3200, attack: 170, defense: 65, critChance: 0.28, critDamage: 2.3, resistance: 40 }
+  },
+
+  void_lord_boss: {
+    name: 'Chúa Tể Hư Không (Boss)', level: 60, expReward: 2000,
+    tier: 'beast_king' as const,
+    drops: [
+      { itemId: 'void_lord_core', chance: 0.25, quantity: [1, 1] },
+      { itemId: 'void_armor', chance: 0.15, quantity: [1, 1] },
+      { itemId: 'dimensional_blade', chance: 0.18, quantity: [1, 1] },
+      { itemId: 'gene_solution_legendary', chance: 0.08, quantity: [1, 1] },
+      { itemId: 'energy_crystal', chance: 1.0, quantity: [80, 120] }
+    ],
+    stats: { hp: 8000, attack: 230, defense: 110, critChance: 0.32, critDamage: 2.5, resistance: 50 }
+  },
+
+  // === SPACE MONSTERS (Feature 6) ===
+  
+  gas_giant_beast: {
+    name: 'Quái Thú Khí Khổng Lồ', level: 65, expReward: 900,
+    tier: 'beast_general_high' as const,
+    drops: [
+      { itemId: 'jupiter_gas', chance: 0.7, quantity: [2, 5] },
+      { itemId: 'energy_crystal', chance: 1.0, quantity: [40, 65] }
+    ],
+    stats: { hp: 3500, attack: 180, defense: 75, critChance: 0.25, critDamage: 2.1, resistance: 45 }
+  },
+
+  magnetic_anomaly: {
+    name: 'Dị Thường Từ Trường', level: 66, expReward: 950,
+    tier: 'beast_general_high' as const,
+    drops: [
+      { itemId: 'magnetic_core', chance: 0.5, quantity: [1, 2] },
+      { itemId: 'energy_crystal', chance: 1.0, quantity: [42, 68] }
+    ],
+    stats: { hp: 3200, attack: 195, defense: 70, critChance: 0.28, critDamage: 2.2, resistance: 50 }
+  },
+
+  ring_guardian: {
+    name: 'Vệ Binh Vành Đai', level: 70, expReward: 1100,
+    tier: 'beast_king' as const,
+    drops: [
+      { itemId: 'saturn_ice', chance: 0.8, quantity: [3, 6] },
+      { itemId: 'cosmic_herb_mid', chance: 0.5, quantity: [2, 4] },
+      { itemId: 'energy_crystal', chance: 1.0, quantity: [50, 75] }
+    ],
+    stats: { hp: 4500, attack: 210, defense: 100, critChance: 0.3, critDamage: 2.3, resistance: 55 }
+  },
+
+  ice_comet_beast: {
+    name: 'Quái Thú Sao Chổi Băng', level: 71, expReward: 1150,
+    tier: 'beast_king' as const,
+    drops: [
+      { itemId: 'saturn_ice', chance: 0.9, quantity: [4, 7] },
+      { itemId: 'frozen_crystal', chance: 0.6, quantity: [2, 4] },
+      { itemId: 'energy_crystal', chance: 1.0, quantity: [52, 78] }
+    ],
+    stats: { hp: 4800, attack: 205, defense: 95, critChance: 0.29, critDamage: 2.2, resistance: 50 }
+  },
+
+  nebula_entity: {
+    name: 'Thực Thể Tinh Vân', level: 75, expReward: 1300,
+    tier: 'beast_king' as const,
+    drops: [
+      { itemId: 'nebula_essence', chance: 0.6, quantity: [1, 3] },
+      { itemId: 'cosmic_herb_mid', chance: 0.7, quantity: [3, 7] },
+      { itemId: 'energy_crystal', chance: 1.0, quantity: [60, 90] }
+    ],
+    stats: { hp: 5500, attack: 220, defense: 105, critChance: 0.32, critDamage: 2.4, resistance: 60 }
+  },
+
+  cosmic_horror: {
+    name: 'Kinh Hoàng Vũ Trụ', level: 76, expReward: 1350,
+    tier: 'beast_king' as const,
+    drops: [
+      { itemId: 'nebula_essence', chance: 0.7, quantity: [2, 4] },
+      { itemId: 'cosmic_artifact', chance: 0.15, quantity: [1, 1] },
+      { itemId: 'energy_crystal', chance: 1.0, quantity: [65, 95] }
+    ],
+    stats: { hp: 6000, attack: 235, defense: 100, critChance: 0.33, critDamage: 2.5, resistance: 55 }
   }
 } as const
 

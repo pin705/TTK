@@ -1,3 +1,5 @@
 export * from './tame'
 export * from './activate'
 export * from './setMode'
+export * from './breed'
+export * from './evolve'

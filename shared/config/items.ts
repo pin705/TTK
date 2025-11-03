@@ -536,6 +536,361 @@ export const items = {
     stats: { treasureFindBonus: 0.15 },
     requirements: { level: 8 }
   },
+
+  // === NEW BOSS DROP ITEMS (Feature 1) ===
+  
+  frozen_crystal: {
+    name: 'Tinh Thể Băng', type: 'resource', rarity: 'rare',
+    description: 'Tinh thể chứa năng lượng băng giá mạnh mẽ.'
+  },
+  
+  ice_essence: {
+    name: 'Bản Chất Băng', type: 'resource', rarity: 'epic',
+    description: 'Tinh túy của nguyên tố băng, cực kỳ quý hiếm.'
+  },
+
+  ice_crown: {
+    name: 'Vương Miện Băng', type: 'accessory', rarity: 'legendary',
+    description: 'Vương miện của Nữ Hoàng Băng. Tăng sức mạnh băng giá.',
+    stats: { attack: 35, defense: 30, spirit: 40, hpMax: 500, resistance: 25 },
+    requirements: { level: 40 }
+  },
+
+  ice_scepter: {
+    name: 'Quyền Trượng Băng', type: 'weapon', rarity: 'epic',
+    description: 'Quyền trượng của Nữ Hoàng Băng.',
+    stats: { attack: 45, spirit: 35, critChance: 0.15 },
+    requirements: { level: 40 }
+  },
+
+  frozen_heart: {
+    name: 'Trái Tim Băng', type: 'consumable', rarity: 'legendary',
+    description: 'Trái tim của Nữ Hoàng Băng. Có thể dùng để tiến hóa.',
+    effect: { type: 'transformation_unlock', race: 'ice' }
+  },
+
+  lava_stone: {
+    name: 'Đá Dung Nham', type: 'resource', rarity: 'rare',
+    description: 'Đá nóng chảy từ núi lửa.'
+  },
+
+  fire_essence: {
+    name: 'Bản Chất Lửa', type: 'resource', rarity: 'epic',
+    description: 'Tinh túy của nguyên tố lửa.'
+  },
+
+  phoenix_feather: {
+    name: 'Lông Phượng Hoàng', type: 'resource', rarity: 'legendary',
+    description: 'Lông vũ của Hỏa Phượng, chứa sức mạnh tái sinh.'
+  },
+
+  phoenix_heart: {
+    name: 'Trái Tim Phượng Hoàng', type: 'consumable', rarity: 'legendary',
+    description: 'Trái tim của Hỏa Phượng. Mở khóa biến hình lửa.',
+    effect: { type: 'transformation_unlock', race: 'fire' }
+  },
+
+  flame_wing: {
+    name: 'Cánh Lửa', type: 'armor', rarity: 'legendary',
+    description: 'Cánh của Hỏa Phượng, cho phép bay và tấn công lửa.',
+    stats: { defense: 50, speed: 30, spirit: 35, hpMax: 600 },
+    requirements: { level: 50 }
+  },
+
+  void_crystal: {
+    name: 'Tinh Thể Hư Không', type: 'resource', rarity: 'epic',
+    description: 'Tinh thể từ chiều không gian khác.'
+  },
+
+  dimensional_essence: {
+    name: 'Bản Chất Chiều Không', type: 'resource', rarity: 'legendary',
+    description: 'Tinh túy của không gian đa chiều.'
+  },
+
+  void_lord_core: {
+    name: 'Lõi Chúa Tể Hư Không', type: 'consumable', rarity: 'legendary',
+    description: 'Lõi năng lượng của Chúa Tể Hư Không. Mở khóa biến hình hư không.',
+    effect: { type: 'transformation_unlock', race: 'void' }
+  },
+
+  void_armor: {
+    name: 'Giáp Hư Không', type: 'armor', rarity: 'legendary',
+    description: 'Giáp từ chiều không gian khác, có thể né tránh hoàn toàn.',
+    stats: { defense: 55, speed: 25, dodgeChance: 0.2, resistance: 30 },
+    requirements: { level: 60 }
+  },
+
+  dimensional_blade: {
+    name: 'Lưỡi Kiếm Chiều Không', type: 'weapon', rarity: 'legendary',
+    description: 'Kiếm có thể cắt xuyên không gian.',
+    stats: { attack: 70, speed: 20, critChance: 0.25, critDamage: 0.5 },
+    requirements: { level: 60 }
+  },
+
+  // === SPACE ITEMS (Feature 6) ===
+  
+  jupiter_gas: {
+    name: 'Khí Sao Mộc', type: 'resource', rarity: 'rare',
+    description: 'Khí quý hiếm từ Sao Mộc, dùng làm nhiên liệu.'
+  },
+
+  magnetic_core: {
+    name: 'Lõi Từ Trường', type: 'resource', rarity: 'epic',
+    description: 'Lõi từ trường mạnh, dùng chế tạo thiết bị.'
+  },
+
+  saturn_ice: {
+    name: 'Băng Sao Thổ', type: 'resource', rarity: 'rare',
+    description: 'Băng từ vành đai Sao Thổ.'
+  },
+
+  nebula_essence: {
+    name: 'Tinh Túy Tinh Vân', type: 'resource', rarity: 'epic',
+    description: 'Năng lượng nguyên thủy từ tinh vân.'
+  },
+
+  cosmic_artifact: {
+    name: 'Cổ Vật Vũ Trụ', type: 'accessory', rarity: 'legendary',
+    description: 'Cổ vật bí ẩn từ nền văn minh cổ đại.',
+    stats: { attack: 40, defense: 40, spirit: 40, hpMax: 500, energyMax: 500 },
+    requirements: { level: 75 }
+  },
+
+  // === TRANSFORMATION ITEMS (Feature 3) ===
+  
+  transformation_catalyst: {
+    name: 'Xúc Tác Biến Hình', type: 'consumable', rarity: 'epic',
+    description: 'Kích hoạt khả năng biến hình của chủng tộc.',
+    effect: { type: 'transformation_unlock', race: 'basic' }
+  },
+
+  transformation_stabilizer: {
+    name: 'Ổn Định Biến Hình', type: 'consumable', rarity: 'rare',
+    description: 'Giúp duy trì trạng thái biến hình lâu hơn.',
+    effect: { type: 'transformation_duration', power: 300 }
+  },
+
+  // === EQUIPMENT SET ITEMS (Feature 4) ===
+  
+  dragon_scale_helmet: {
+    name: 'Mũ Vảy Rồng', type: 'armor', rarity: 'epic', set: 'dragon_set',
+    description: 'Phần 1 của bộ Vảy Rồng.',
+    stats: { defense: 35, hpMax: 400, resistance: 20 },
+    requirements: { level: 45 }
+  },
+
+  dragon_scale_armor: {
+    name: 'Giáp Vảy Rồng', type: 'armor', rarity: 'epic', set: 'dragon_set',
+    description: 'Phần 2 của bộ Vảy Rồng.',
+    stats: { defense: 50, hpMax: 600, resistance: 30 },
+    requirements: { level: 45 }
+  },
+
+  dragon_scale_gauntlets: {
+    name: 'Găng Tay Vảy Rồng', type: 'accessory', rarity: 'epic', set: 'dragon_set',
+    description: 'Phần 3 của bộ Vảy Rồng.',
+    stats: { attack: 30, defense: 25, critChance: 0.1 },
+    requirements: { level: 45 }
+  },
+
+  dragon_scale_boots: {
+    name: 'Giày Vảy Rồng', type: 'accessory', rarity: 'epic', set: 'dragon_set',
+    description: 'Phần 4 của bộ Vảy Rồng.',
+    stats: { defense: 20, speed: 15, dodgeChance: 0.1 },
+    requirements: { level: 45 }
+  },
+
+  phoenix_crown: {
+    name: 'Vương Miện Phượng Hoàng', type: 'accessory', rarity: 'legendary', set: 'phoenix_set',
+    description: 'Phần 1 của bộ Hỏa Phượng.',
+    stats: { attack: 40, spirit: 35, hpMax: 400 },
+    requirements: { level: 50 }
+  },
+
+  phoenix_robe: {
+    name: 'Áo Choàng Phượng Hoàng', type: 'armor', rarity: 'legendary', set: 'phoenix_set',
+    description: 'Phần 2 của bộ Hỏa Phượng.',
+    stats: { defense: 45, spirit: 40, hpMax: 600, resistance: 35 },
+    requirements: { level: 50 }
+  },
+
+  phoenix_wings: {
+    name: 'Đôi Cánh Phượng Hoàng', type: 'accessory', rarity: 'legendary', set: 'phoenix_set',
+    description: 'Phần 3 của bộ Hỏa Phượng.',
+    stats: { attack: 35, speed: 30, critDamage: 0.3 },
+    requirements: { level: 50 }
+  },
+
+  void_mask: {
+    name: 'Mặt Nạ Hư Không', type: 'accessory', rarity: 'legendary', set: 'void_set',
+    description: 'Phần 1 của bộ Hư Không.',
+    stats: { attack: 38, spirit: 32, critChance: 0.15 },
+    requirements: { level: 60 }
+  },
+
+  void_cloak: {
+    name: 'Áo Choàng Hư Không', type: 'armor', rarity: 'legendary', set: 'void_set',
+    description: 'Phần 2 của bộ Hư Không.',
+    stats: { defense: 40, dodgeChance: 0.15, resistance: 30 },
+    requirements: { level: 60 }
+  },
+
+  void_ring: {
+    name: 'Nhẫn Hư Không', type: 'accessory', rarity: 'legendary', set: 'void_set',
+    description: 'Phần 3 của bộ Hư Không.',
+    stats: { attack: 35, critChance: 0.12, critDamage: 0.25 },
+    requirements: { level: 60 }
+  },
+
+  // === PET BREEDING ITEMS (Feature 7) ===
+  
+  pet_breeding_stone: {
+    name: 'Đá Lai Giống', type: 'consumable', rarity: 'rare',
+    description: 'Dùng để lai giống 2 pet với nhau.',
+    effect: { type: 'pet_breeding' }
+  },
+
+  evolution_stone_basic: {
+    name: 'Đá Tiến Hóa Cơ Bản', type: 'consumable', rarity: 'uncommon',
+    description: 'Giúp pet tiến hóa lên cấp 1.',
+    effect: { type: 'pet_evolution', tier: 1 }
+  },
+
+  evolution_stone_advanced: {
+    name: 'Đá Tiến Hóa Cao Cấp', type: 'consumable', rarity: 'rare',
+    description: 'Giúp pet tiến hóa lên cấp 2.',
+    effect: { type: 'pet_evolution', tier: 2 }
+  },
+
+  evolution_stone_elite: {
+    name: 'Đá Tiến Hóa Tinh Anh', type: 'consumable', rarity: 'epic',
+    description: 'Giúp pet tiến hóa lên cấp 3.',
+    effect: { type: 'pet_evolution', tier: 3 }
+  },
+
+  pet_exp_orb: {
+    name: 'Châu Kinh Nghiệm Pet', type: 'consumable', rarity: 'uncommon',
+    description: 'Cho pet ăn để tăng kinh nghiệm.',
+    effect: { type: 'pet_exp', power: 1000 }
+  },
+
+  pet_talent_book: {
+    name: 'Sách Thiên Phú Pet', type: 'consumable', rarity: 'rare',
+    description: 'Mở khóa tài năng mới cho pet.',
+    effect: { type: 'pet_talent_unlock' }
+  },
+
+  // === HOUSING ITEMS (Feature 8) ===
+  
+  basic_house_blueprint: {
+    name: 'Bản Vẽ Nhà Cơ Bản', type: 'blueprint', rarity: 'common',
+    description: 'Bản vẽ xây nhà cơ bản.'
+  },
+
+  advanced_house_blueprint: {
+    name: 'Bản Vẽ Nhà Cao Cấp', type: 'blueprint', rarity: 'rare',
+    description: 'Bản vẽ xây nhà cao cấp với nhiều phòng.'
+  },
+
+  building_materials: {
+    name: 'Vật Liệu Xây Dựng', type: 'resource', rarity: 'common',
+    description: 'Vật liệu cơ bản để xây dựng.'
+  },
+
+  furniture_set_basic: {
+    name: 'Bộ Nội Thất Cơ Bản', type: 'furniture', rarity: 'common',
+    description: 'Bộ nội thất cơ bản cho nhà.'
+  },
+
+  furniture_set_luxury: {
+    name: 'Bộ Nội Thất Sang Trọng', type: 'furniture', rarity: 'rare',
+    description: 'Bộ nội thất cao cấp, tăng buff khi nghỉ ngơi.'
+  },
+
+  storage_chest_small: {
+    name: 'Rương Lưu Trữ Nhỏ', type: 'furniture', rarity: 'common',
+    description: 'Rương nhỏ, chứa 20 ô đồ.',
+    effect: { type: 'storage', capacity: 20 }
+  },
+
+  storage_chest_large: {
+    name: 'Rương Lưu Trữ Lớn', type: 'furniture', rarity: 'rare',
+    description: 'Rương lớn, chứa 50 ô đồ.',
+    effect: { type: 'storage', capacity: 50 }
+  },
+
+  cultivation_chamber: {
+    name: 'Phòng Tu Luyện', type: 'furniture', rarity: 'epic',
+    description: 'Phòng đặc biệt tăng 50% tốc độ tu luyện.',
+    effect: { type: 'cultivation_boost', power: 0.5 }
+  },
+
+  workshop: {
+    name: 'Xưởng Chế Tạo', type: 'furniture', rarity: 'rare',
+    description: 'Xưởng cho phép chế tạo tại nhà.',
+    effect: { type: 'crafting_enabled' }
+  },
+
+  pet_habitat: {
+    name: 'Khu Nuôi Pet', type: 'furniture', rarity: 'rare',
+    description: 'Khu vực cho pet nghỉ ngơi, tăng exp pet.',
+    effect: { type: 'pet_exp_boost', power: 0.3 }
+  },
+
+  // === LEGENDARY QUEST ITEMS ===
+  
+  dragon_scale_fragment: {
+    name: 'Mảnh Vảy Rồng', type: 'resource', rarity: 'rare',
+    description: 'Mảnh vảy của rồng cổ đại.'
+  },
+
+  dragon_amulet: {
+    name: 'Bùa Hộ Mệnh Rồng', type: 'accessory', rarity: 'epic',
+    description: 'Bùa hộ mệnh mang sức mạnh rồng.',
+    stats: { attack: 25, defense: 25, hpMax: 300 }
+  },
+
+  dragon_soul_crystal: {
+    name: 'Tinh Thể Linh Hồn Rồng', type: 'consumable', rarity: 'legendary',
+    description: 'Linh hồn của rồng cổ đại, mở khóa sức mạnh tột cùng.',
+    effect: { type: 'legendary_unlock', unlock: 'dragon' }
+  },
+
+  phoenix_amulet: {
+    name: 'Bùa Hộ Mệnh Phượng', type: 'accessory', rarity: 'epic',
+    description: 'Bùa hộ mệnh mang sức mạnh hỏa phượng.',
+    stats: { attack: 28, spirit: 25, hpMax: 300 }
+  },
+
+  phoenix_essence: {
+    name: 'Tinh Túy Phượng Hoàng', type: 'consumable', rarity: 'legendary',
+    description: 'Tinh túy của hỏa phượng, sức mạnh tái sinh.',
+    effect: { type: 'legendary_unlock', unlock: 'phoenix' }
+  },
+
+  void_amulet: {
+    name: 'Bùa Hộ Mệnh Hư Không', type: 'accessory', rarity: 'epic',
+    description: 'Bùa hộ mệnh từ chiều không gian khác.',
+    stats: { attack: 26, speed: 15, critChance: 0.1 }
+  },
+
+  void_mastery_scroll: {
+    name: 'Cuốn Sách Làm Chủ Hư Không', type: 'consumable', rarity: 'legendary',
+    description: 'Bí quyết làm chủ sức mạnh hư không.',
+    effect: { type: 'legendary_unlock', unlock: 'void' }
+  },
+
+  cosmic_navigator: {
+    name: 'La Bàn Vũ Trụ', type: 'accessory', rarity: 'epic',
+    description: 'La bàn chỉ đường trong vũ trụ bao la.',
+    stats: { speed: 20, energyMax: 500 }
+  },
+
+  cosmic_mastery_tome: {
+    name: 'Sách Làm Chủ Vũ Trụ', type: 'consumable', rarity: 'legendary',
+    description: 'Bí quyết làm chủ sức mạnh vũ trụ.',
+    effect: { type: 'legendary_unlock', unlock: 'cosmic' }
+  },
 } as const
 
 export type ItemId = keyof typeof items;
