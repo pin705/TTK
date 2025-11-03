@@ -1,14 +1,65 @@
 <template>
-  <div v-if="playerStore.character" class="p-3 bg-gray-900/50 rounded-lg border border-gray-700 shadow-inner">
-    <h3 class="text-blue-400 border-b border-blue-700/50 pb-1 mb-3 font-semibold flex items-center justify-between">
-      <span class="flex items-center">
-        <Icon name="lucide:package" class="mr-2 h-4 w-4 text-blue-500" />
-        Túi Đồ
-      </span>
-      <span class="text-xs text-gray-400">
-        {{ playerStore.character.inventory.length }} / 100
-      </span>
-    </h3>
+  <div v-if="playerStore.character" class="space-y-3">
+    <!-- Equipment Section -->
+    <div class="p-3 bg-gray-900/50 rounded-lg border border-gray-700 shadow-inner">
+      <h3 class="text-purple-400 border-b border-purple-700/50 pb-1 mb-3 font-semibold flex items-center">
+        <Icon name="lucide:shield" class="mr-2 h-4 w-4 text-purple-500" />
+        Trang Bị
+      </h3>
+
+      <div class="grid grid-cols-2 gap-2">
+        <!-- Weapon Slot -->
+        <div class="p-2 bg-gray-800/60 rounded-md border border-gray-700/80">
+          <p class="text-xs text-gray-400 mb-1">Vũ Khí</p>
+          <div v-if="playerStore.character.equipment.weapon" class="flex items-center gap-2">
+            <Icon name="lucide:sword" class="h-5 w-5 text-red-400" />
+            <div class="flex-1 min-w-0">
+              <p class="text-sm text-red-300 truncate">{{ getItemName(playerStore.character.equipment.weapon) }}</p>
+              <button @click="unequip('weapon')" class="text-xs text-gray-500 hover:text-red-400">Gỡ</button>
+            </div>
+          </div>
+          <p v-else class="text-xs text-gray-600 italic">Trống</p>
+        </div>
+
+        <!-- Armor Slot -->
+        <div class="p-2 bg-gray-800/60 rounded-md border border-gray-700/80">
+          <p class="text-xs text-gray-400 mb-1">Giáp</p>
+          <div v-if="playerStore.character.equipment.armor" class="flex items-center gap-2">
+            <Icon name="lucide:shield" class="h-5 w-5 text-blue-400" />
+            <div class="flex-1 min-w-0">
+              <p class="text-sm text-blue-300 truncate">{{ getItemName(playerStore.character.equipment.armor) }}</p>
+              <button @click="unequip('armor')" class="text-xs text-gray-500 hover:text-red-400">Gỡ</button>
+            </div>
+          </div>
+          <p v-else class="text-xs text-gray-600 italic">Trống</p>
+        </div>
+
+        <!-- Accessory Slot -->
+        <div class="p-2 bg-gray-800/60 rounded-md border border-gray-700/80 col-span-2">
+          <p class="text-xs text-gray-400 mb-1">Phụ Kiện</p>
+          <div v-if="playerStore.character.equipment.accessory" class="flex items-center gap-2">
+            <Icon name="lucide:gem" class="h-5 w-5 text-cyan-400" />
+            <div class="flex-1 min-w-0">
+              <p class="text-sm text-cyan-300 truncate">{{ getItemName(playerStore.character.equipment.accessory) }}</p>
+              <button @click="unequip('accessory')" class="text-xs text-gray-500 hover:text-red-400">Gỡ</button>
+            </div>
+          </div>
+          <p v-else class="text-xs text-gray-600 italic">Trống</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Inventory Section -->
+    <div class="p-3 bg-gray-900/50 rounded-lg border border-gray-700 shadow-inner">
+      <h3 class="text-blue-400 border-b border-blue-700/50 pb-1 mb-3 font-semibold flex items-center justify-between">
+        <span class="flex items-center">
+          <Icon name="lucide:package" class="mr-2 h-4 w-4 text-blue-500" />
+          Túi Đồ
+        </span>
+        <span class="text-xs text-gray-400">
+          {{ playerStore.character.inventory.length }} / 100
+        </span>
+      </h3>
 
     <!-- Empty State -->
     <div v-if="!playerStore.character.inventory.length" class="text-center py-8 text-gray-500 italic">
@@ -44,7 +95,15 @@
         </div>
 
         <!-- Quick Actions (on hover) -->
-        <div class="absolute top-1 right-1 opacity-0 group-hover:opacity-100 transition-opacity">
+        <div class="absolute top-1 right-1 opacity-0 group-hover:opacity-100 transition-opacity flex gap-1">
+          <button
+            v-if="isEquipableItem(item.itemId)"
+            class="p-1 bg-purple-600/80 hover:bg-purple-500 rounded text-white"
+            title="Trang bị"
+            @click="equipItem(item.itemId)"
+          >
+            <Icon name="lucide:shield" class="h-3 w-3" />
+          </button>
           <button
             v-if="isUsableItem(item.itemId)"
             class="p-1 bg-green-600/80 hover:bg-green-500 rounded text-white"
@@ -67,6 +126,7 @@
           <span class="font-semibold text-white">{{ resource.quantity }}</span>
         </div>
       </div>
+    </div>
     </div>
   </div>
 </template>
@@ -128,6 +188,27 @@ function getItemColor(itemId: string): string {
 function isUsableItem(itemId: string): boolean {
   const item = items[itemId as ItemId]
   return item?.type === 'consumable' || item?.type === 'gene_solution'
+}
+
+function isEquipableItem(itemId: string): boolean {
+  const item = items[itemId as ItemId]
+  return ['weapon', 'armor', 'accessory', 'spirit_weapon', 'module_cultivation', 'module_combat', 'module_survival'].includes(item?.type || '')
+}
+
+async function equipItem(itemId: string) {
+  try {
+    await execute('equipment/equip', { itemId })
+  } catch (error) {
+    console.error('Failed to equip item:', error)
+  }
+}
+
+async function unequip(slot: string) {
+  try {
+    await execute('equipment/unequip', { slot })
+  } catch (error) {
+    console.error('Failed to unequip item:', error)
+  }
 }
 
 async function useItem(itemId: string) {

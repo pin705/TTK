@@ -1,5 +1,5 @@
 import type { ICharacter } from '~~/server/models/character.model'
-import { getExpRequiredForLevel, STAT_GAINS_PER_LEVEL, getRaceStatGains, applyRacialBonuses } from '~~/shared/config' // Import config mới
+import { getExpRequiredForLevel, STAT_GAINS_PER_LEVEL, getRaceStatGains, applyRacialBonuses, items } from '~~/shared/config' // Import config mới
 import type { LogPayload } from './logger' // Import LogPayload
 import type { RaceId } from '~~/shared/config/races'
 
@@ -75,26 +75,57 @@ export function recalculateStats(character: ICharacter) {
   const baseSpeed = 10 + (character.level - 1) * raceGains.speed
   const baseSpirit = 10 + (character.level - 1) * raceGains.spirit
 
-  // Logic tính chỉ số từ trang bị (equipment) - cần lấy data item từ config
-  const equipmentAttack = 0
-  const equipmentDefense = 0
-  // ...
+  // Calculate equipment bonuses from equipped items
+  let equipmentAttack = 0
+  let equipmentDefense = 0
+  let equipmentSpeed = 0
+  let equipmentSpirit = 0
+  let equipmentCritChance = 0
+  let equipmentCritDamage = 0
+  let equipmentDodgeChance = 0
+  let equipmentResistance = 0
+  let equipmentHpMax = 0
+  let equipmentEnergyMax = 0
+
+  // Check each equipment slot
+  const equipmentSlots = ['weapon', 'armor', 'accessory', 'moduleSlot1', 'moduleSlot2', 'moduleSlot3'] as const
+  for (const slot of equipmentSlots) {
+    const itemId = character.equipment[slot]
+    if (itemId) {
+      const itemConfig = items[itemId as keyof typeof items]
+      if (itemConfig && itemConfig.stats) {
+        equipmentAttack += itemConfig.stats.attack || 0
+        equipmentDefense += itemConfig.stats.defense || 0
+        equipmentSpeed += itemConfig.stats.speed || 0
+        equipmentSpirit += itemConfig.stats.spirit || 0
+        equipmentCritChance += itemConfig.stats.critChance || 0
+        equipmentCritDamage += itemConfig.stats.critDamage || 0
+        equipmentDodgeChance += itemConfig.stats.dodgeChance || 0
+        equipmentResistance += itemConfig.stats.resistance || 0
+        equipmentHpMax += itemConfig.stats.hpMax || 0
+        equipmentEnergyMax += itemConfig.stats.energyMax || 0
+      }
+    }
+  }
 
   // Tính tổng
   character.stats.attack = baseAttack + character.allocatedStats.attack + equipmentAttack
   character.stats.defense = baseDefense + character.allocatedStats.defense + equipmentDefense
-  character.stats.speed = baseSpeed
-  character.stats.spirit = baseSpirit
-  // Tương tự cho các chỉ số khác...
+  character.stats.speed = baseSpeed + character.allocatedStats.speed + equipmentSpeed
+  character.stats.spirit = baseSpirit + equipmentSpirit
+  character.stats.critChance = 0.05 + equipmentCritChance
+  character.stats.critDamage = 1.5 + equipmentCritDamage
+  character.stats.dodgeChance = 0.05 + equipmentDodgeChance
+  character.stats.resistance = 0 + equipmentResistance
 
   // Apply racial bonuses
   if (character.race) {
     character.stats = applyRacialBonuses(character.stats, character.race as RaceId)
   }
 
-  // Cập nhật lại HP/Energy Max từ điểm cộng
-  character.hpMax = (100 + (character.level - 1) * raceGains.hpMax) + character.allocatedStats.hpMax // Giả sử base HP là 100
-  character.energyMax = (500 + (character.level - 1) * raceGains.energyMax) + character.allocatedStats.energyMax // Giả sử base Energy là 500
+  // Cập nhật lại HP/Energy Max từ điểm cộng và trang bị
+  character.hpMax = (100 + (character.level - 1) * raceGains.hpMax) + character.allocatedStats.hpMax + equipmentHpMax
+  character.energyMax = (500 + (character.level - 1) * raceGains.energyMax) + character.allocatedStats.energyMax + equipmentEnergyMax
 
   // Đảm bảo HP/Energy hiện tại không vượt quá max mới
   character.hp = Math.min(character.hp, character.hpMax)

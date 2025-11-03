@@ -1,15 +1,26 @@
 <template>
   <div
     v-if="playerStore.character && currentRealm"
-    class="space-y-4 text-sm"
+    class="space-y-3 text-sm"
   >
-    <div class="p-3 bg-gray-900/50 rounded-lg border border-gray-700 shadow-inner">
-      <h3 class="text-yellow-400 border-b border-yellow-700/50 pb-1 mb-2 font-semibold flex items-center">
+    <!-- Cultivation Section - Collapsible -->
+    <div class="bg-gray-900/50 rounded-lg border border-gray-700 shadow-inner">
+      <button
+        @click="toggleSection('cultivation')"
+        class="w-full p-3 flex items-center justify-between hover:bg-gray-800/30 transition-colors"
+      >
+        <h3 class="text-yellow-400 font-semibold flex items-center">
+          <Icon
+            name="lucide:swords"
+            class="mr-2 h-4 w-4 text-yellow-500"
+          /> Tu Luyện & Cảnh Giới
+        </h3>
         <Icon
-          name="lucide:swords"
-          class="mr-2 h-4 w-4 text-yellow-500"
-        /> Tu Luyện & Cảnh Giới
-      </h3>
+          :name="expandedSections.cultivation ? 'lucide:chevron-up' : 'lucide:chevron-down'"
+          class="h-4 w-4 text-gray-400"
+        />
+      </button>
+      <div v-if="expandedSections.cultivation" class="px-3 pb-3">
       <div class="grid grid-cols-2 gap-x-4 mb-2">
         <p>Cấp Độ: <span class="text-white font-bold">Lv.{{ playerStore.character.level }}</span></p>
         <p>Cảnh Giới Hiện Tại: <span class="text-white font-bold">{{ playerStore.character.cultivation.stage }}</span></p>
@@ -75,19 +86,29 @@
         </p>
       </div>
     </div>
+    </div>
 
-    <div class="p-3 bg-gray-900/50 rounded-lg border border-gray-700 shadow-inner">
-      <h3 class="text-emerald-400 border-b border-emerald-700/50 pb-1 mb-2 font-semibold flex items-center justify-between">
-        <span class="flex items-center">
+    <!-- Potential Points Section - Collapsible -->
+    <div class="bg-gray-900/50 rounded-lg border border-gray-700 shadow-inner">
+      <button
+        @click="toggleSection('potential')"
+        class="w-full p-3 flex items-center justify-between hover:bg-gray-800/30 transition-colors"
+      >
+        <h3 class="text-emerald-400 font-semibold flex items-center">
           <Icon
             name="lucide:gem"
             class="mr-2 h-4 w-4 text-emerald-500"
           /> Phân Phối Tiềm Năng
-        </span>
-        <span class="text-xs text-gray-400">Điểm còn lại:
-          <span class="text-white font-bold text-base ml-1">{{ playerStore.character.statPoints }}</span>
-        </span>
-      </h3>
+          <span class="text-xs text-gray-400 ml-2">
+            (<span class="text-white font-bold">{{ playerStore.character.statPoints }}</span> điểm)
+          </span>
+        </h3>
+        <Icon
+          :name="expandedSections.potential ? 'lucide:chevron-up' : 'lucide:chevron-down'"
+          class="h-4 w-4 text-gray-400"
+        />
+      </button>
+      <div v-if="expandedSections.potential" class="px-3 pb-3">
       <div
         v-if="playerStore.character.statPoints > 0"
         class="space-y-2"
@@ -124,14 +145,16 @@
       >
         Không có điểm tiềm năng để phân phối. Hãy lên cấp để nhận thêm!
       </div>
+      </div>
     </div>
 
+    <!-- Stats Section - Always expanded, compact view -->
     <div class="p-3 bg-gray-900/50 rounded-lg border border-gray-700 shadow-inner">
-      <h3 class="text-cyan-400 border-b border-cyan-700/50 pb-1 mb-2 font-semibold flex items-center">
+      <h3 class="text-cyan-400 border-b border-cyan-700/50 pb-1 mb-2 font-semibold flex items-center text-xs">
         <Icon
           name="lucide:bar-chart-3"
           class="mr-2 h-4 w-4 text-cyan-500"
-        /> Bảng Thuộc Tính
+        /> Thuộc Tính
       </h3>
       <div class="grid grid-cols-2 md:grid-cols-3 gap-x-4 gap-y-1">
         <span class="flex items-center"><Icon
@@ -175,13 +198,24 @@
       </div>
     </div>
 
-    <div class="p-3 bg-gray-900/50 rounded-lg border border-gray-700 shadow-inner">
-      <h3 class="text-orange-400 border-b border-orange-700/50 pb-1 mb-2 font-semibold flex items-center">
+    <!-- Effects Section - Collapsible -->
+    <div class="bg-gray-900/50 rounded-lg border border-gray-700 shadow-inner">
+      <button
+        @click="toggleSection('effects')"
+        class="w-full p-3 flex items-center justify-between hover:bg-gray-800/30 transition-colors"
+      >
+        <h3 class="text-orange-400 font-semibold flex items-center">
+          <Icon
+            name="lucide:wand-sparkles"
+            class="mr-2 h-4 w-4 text-orange-500"
+          /> Trạng Thái & Hiệu Ứng
+        </h3>
         <Icon
-          name="lucide:wand-sparkles"
-          class="mr-2 h-4 w-4 text-orange-500"
-        /> Trạng Thái & Hiệu Ứng
-      </h3>
+          :name="expandedSections.effects ? 'lucide:chevron-up' : 'lucide:chevron-down'"
+          class="h-4 w-4 text-gray-400"
+        />
+      </button>
+      <div v-if="expandedSections.effects" class="px-3 pb-3">
       <div
         v-if="!activeEffects.length"
         class="text-sm text-gray-500 italic"
@@ -209,10 +243,11 @@
           >({{ effect.durationText }})</span>
         </li>
       </ul>
+      </div>
     </div>
 
+    <!-- Evolution and Inventory panels keep their own collapsible logic -->
     <GameEvolutionPanel />
-
     <GameInventoryPanel />
   </div>
   <div
@@ -233,6 +268,17 @@ import { ALLOCATABLE_STATS, type AllocatableStat } from '~~/shared/config' // Im
 
 const { execute, isLoading } = useGameAction()
 const playerStore = usePlayerStore()
+
+// Collapsible sections state
+const expandedSections = ref({
+  cultivation: true,
+  potential: false,
+  effects: false
+})
+
+function toggleSection(section: keyof typeof expandedSections.value) {
+  expandedSections.value[section] = !expandedSections.value[section]
+}
 
 // --- Logic Cảnh giới & EXP (Sửa lỗi allRealms) ---
 const currentRealm = computed(() => {
