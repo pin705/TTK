@@ -1,14 +1,13 @@
 <template>
-  <div v-if="showHint" class="fixed top-20 right-4 z-50 max-w-md animate-slide-in-right">
-    <div class="bg-gradient-to-br from-cyan-900/95 to-blue-900/95 border-2 border-cyan-500/70 rounded-lg shadow-2xl p-4 backdrop-blur-sm">
+  <div v-if="showHint" class="fixed top-20 right-4 z-50 max-w-md animate-slide-in-right font-mono">
+    <div class="bg-gradient-to-br from-cyan-900/95 to-blue-900/95 border-2 border-cyan-500/70 shadow-2xl p-4 backdrop-blur-sm">
       <div class="flex items-start gap-3">
-        <div class="flex-shrink-0">
-          <Icon name="lucide:lightbulb" class="h-6 w-6 text-yellow-400 animate-pulse" />
+        <div class="flex-shrink-0 text-2xl">
+          💡
         </div>
         <div class="flex-grow">
-          <h3 class="text-cyan-300 font-bold text-sm mb-1 flex items-center gap-2">
-            <Icon name="lucide:info" class="h-4 w-4" />
-            Hướng Dẫn
+          <h3 class="text-cyan-300 font-bold text-sm mb-1 uppercase tracking-wider">
+            > HƯỚNG DẪN
           </h3>
           <p class="text-gray-200 text-sm leading-relaxed">
             {{ currentHint }}
@@ -20,29 +19,28 @@
         </div>
         <button 
           @click="dismissHint"
-          class="flex-shrink-0 text-gray-400 hover:text-white transition-colors"
-          title="Đóng hướng dẫn"
+          class="flex-shrink-0 text-gray-400 hover:text-white transition-colors text-lg font-bold px-2"
         >
-          <Icon name="lucide:x" class="h-5 w-5" />
+          ✕
         </button>
       </div>
       <div class="mt-3 flex items-center justify-between">
         <button 
           @click="prevHint"
           :disabled="currentHintIndex === 0"
-          class="text-xs px-2 py-1 bg-gray-700/50 hover:bg-gray-600/50 rounded disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+          class="text-xs px-3 py-1 bg-gray-700/50 hover:bg-gray-600/50 disabled:opacity-30 disabled:cursor-not-allowed transition-colors font-bold"
         >
-          <Icon name="lucide:chevron-left" class="h-4 w-4" />
+          [ ◄ ]
         </button>
-        <div class="text-xs text-gray-400">
+        <div class="text-xs text-gray-400 font-bold">
           {{ currentHintIndex + 1 }} / {{ hints.length }}
         </div>
         <button 
           @click="nextHint"
           :disabled="currentHintIndex === hints.length - 1"
-          class="text-xs px-2 py-1 bg-gray-700/50 hover:bg-gray-600/50 rounded disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+          class="text-xs px-3 py-1 bg-gray-700/50 hover:bg-gray-600/50 disabled:opacity-30 disabled:cursor-not-allowed transition-colors font-bold"
         >
-          <Icon name="lucide:chevron-right" class="h-4 w-4" />
+          [ ► ]
         </button>
       </div>
     </div>
@@ -54,8 +52,9 @@ import { usePlayerStore } from '~/stores/player'
 
 const playerStore = usePlayerStore()
 
-const showHint = ref(true)
+const showHint = ref(false)
 const currentHintIndex = ref(0)
+const dismissedHints = ref<string[]>([])
 
 // Tutorial hints based on active quest
 const hints = computed(() => {
@@ -135,16 +134,49 @@ function prevHint() {
 }
 
 function dismissHint() {
+  const character = playerStore.character
+  if (!character?.activeQuests) return
+  
+  const tutorialQuest = character.activeQuests.find((q: any) => 
+    q.questId.startsWith('tutorial_')
+  )
+  
+  if (tutorialQuest) {
+    // Store dismissed hint in localStorage
+    dismissedHints.value.push(tutorialQuest.questId)
+    localStorage.setItem('dismissedTutorialHints', JSON.stringify(dismissedHints.value))
+  }
+  
   showHint.value = false
 }
 
-// Auto-show hint when quest changes
+// Load dismissed hints from localStorage
+onMounted(() => {
+  const stored = localStorage.getItem('dismissedTutorialHints')
+  if (stored) {
+    try {
+      dismissedHints.value = JSON.parse(stored)
+    } catch (e) {
+      console.error('Failed to parse dismissed hints:', e)
+    }
+  }
+})
+
+// Auto-show hint when quest changes (only if not dismissed)
 watch(() => playerStore.character?.activeQuests, () => {
-  if (hints.value.length > 0) {
+  const character = playerStore.character
+  if (!character?.activeQuests) return
+  
+  const tutorialQuest = character.activeQuests.find((q: any) => 
+    q.questId.startsWith('tutorial_')
+  )
+  
+  // Only show if hints exist and this quest hasn't been dismissed
+  if (hints.value.length > 0 && tutorialQuest && !dismissedHints.value.includes(tutorialQuest.questId)) {
     showHint.value = true
     currentHintIndex.value = 0
   }
-}, { deep: true })
+}, { deep: true, immediate: true })
 </script>
 
 <style scoped>

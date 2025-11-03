@@ -3,12 +3,9 @@
     v-if="playerStore.character && currentRealm"
     class="space-y-4 text-sm"
   >
-    <div class="p-3 bg-gray-900/50 rounded-lg border border-gray-700 shadow-inner">
-      <h3 class="text-yellow-400 border-b border-yellow-700/50 pb-1 mb-2 font-semibold flex items-center">
-        <Icon
-          name="lucide:swords"
-          class="mr-2 h-4 w-4 text-yellow-500"
-        /> Tu Luyện & Cảnh Giới
+    <div class="p-3 bg-gray-900/50 border border-gray-700 shadow-inner font-mono">
+      <h3 class="text-yellow-400 border-b border-yellow-700/50 pb-1 mb-2 font-bold uppercase tracking-wider">
+        > TU LUYỆN & CẢNH GIỚI
       </h3>
       <div class="grid grid-cols-2 gap-x-4 mb-2">
         <p>Cấp Độ: <span class="text-white font-bold">Lv.{{ playerStore.character.level }}</span></p>
@@ -41,17 +38,11 @@
         class="mt-3 text-center"
       >
         <button
-          class="bg-gradient-to-r from-yellow-600 to-orange-500 hover:from-yellow-500 hover:to-orange-400 text-white px-4 py-2 rounded-md disabled:opacity-50 disabled:cursor-not-allowed animate-pulse font-bold shadow-lg border border-yellow-400/80 text-base"
+          class="bg-gradient-to-r from-yellow-600 to-orange-500 hover:from-yellow-500 hover:to-orange-400 text-white px-4 py-2 disabled:opacity-50 disabled:cursor-not-allowed font-bold shadow-lg border border-yellow-400/80 text-base uppercase tracking-widest"
           :disabled="isLoading"
           @click="performBreakthrough"
         >
-          <Icon
-            name="lucide:sparkles"
-            class="inline-block mr-1 -mt-px h-4 w-4"
-          /> ĐỘT PHÁ <Icon
-            name="lucide:sparkles"
-            class="inline-block ml-1 -mt-px h-4 w-4"
-          />
+          ✦ ĐỘT PHÁ ✦
         </button>
         <p
           v-if="nextRealm"
@@ -76,15 +67,12 @@
       </div>
     </div>
 
-    <div class="p-3 bg-gray-900/50 rounded-lg border border-gray-700 shadow-inner">
-      <h3 class="text-emerald-400 border-b border-emerald-700/50 pb-1 mb-2 font-semibold flex items-center justify-between">
-        <span class="flex items-center">
-          <Icon
-            name="lucide:gem"
-            class="mr-2 h-4 w-4 text-emerald-500"
-          /> Phân Phối Tiềm Năng
+    <div class="p-3 bg-gray-900/50 border border-gray-700 shadow-inner font-mono">
+      <h3 class="text-emerald-400 border-b border-emerald-700/50 pb-1 mb-2 font-bold flex items-center justify-between uppercase tracking-wider">
+        <span>
+          > PHÂN PHỐI TIỀM NĂNG
         </span>
-        <span class="text-xs text-gray-400">Điểm còn lại:
+        <span class="text-xs text-gray-400">ĐIỂM:
           <span class="text-white font-bold text-base ml-1">{{ playerStore.character.statPoints }}</span>
         </span>
       </h3>
@@ -95,26 +83,19 @@
         <div
           v-for="statKey in allocatableStats"
           :key="statKey"
-          class="flex items-center justify-between bg-gray-800/50 p-1.5 rounded border border-gray-700/50"
+          class="flex items-center justify-between bg-gray-800/50 p-1.5 border border-gray-700/50"
         >
           <span class="flex items-center text-xs uppercase tracking-wider">
-            <Icon
-              :name="statIcon(statKey)"
-              class="mr-1.5 h-4 w-4"
-              :class="statColor(statKey)"
-            />
+            <span :class="statColor(statKey)" class="font-bold mr-2">{{ statPrefix(statKey) }}:</span>
             {{ statName(statKey) }}
-            <span class="text-gray-400 ml-1">({{ playerStore.character.allocatedStats[statKey] || 0 }})</span> </span>
+            <span class="text-gray-400 ml-1">({{ playerStore.character.allocatedStats[statKey] || 0 }})</span>
+          </span>
           <button
-            class="bg-emerald-700/70 hover:bg-emerald-600/70 text-emerald-100 px-2 py-0.5 rounded text-xs border border-emerald-600/50 disabled:opacity-50 disabled:cursor-not-allowed"
+            class="bg-emerald-700/70 hover:bg-emerald-600/70 text-emerald-100 px-2 py-0.5 text-xs border border-emerald-600/50 disabled:opacity-50 disabled:cursor-not-allowed font-bold"
             :disabled="isLoading"
-            title="Cộng 1 điểm"
             @click="allocate(statKey, 1)"
           >
-            <Icon
-              name="lucide:plus"
-              class="h-4 w-4"
-            />
+            [ + ]
           </button>
         </div>
       </div>
@@ -126,61 +107,30 @@
       </div>
     </div>
 
-    <div class="p-3 bg-gray-900/50 rounded-lg border border-gray-700 shadow-inner">
-      <h3 class="text-cyan-400 border-b border-cyan-700/50 pb-1 mb-2 font-semibold flex items-center">
-        <Icon
-          name="lucide:bar-chart-3"
-          class="mr-2 h-4 w-4 text-cyan-500"
-        /> Bảng Thuộc Tính
+    <div class="p-3 bg-gray-900/50 border border-gray-700 shadow-inner font-mono">
+      <h3 class="text-cyan-400 border-b border-cyan-700/50 pb-1 mb-2 font-bold uppercase tracking-wider">
+        > BẢNG THUỘC TÍNH
       </h3>
-      <div class="grid grid-cols-2 md:grid-cols-3 gap-x-4 gap-y-1">
-        <span class="flex items-center"><Icon
-          name="lucide:sword"
-          class="mr-1.5 text-red-400 h-4 w-4"
-        /> Tấn Công: <span class="text-white ml-1">{{ playerStore.character.stats.attack }}</span></span>
-        <span class="flex items-center"><Icon
-          name="lucide:shield"
-          class="mr-1.5 text-blue-400 h-4 w-4"
-        /> Phòng Thủ: <span class="text-white ml-1">{{ playerStore.character.stats.defense }}</span></span>
-        <span class="flex items-center"><Icon
-          name="lucide:wind"
-          class="mr-1.5 text-green-400 h-4 w-4"
-        /> Tốc Độ: <span class="text-white ml-1">{{ playerStore.character.stats.speed }}</span></span>
-        <span class="flex items-center"><Icon
-          name="lucide:swords"
-          class="mr-1.5 text-yellow-400 h-4 w-4"
-        /> Chí Mạng: <span class="text-white ml-1">{{ (playerStore.character.stats.critChance * 100).toFixed(0) }}%</span></span>
-        <span class="flex items-center"><Icon
-          name="lucide:shield-half"
-          class="mr-1.5 text-purple-400 h-4 w-4"
-        /> Kháng Phép: <span class="text-white ml-1">{{ playerStore.character.stats.resistance }}</span></span>
-        <span class="flex items-center"><Icon
-          name="lucide:feather"
-          class="mr-1.5 text-sky-400 h-4 w-4"
-        /> Né Tránh: <span class="text-white ml-1">{{ (playerStore.character.stats.dodgeChance * 100).toFixed(0) }}%</span></span>
+      <div class="grid grid-cols-2 md:grid-cols-3 gap-x-4 gap-y-1 text-xs">
+        <span><span class="text-red-400 font-bold">TẤN:</span> <span class="text-white ml-1">{{ playerStore.character.stats.attack }}</span></span>
+        <span><span class="text-blue-400 font-bold">THỦ:</span> <span class="text-white ml-1">{{ playerStore.character.stats.defense }}</span></span>
+        <span><span class="text-green-400 font-bold">TỐC:</span> <span class="text-white ml-1">{{ playerStore.character.stats.speed }}</span></span>
+        <span><span class="text-yellow-400 font-bold">CHÍ MẠNG:</span> <span class="text-white ml-1">{{ (playerStore.character.stats.critChance * 100).toFixed(0) }}%</span></span>
+        <span><span class="text-purple-400 font-bold">KHÁNG:</span> <span class="text-white ml-1">{{ playerStore.character.stats.resistance }}</span></span>
+        <span><span class="text-sky-400 font-bold">NÉ:</span> <span class="text-white ml-1">{{ (playerStore.character.stats.dodgeChance * 100).toFixed(0) }}%</span></span>
       </div>
-      <div class="grid grid-cols-2 md:grid-cols-3 gap-x-4 gap-y-1 mt-1 pt-1 border-t border-gray-700/50">
-        <span class="flex items-center"><Icon
-          name="lucide:star"
-          class="mr-1.5 text-gray-400 h-4 w-4"
-        /> Danh Vọng: <span class="text-white ml-1">{{ playerStore.character.reputation }}</span></span>
-        <span class="flex items-center"><Icon
-          name="lucide:heart"
-          class="mr-1.5 h-4 w-4"
-          :class="karmaColor"
-        /> Karma: <span
+      <div class="grid grid-cols-2 md:grid-cols-3 gap-x-4 gap-y-1 mt-1 pt-1 border-t border-gray-700/50 text-xs">
+        <span><span class="text-gray-400 font-bold">DANH VỌNG:</span> <span class="text-white ml-1">{{ playerStore.character.reputation }}</span></span>
+        <span><span :class="karmaColor" class="font-bold">KARMA:</span> <span
           :class="karmaColor"
           class="ml-1"
         >{{ playerStore.character.karma }}</span></span>
       </div>
     </div>
 
-    <div class="p-3 bg-gray-900/50 rounded-lg border border-gray-700 shadow-inner">
-      <h3 class="text-orange-400 border-b border-orange-700/50 pb-1 mb-2 font-semibold flex items-center">
-        <Icon
-          name="lucide:wand-sparkles"
-          class="mr-2 h-4 w-4 text-orange-500"
-        /> Trạng Thái & Hiệu Ứng
+    <div class="p-3 bg-gray-900/50 border border-gray-700 shadow-inner font-mono">
+      <h3 class="text-orange-400 border-b border-orange-700/50 pb-1 mb-2 font-bold uppercase tracking-wider">
+        > TRẠNG THÁI & HIỆU ỨNG
       </h3>
       <div
         v-if="!activeEffects.length"
@@ -196,12 +146,9 @@
           v-for="effect in activeEffects"
           :key="effect.effectId"
           :class="effectColor(effect)"
-          class="flex items-center"
+          class="flex items-center text-xs"
         >
-          <Icon
-            :name="effectIcon(effect)"
-            class="inline-block mr-2 flex-shrink-0 h-4 w-4"
-          />
+          <span class="font-bold mr-2">{{ effectPrefix(effect) }}</span>
           <span class="font-medium">{{ effect.name }}</span>
           <span
             v-if="effect.durationText"
@@ -286,19 +233,19 @@ function statName(statKey: AllocatableStat): string {
     case 'attack': return 'Tấn Công'
     case 'defense': return 'Phòng Thủ'
     case 'speed': return 'Tốc Độ'
-    case 'hpMax': return 'Sinh Lực Tối Đa'
-    case 'energyMax': return 'Năng Lượng Tối Đa'
+    case 'hpMax': return 'Sinh Lực'
+    case 'energyMax': return 'Năng Lượng'
     default: return statKey
   }
 }
-function statIcon(statKey: AllocatableStat): string {
+function statPrefix(statKey: AllocatableStat): string {
   switch (statKey) {
-    case 'attack': return 'lucide:sword'
-    case 'defense': return 'lucide:shield'
-    case 'speed': return 'lucide:wind'
-    case 'hpMax': return 'lucide:heart-pulse'
-    case 'energyMax': return 'lucide:zap'
-    default: return 'lucide:gem'
+    case 'attack': return 'TẤN'
+    case 'defense': return 'THỦ'
+    case 'speed': return 'TỐC'
+    case 'hpMax': return 'HP'
+    case 'energyMax': return 'NL'
+    default: return 'ST'
   }
 }
 function statColor(statKey: AllocatableStat): string {
@@ -367,12 +314,11 @@ function effectColor(effect: any): string {
   return 'text-gray-300'
 }
 
-// Hàm chọn icon cho hiệu ứng
-function effectIcon(effect: any): string {
-  if (effect.effectId === 'heavy_wound') return 'lucide:heart-crack'
-  if (effect.hpRegenModifier > 0) return 'lucide:trending-up' // Buff
-  if (effect.hpRegenModifier < 0) return 'lucide:trending-down' // Debuff
-  // Thêm icon cho các buff/debuff khác dựa trên effectId
-  return 'lucide:sparkles' // Icon mặc định
+// Hàm chọn prefix cho hiệu ứng
+function effectPrefix(effect: any): string {
+  if (effect.effectId === 'heavy_wound') return '✗'
+  if (effect.hpRegenModifier > 0) return '↑' // Buff
+  if (effect.hpRegenModifier < 0) return '↓' // Debuff
+  return '•'
 }
 </script>
