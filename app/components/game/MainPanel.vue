@@ -44,6 +44,7 @@
       <div class="p-3 md:p-4 flex-grow overflow-y-auto custom-scrollbar">
         <GameTabsZoneTab v-if="activeTab === 'zone'" />
         <GameTabsCharacterTab v-if="activeTab === 'character'" />
+        <GameTabsEquipmentTab v-if="activeTab === 'equipment'" />
         <GameTabsQuestsTab v-if="activeTab === 'quests'" />
         <GameTabsPetTab v-if="activeTab === 'pet'" />
         <GameTabsGuildTab v-if="activeTab === 'guild'" />
@@ -62,6 +63,7 @@ const activeTab = ref<Tab>('zone')
 const tabs = [
   { id: 'zone', name: 'KHU VỰC' },
   { id: 'character', name: 'NHÂN VẬT' },
+  { id: 'equipment', name: 'TRANG BỊ' },
   { id: 'quests', name: 'NHIỆM VỤ' },
   { id: 'pet', name: 'THÚ CƯỠI' },
   { id: 'guild', name: 'LIÊN MINH' },
