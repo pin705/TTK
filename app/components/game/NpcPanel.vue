@@ -58,10 +58,9 @@
         </div>
 
         <button
-          class="bg-gradient-to-r from-blue-700/70 to-blue-800/70 hover:from-blue-600/70 hover:to-blue-700/70 px-3 py-2 rounded-md text-xs text-blue-100 flex-shrink-0 border border-blue-600/50 flex items-center gap-1.5 transition-all hover:scale-105 disabled:opacity-50"
-          :disabled="isLoading"
+          class="bg-gradient-to-r from-blue-700/70 to-blue-800/70 hover:from-blue-600/70 hover:to-blue-700/70 px-3 py-2 rounded-md text-xs text-blue-100 flex-shrink-0 border border-blue-600/50 flex items-center gap-1.5 transition-all hover:scale-105"
           title="Nói chuyện"
-          @click="talkToNpc(npc.npcId)"
+          @click="openNpcDialog(npc.npcId)"
         >
           <Icon
             name="lucide:message-circle"
@@ -82,6 +81,12 @@
     />
     <p class="text-sm text-gray-500 italic">Không có NPC nào trong khu vực này</p>
   </div>
+
+  <!-- NPC Dialog -->
+  <GameNpcDialog
+    :npc-id="selectedNpcId"
+    @close="closeNpcDialog"
+  />
 </template>
 
 <script setup lang="ts">
@@ -136,5 +141,14 @@ const npcsInZoneDetails = computed(() => {
   }).filter(npc => npc !== null)
 })
 
-async function talkToNpc(npcId: string) { await execute('npc/talk', { npcId }) }
+// NPC Dialog state
+const selectedNpcId = ref<NpcId | null>(null)
+
+function openNpcDialog(npcId: string) {
+  selectedNpcId.value = npcId as NpcId
+}
+
+function closeNpcDialog() {
+  selectedNpcId.value = null
+}
 </script>

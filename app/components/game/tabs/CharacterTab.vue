@@ -211,6 +211,8 @@
       </ul>
     </div>
 
+    <GameEquipmentPanel />
+
     <GameEvolutionPanel />
 
     <GameInventoryPanel />

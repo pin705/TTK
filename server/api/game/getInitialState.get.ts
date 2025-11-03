@@ -6,20 +6,26 @@ export default defineEventHandler(async (event) => {
   }
 
   const character = await Character.findById(characterId)
-    .lean()
 
   if (!character)
     throw createError({ statusCode: 404, statusMessage: 'Character not found' })
 
-  const currentZoneData = ZoneManager.getZone(character.currentZoneId as any)
-  if (!currentZoneData)
-    throw createError({ statusCode: 404, statusMessage: `Khu vực '${character.currentZoneId}' không tồn tại.` })
+  // Recalculate stats including equipment bonuses
+  const { recalculateStats } = await import('~~/server/utils/levelManager')
+  recalculateStats(character)
+  await character.save()
 
-  const activeMonsters = await MonsterEngine.getMonstersInZone(character.currentZoneId)
+  const characterData = character.toObject()
+
+  const currentZoneData = ZoneManager.getZone(characterData.currentZoneId as any)
+  if (!currentZoneData)
+    throw createError({ statusCode: 404, statusMessage: `Khu vực '${characterData.currentZoneId}' không tồn tại.` })
+
+  const activeMonsters = await MonsterEngine.getMonstersInZone(characterData.currentZoneId)
 
   const currentZone = {
     ...currentZoneData,
-    zoneId: character.currentZoneId,
+    zoneId: characterData.currentZoneId,
     monsters: activeMonsters
   }
 
@@ -28,8 +34,8 @@ export default defineEventHandler(async (event) => {
 
   // Check for tutorial quests and provide hints
   const tutorialHints: string[] = []
-  if (character.activeQuests && character.activeQuests.length > 0) {
-    const activeTutorialQuest = character.activeQuests.find(q => 
+  if (characterData.activeQuests && characterData.activeQuests.length > 0) {
+    const activeTutorialQuest = characterData.activeQuests.find(q => 
       q.questId.startsWith('tutorial_')
     )
     
@@ -49,7 +55,7 @@ export default defineEventHandler(async (event) => {
   }
 
   return {
-    character,
+    character: characterData,
     currentZone,
     tutorialHints
   }
