@@ -41,7 +41,7 @@ async function handleVictory(character: any, monsterData: any, monsterTemplate: 
 }
 
 // Xử lý khi người chơi bị đánh bại
-function handleDefeat(character: ICharacter, monsterData: unknown) {
+async function handleDefeat(character: ICharacter, monsterData: unknown) {
   character.inCombat = false
   character.combat = null
   character.hp = Math.max(1, Math.floor(character.hpMax * 0.05)) // Hồi sinh với 5% HP (tối thiểu 1)
@@ -76,7 +76,19 @@ function handleDefeat(character: ICharacter, monsterData: unknown) {
   })
   // Xóa các buff có lợi khác nếu cần
 
-  return { message: `Bạn đã bị [${monsterData.name}] đánh bại! Bị đưa về ${ZoneManager.getZone(respawnZoneId)?.name}.${crystalLossMessage} Trạng thái Trọng Thương trong ${woundDurationSeconds} giây.`, type: 'defeat' }
+  // Get new zone data for respawn location
+  const respawnZoneData = ZoneManager.getZone(respawnZoneId as any)
+  const respawnZoneMonsters = await MonsterEngine.getMonstersInZone(respawnZoneId)
+
+  return { 
+    message: `Bạn đã bị [${monsterData.name}] đánh bại! Bị đưa về ${respawnZoneData?.name}.${crystalLossMessage} Trạng thái Trọng Thương trong ${woundDurationSeconds} giây.`, 
+    type: 'defeat',
+    newZone: {
+      ...respawnZoneData,
+      zoneId: respawnZoneId,
+      monsters: respawnZoneMonsters
+    }
+  }
 }
 
 // --- Action Attack chính ---
@@ -146,8 +158,17 @@ export const attack: ActionHandler = async ({ character }) => {
 
     if (character.hp <= 0) {
       // Người chơi thua
-      const defeatLog = handleDefeat(character, monsterData)
-      turnLogs.push(defeatLog)
+      const defeatResult = await handleDefeat(character, monsterData)
+      turnLogs.push({ message: defeatResult.message, type: defeatResult.type })
+      
+      // Return with new zone data for respawn location
+      return {
+        log: turnLogs,
+        updates: {
+          character: { ...character.toObject() }, // Gửi lại toàn bộ object character đã được cập nhật
+          zone: defeatResult.newZone // Use new zone data instead of old zone
+        }
+      }
     }
   }
 
