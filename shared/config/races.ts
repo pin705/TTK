@@ -381,10 +381,197 @@ export const races = {
           damage: 3.0,
           specialEffect: 'assassinate'
         }
+      },
+      {
+        id: 'voidwalker_transformation',
+        name: 'Biến Hình Hư Không',
+        description: 'Biến hình thành Hành Giả Hư Không hoàn chỉnh. Tăng 50% tất cả chỉ số, có thể dịch chuyển tức thời.',
+        type: 'active',
+        cooldown: 1800, // 30 minutes
+        energyCost: 200,
+        effect: {
+          buffDuration: 300, // 5 minutes
+          specialEffect: 'void_transformation'
+        }
       }
     ],
     startingZone: 'giang_nam_khu_dan_cu_01'
   }
 } as const satisfies Record<string, RaceConfig>
 
+// Transformation Forms (Feature 3)
+export interface TransformationForm {
+  name: string
+  nameVi: string
+  description: string
+  requiredItem?: string // Item needed to unlock this form
+  statMultipliers: {
+    attack: number
+    defense: number
+    speed: number
+    spirit: number
+    hpMax: number
+    energyMax: number
+  }
+  specialAbilities: string[] // Special abilities gained in this form
+  visualEffect: string // Visual description
+}
+
+export const transformationForms = {
+  // Human Transformations
+  human_iron_body: {
+    name: 'Iron Body',
+    nameVi: 'Thân Thể Sắt',
+    description: 'Biến hình cơ bản của con người, cơ thể trở nên cứng như sắt.',
+    statMultipliers: {
+      attack: 1.3,
+      defense: 1.5,
+      speed: 0.9,
+      spirit: 1.0,
+      hpMax: 1.4,
+      energyMax: 1.0
+    },
+    specialAbilities: ['damage_reduction_20', 'knockback_resist'],
+    visualEffect: 'Cơ thể phát ra ánh kim loại'
+  },
+
+  // Mutant Transformations
+  mutant_berserker_form: {
+    name: 'Berserker Form',
+    nameVi: 'Hình Thái Cuồng Chiến',
+    description: 'Giải phóng toàn bộ sức mạnh đột biến, trở thành cỗ máy sát thương.',
+    statMultipliers: {
+      attack: 2.0,
+      defense: 0.8,
+      speed: 1.3,
+      spirit: 0.7,
+      hpMax: 1.5,
+      energyMax: 0.9
+    },
+    specialAbilities: ['berserk_rage', 'life_steal_15', 'attack_speed_boost'],
+    visualEffect: 'Cơ bắp phồng lên, mắt phát sáng đỏ'
+  },
+
+  // Esper Transformations
+  esper_spirit_form: {
+    name: 'Spirit Form',
+    nameVi: 'Hình Thái Linh Hồn',
+    description: 'Chuyển hóa thành dạng năng lượng tinh thần thuần túy.',
+    statMultipliers: {
+      attack: 0.8,
+      defense: 0.7,
+      speed: 1.5,
+      spirit: 2.5,
+      hpMax: 0.8,
+      energyMax: 2.0
+    },
+    specialAbilities: ['phase_through', 'spirit_attacks_ignore_armor', 'energy_regen_boost'],
+    visualEffect: 'Cơ thể trở nên trong suốt, phát sáng xanh'
+  },
+
+  // Cyborg Transformations
+  cyborg_combat_mode: {
+    name: 'Combat Mode',
+    nameVi: 'Chế Độ Chiến Đấu',
+    description: 'Kích hoạt toàn bộ hệ thống chiến đấu cơ giới.',
+    statMultipliers: {
+      attack: 1.5,
+      defense: 1.5,
+      speed: 1.2,
+      spirit: 1.0,
+      hpMax: 1.3,
+      energyMax: 1.5
+    },
+    specialAbilities: ['all_modules_active', 'auto_repair', 'weapon_systems'],
+    visualEffect: 'Giáp cơ giới mở ra, vũ khí xuất hiện'
+  },
+
+  // Beast Kin Transformations
+  beastkin_primal_form: {
+    name: 'Primal Beast Form',
+    nameVi: 'Hình Thái Thú Nguyên Thủy',
+    description: 'Giải phóng bản năng thú tính hoàn toàn.',
+    statMultipliers: {
+      attack: 1.7,
+      defense: 1.2,
+      speed: 2.0,
+      spirit: 0.8,
+      hpMax: 1.4,
+      energyMax: 1.2
+    },
+    specialAbilities: ['feral_strikes', 'enhanced_senses', 'pack_hunter'],
+    visualEffect: 'Mọc thêm móng vuốt, nanh răng, lông thú'
+  },
+
+  // Void Walker Transformations
+  voidwalker_shadow_form: {
+    name: 'Shadow Form',
+    nameVi: 'Hình Thái Bóng Tối',
+    description: 'Hòa nhập với bóng tối và không gian.',
+    statMultipliers: {
+      attack: 1.6,
+      defense: 0.9,
+      speed: 1.8,
+      spirit: 1.5,
+      hpMax: 1.1,
+      energyMax: 1.3
+    },
+    specialAbilities: ['stealth', 'critical_damage_boost', 'dimensional_step'],
+    visualEffect: 'Cơ thể trở thành bóng đen, hòa vào tối'
+  },
+
+  // Special Transformations (Unlocked via Legendary Quests)
+  dragon_form: {
+    name: 'Dragon Form',
+    nameVi: 'Hình Thái Rồng',
+    description: 'Biến thành rồng, sức mạnh tối thượng.',
+    requiredItem: 'dragon_soul_crystal',
+    statMultipliers: {
+      attack: 2.5,
+      defense: 2.0,
+      speed: 1.5,
+      spirit: 2.0,
+      hpMax: 2.5,
+      energyMax: 2.0
+    },
+    specialAbilities: ['dragon_breath', 'flight', 'dragon_scales_defense', 'fear_aura'],
+    visualEffect: 'Biến thành rồng hoàn chỉnh với vảy và cánh'
+  },
+
+  phoenix_form: {
+    name: 'Phoenix Form',
+    nameVi: 'Hình Thái Phượng Hoàng',
+    description: 'Biến thành hỏa phượng, bất tử và hủy diệt.',
+    requiredItem: 'phoenix_essence',
+    statMultipliers: {
+      attack: 2.3,
+      defense: 1.5,
+      speed: 2.0,
+      spirit: 2.5,
+      hpMax: 1.8,
+      energyMax: 2.2
+    },
+    specialAbilities: ['phoenix_flames', 'flight', 'rebirth_passive', 'burn_aura'],
+    visualEffect: 'Bao phủ bởi lửa phượng hoàng, đôi cánh lửa'
+  },
+
+  void_lord_form: {
+    name: 'Void Lord Form',
+    nameVi: 'Hình Thái Chúa Tể Hư Không',
+    description: 'Làm chủ không gian, sức mạnh siêu việt.',
+    requiredItem: 'void_mastery_scroll',
+    statMultipliers: {
+      attack: 2.2,
+      defense: 1.8,
+      speed: 2.2,
+      spirit: 2.3,
+      hpMax: 2.0,
+      energyMax: 2.5
+    },
+    specialAbilities: ['void_manipulation', 'teleportation', 'time_slow', 'dimensional_rift_attack'],
+    visualEffect: 'Không gian xung quanh bị bóp méo, thân thể nửa hiện hữu'
+  }
+} as const
+
+export type TransformationFormId = keyof typeof transformationForms
 export type RaceId = keyof typeof races

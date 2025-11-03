@@ -512,6 +512,249 @@ export const quests = {
       ],
       reputation: 120
     }
+  },
+
+  // === LEGENDARY QUEST LINES (Feature 5) ===
+  
+  // Dragon's Legacy Quest Line
+  legendary_dragon_awakening_1: {
+    title: '[Huyền Thoại] Di Sản Rồng - Phần 1: Thức Tỉnh',
+    description: 'Một giấc mơ kỳ lạ dẫn bạn đến một bí mật cổ xưa về Rồng. Hành trình huyền thoại bắt đầu.',
+    type: 'main',
+    requiredLevel: 40,
+    objectives: [
+      { type: 'talk', npcId: 'elder_sage', description: 'Tìm gặp Hiền Giả Cổ Lão' },
+      { type: 'explore', zoneId: 'dragon_tomb_entrance', description: 'Khám phá Lăng Mộ Rồng' },
+      { type: 'gather', itemId: 'dragon_scale_fragment', count: 10, description: 'Thu thập 10 Mảnh Vảy Rồng' }
+    ],
+    rewards: {
+      exp: 5000,
+      items: [
+        { itemId: 'dragon_amulet', quantity: 1 },
+        { itemId: 'energy_crystal', quantity: 500 }
+      ],
+      reputation: 200
+    }
+  },
+
+  legendary_dragon_awakening_2: {
+    title: '[Huyền Thoại] Di Sản Rồng - Phần 2: Thử Thách',
+    description: 'Để chứng minh bản thân xứng đáng, bạn phải vượt qua Thử Thách Rồng.',
+    type: 'main',
+    requiredLevel: 42,
+    objectives: [
+      { type: 'kill', monsterId: 'dragon_guardian', count: 3, description: 'Đánh bại 3 Vệ Binh Rồng' },
+      { type: 'kill', monsterId: 'ancient_dragon_spirit', count: 1, description: 'Chiến thắng Linh Hồn Rồng Cổ Đại' }
+    ],
+    rewards: {
+      exp: 8000,
+      items: [
+        { itemId: 'dragon_scale_helmet', quantity: 1 },
+        { itemId: 'gene_solution_elite', quantity: 2 }
+      ]
+    }
+  },
+
+  legendary_dragon_awakening_3: {
+    title: '[Huyền Thoại] Di Sản Rồng - Phần 3: Kế Thừa',
+    description: 'Thu thập toàn bộ bộ Giáp Vảy Rồng và nhận được sức mạnh của Rồng.',
+    type: 'main',
+    requiredLevel: 45,
+    objectives: [
+      { type: 'gather', itemId: 'dragon_scale_armor', count: 1, description: 'Sở hữu Giáp Vảy Rồng' },
+      { type: 'gather', itemId: 'dragon_scale_gauntlets', count: 1, description: 'Sở hữu Găng Tay Vảy Rồng' },
+      { type: 'gather', itemId: 'dragon_scale_boots', count: 1, description: 'Sở hữu Giày Vảy Rồng' },
+      { type: 'kill', monsterId: 'elder_dragon', count: 1, description: 'Đánh bại Cổ Rồng' }
+    ],
+    rewards: {
+      exp: 15000,
+      items: [
+        { itemId: 'dragon_soul_crystal', quantity: 1 },
+        { itemId: 'transformation_catalyst', quantity: 1 },
+        { itemId: 'gene_solution_legendary', quantity: 1 }
+      ],
+      reputation: 500
+    }
+  },
+
+  // Phoenix Rebirth Quest Line
+  legendary_phoenix_rebirth_1: {
+    title: '[Huyền Thoại] Tái Sinh Phượng Hoàng - Phần 1: Tìm Kiếm',
+    description: 'Huyền thoại về Hỏa Phượng bất tử. Hãy tìm kiếm dấu tích của nó.',
+    type: 'main',
+    requiredLevel: 48,
+    objectives: [
+      { type: 'explore', zoneId: 'volcano_depths', description: 'Khám phá Sâu Thẳm Núi Lửa' },
+      { type: 'gather', itemId: 'lava_stone', count: 20, description: 'Thu thập 20 Đá Dung Nham' },
+      { type: 'gather', itemId: 'fire_essence', count: 10, description: 'Thu thập 10 Bản Chất Lửa' }
+    ],
+    rewards: {
+      exp: 8000,
+      items: [
+        { itemId: 'phoenix_amulet', quantity: 1 },
+        { itemId: 'energy_crystal', quantity: 600 }
+      ]
+    }
+  },
+
+  legendary_phoenix_rebirth_2: {
+    title: '[Huyền Thoại] Tái Sinh Phượng Hoàng - Phần 2: Đối Mặt',
+    description: 'Hỏa Phượng đã tỉnh giấc. Hãy chứng minh sức mạnh của bạn.',
+    type: 'main',
+    requiredLevel: 50,
+    objectives: [
+      { type: 'kill', monsterId: 'fire_phoenix_boss', count: 1, description: 'Đánh bại Hỏa Phượng' },
+      { type: 'gather', itemId: 'phoenix_feather', count: 1, description: 'Thu thập Lông Phượng Hoàng' }
+    ],
+    rewards: {
+      exp: 12000,
+      items: [
+        { itemId: 'phoenix_heart', quantity: 1 },
+        { itemId: 'gene_solution_elite', quantity: 3 }
+      ],
+      reputation: 400
+    }
+  },
+
+  legendary_phoenix_rebirth_3: {
+    title: '[Huyền Thoại] Tái Sinh Phượng Hoàng - Phần 3: Kế Thừa Lửa',
+    description: 'Thu thập toàn bộ bộ Hỏa Phượng và nhận được sức mạnh tái sinh.',
+    type: 'main',
+    requiredLevel: 52,
+    objectives: [
+      { type: 'gather', itemId: 'phoenix_crown', count: 1, description: 'Sở hữu Vương Miện Phượng Hoàng' },
+      { type: 'gather', itemId: 'phoenix_robe', count: 1, description: 'Sở hữu Áo Choàng Phượng Hoàng' },
+      { type: 'gather', itemId: 'phoenix_wings', count: 1, description: 'Sở hữu Đôi Cánh Phượng Hoàng' }
+    ],
+    rewards: {
+      exp: 20000,
+      items: [
+        { itemId: 'phoenix_essence', quantity: 1 },
+        { itemId: 'transformation_catalyst', quantity: 1 },
+        { itemId: 'gene_solution_legendary', quantity: 2 }
+      ],
+      reputation: 600
+    }
+  },
+
+  // Void Walker Quest Line
+  legendary_void_walker_1: {
+    title: '[Huyền Thoại] Hành Giả Hư Không - Phần 1: Khe Nứt',
+    description: 'Một khe nứt trong không gian xuất hiện. Hãy khám phá bí ẩn của nó.',
+    type: 'main',
+    requiredLevel: 55,
+    objectives: [
+      { type: 'explore', zoneId: 'dimensional_rift', description: 'Khám phá Khe Nứt Chiều Không' },
+      { type: 'kill', monsterId: 'void_demon', count: 10, description: 'Đánh bại 10 Quỷ Hư Không' },
+      { type: 'gather', itemId: 'void_crystal', count: 15, description: 'Thu thập 15 Tinh Thể Hư Không' }
+    ],
+    rewards: {
+      exp: 10000,
+      items: [
+        { itemId: 'void_amulet', quantity: 1 },
+        { itemId: 'energy_crystal', quantity: 800 }
+      ]
+    }
+  },
+
+  legendary_void_walker_2: {
+    title: '[Huyền Thoại] Hành Giả Hư Không - Phần 2: Chúa Tể',
+    description: 'Đối mặt với Chúa Tể Hư Không và chiếm lấy sức mạnh của hắn.',
+    type: 'main',
+    requiredLevel: 58,
+    objectives: [
+      { type: 'kill', monsterId: 'void_lord_boss', count: 1, description: 'Đánh bại Chúa Tể Hư Không' },
+      { type: 'gather', itemId: 'void_lord_core', count: 1, description: 'Thu thập Lõi Chúa Tể Hư Không' }
+    ],
+    rewards: {
+      exp: 18000,
+      items: [
+        { itemId: 'dimensional_essence', quantity: 5 },
+        { itemId: 'gene_solution_legendary', quantity: 2 }
+      ],
+      reputation: 500
+    }
+  },
+
+  legendary_void_walker_3: {
+    title: '[Huyền Thoại] Hành Giả Hư Không - Phần 3: Làm Chủ Không Gian',
+    description: 'Hoàn thiện bộ Hư Không và làm chủ sức mạnh không gian.',
+    type: 'main',
+    requiredLevel: 60,
+    objectives: [
+      { type: 'gather', itemId: 'void_mask', count: 1, description: 'Sở hữu Mặt Nạ Hư Không' },
+      { type: 'gather', itemId: 'void_cloak', count: 1, description: 'Sở hữu Áo Choàng Hư Không' },
+      { type: 'gather', itemId: 'void_ring', count: 1, description: 'Sở hữu Nhẫn Hư Không' }
+    ],
+    rewards: {
+      exp: 25000,
+      items: [
+        { itemId: 'void_mastery_scroll', quantity: 1 },
+        { itemId: 'transformation_catalyst', quantity: 1 },
+        { itemId: 'gene_solution_legendary', quantity: 3 }
+      ],
+      reputation: 800
+    }
+  },
+
+  // Cosmic Explorer Quest Line
+  legendary_cosmic_explorer_1: {
+    title: '[Huyền Thoại] Nhà Thám Hiểm Vũ Trụ - Phần 1: Bắt Đầu',
+    description: 'Hãy khám phá những vùng sâu thẳm của vũ trụ chưa ai đặt chân đến.',
+    type: 'main',
+    requiredLevel: 65,
+    objectives: [
+      { type: 'explore', zoneId: 'jupiter_orbit', description: 'Khám phá Quỹ Đạo Sao Mộc' },
+      { type: 'explore', zoneId: 'saturn_rings', description: 'Khám phá Vành Đai Sao Thổ' },
+      { type: 'gather', itemId: 'jupiter_gas', count: 20, description: 'Thu thập 20 Khí Sao Mộc' },
+      { type: 'gather', itemId: 'saturn_ice', count: 20, description: 'Thu thập 20 Băng Sao Thổ' }
+    ],
+    rewards: {
+      exp: 15000,
+      items: [
+        { itemId: 'cosmic_navigator', quantity: 1 },
+        { itemId: 'energy_crystal', quantity: 1000 }
+      ]
+    }
+  },
+
+  legendary_cosmic_explorer_2: {
+    title: '[Huyền Thoại] Nhà Thám Hiểm Vũ Trụ - Phần 2: Tinh Vân',
+    description: 'Tinh vân không gian sâu ẩn chứa năng lượng nguyên thủy của vũ trụ.',
+    type: 'main',
+    requiredLevel: 70,
+    objectives: [
+      { type: 'explore', zoneId: 'deep_space_nebula', description: 'Khám phá Tinh Vân Không Gian Sâu' },
+      { type: 'kill', monsterId: 'nebula_entity', count: 5, description: 'Đánh bại 5 Thực Thể Tinh Vân' },
+      { type: 'gather', itemId: 'nebula_essence', count: 15, description: 'Thu thập 15 Tinh Túy Tinh Vân' }
+    ],
+    rewards: {
+      exp: 20000,
+      items: [
+        { itemId: 'cosmic_artifact', quantity: 1 },
+        { itemId: 'gene_solution_legendary', quantity: 3 }
+      ],
+      reputation: 700
+    }
+  },
+
+  legendary_cosmic_explorer_3: {
+    title: '[Huyền Thoại] Nhà Thám Hiểm Vũ Trụ - Phần 3: Bậc Thầy Vũ Trụ',
+    description: 'Trở thành Bậc Thầy Vũ Trụ và làm chủ sức mạnh của các hành tinh.',
+    type: 'main',
+    requiredLevel: 75,
+    objectives: [
+      { type: 'kill', monsterId: 'cosmic_horror', count: 3, description: 'Đánh bại 3 Kinh Hoàng Vũ Trụ' }
+    ],
+    rewards: {
+      exp: 30000,
+      items: [
+        { itemId: 'cosmic_mastery_tome', quantity: 1 },
+        { itemId: 'transformation_catalyst', quantity: 2 },
+        { itemId: 'gene_solution_legendary', quantity: 5 }
+      ],
+      reputation: 1000
+    }
   }
 } as const satisfies Record<string, QuestTemplate> // Đảm bảo type safety
 

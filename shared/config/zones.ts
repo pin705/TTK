@@ -435,6 +435,204 @@ export const zones = {
     connectedZones: [
       { direction: 'quay lại tầng trên', zoneId: 'ham_ngam_bien_di' }
     ]
+  },
+
+  // === NEW SECRET REALMS (Feature 1) ===
+  
+  frozen_palace: {
+    name: 'Cung Điện Băng Giá',
+    description: 'Một cung điện cổ đại bị đóng băng trong thời gian hàng nghìn năm. Năng lượng băng giá nguy hiểm tràn ngập khắp nơi.',
+    recommendedLevel: 35, monsterDensity: 'high', allowCultivation: false,
+    zoneType: 'secret_realm' as const,
+    energyCostPerMove: 18,
+    deathPenalty: { energyCrystalLoss: 0.28 },
+    respawnLocation: 'giang_nam_khu_dan_cu_01',
+    monsters: [
+      { monsterId: 'ice_wraith', spawnChance: 0.6 },
+      { monsterId: 'frost_golem', spawnChance: 0.4 }
+    ],
+    resources: [
+      { itemId: 'frozen_crystal', spawnChance: 0.4, quantity: [1, 2] },
+      { itemId: 'ice_essence', spawnChance: 0.2, quantity: [1, 1] }
+    ],
+    connectedZones: [
+      { direction: 'đến Phòng Ngai Vàng', zoneId: 'frozen_throne_room' }
+    ]
+  },
+
+  frozen_throne_room: {
+    name: 'Phòng Ngai Vàng Băng',
+    description: 'Phòng ngai vàng nơi Nữ Hoàng Băng đang say giấc ngàn năm.',
+    recommendedLevel: 40, monsterDensity: 'boss', allowCultivation: false,
+    zoneType: 'secret_realm' as const,
+    energyCostPerMove: 20,
+    deathPenalty: { energyCrystalLoss: 0.3 },
+    respawnLocation: 'giang_nam_khu_dan_cu_01',
+    monsters: [
+      { monsterId: 'ice_queen_boss', spawnChance: 1 }
+    ],
+    resources: [
+      { itemId: 'ice_crown', spawnChance: 0.15, quantity: [1, 1] },
+      { itemId: 'gene_solution_elite', spawnChance: 0.1, quantity: [1, 1] }
+    ],
+    connectedZones: [
+      { direction: 'rời khỏi cung điện', zoneId: 'frozen_palace' }
+    ]
+  },
+
+  volcano_depths: {
+    name: 'Sâu Thẳm Núi Lửa',
+    description: 'Lòng núi lửa đầy dung nham sôi sục. Nhiệt độ cực cao và quái vật lửa hung dữ.',
+    recommendedLevel: 45, monsterDensity: 'high', allowCultivation: false,
+    zoneType: 'secret_realm' as const,
+    energyCostPerMove: 20,
+    deathPenalty: { energyCrystalLoss: 0.3 },
+    respawnLocation: 'moon_base',
+    monsters: [
+      { monsterId: 'lava_serpent', spawnChance: 0.5 },
+      { monsterId: 'fire_elemental', spawnChance: 0.5 }
+    ],
+    resources: [
+      { itemId: 'lava_stone', spawnChance: 0.5, quantity: [1, 3] },
+      { itemId: 'fire_essence', spawnChance: 0.3, quantity: [1, 2] }
+    ],
+    connectedZones: [
+      { direction: 'đến Hầm Lửa Phượng', zoneId: 'phoenix_chamber' }
+    ]
+  },
+
+  phoenix_chamber: {
+    name: 'Hầm Lửa Phượng',
+    description: 'Hang động thiêng liêng nơi Hỏa Phượng canh giữ.',
+    recommendedLevel: 50, monsterDensity: 'boss', allowCultivation: false,
+    zoneType: 'secret_realm' as const,
+    energyCostPerMove: 22,
+    deathPenalty: { energyCrystalLoss: 0.35 },
+    respawnLocation: 'moon_base',
+    monsters: [
+      { monsterId: 'fire_phoenix_boss', spawnChance: 1 }
+    ],
+    resources: [
+      { itemId: 'phoenix_feather', spawnChance: 0.2, quantity: [1, 1] },
+      { itemId: 'gene_solution_elite', spawnChance: 0.12, quantity: [1, 1] }
+    ],
+    connectedZones: [
+      { direction: 'rời khỏi hầm', zoneId: 'volcano_depths' }
+    ]
+  },
+
+  dimensional_rift: {
+    name: 'Khe Nứt Chiều Không',
+    description: 'Một khe nứt trong không gian dẫn đến các chiều không gian khác. Cực kỳ nguy hiểm.',
+    recommendedLevel: 55, monsterDensity: 'high', allowCultivation: false,
+    zoneType: 'secret_realm' as const,
+    energyCostPerMove: 25,
+    deathPenalty: { energyCrystalLoss: 0.4 },
+    respawnLocation: 'moon_base',
+    monsters: [
+      { monsterId: 'void_demon', spawnChance: 0.7 },
+      { monsterId: 'rift_horror', spawnChance: 0.3 }
+    ],
+    resources: [
+      { itemId: 'void_crystal', spawnChance: 0.3, quantity: [1, 2] },
+      { itemId: 'dimensional_essence', spawnChance: 0.15, quantity: [1, 1] }
+    ],
+    connectedZones: [
+      { direction: 'đến Trung Tâm Khe Nứt', zoneId: 'rift_core' }
+    ]
+  },
+
+  rift_core: {
+    name: 'Trung Tâm Khe Nứt',
+    description: 'Trung tâm của khe nứt chiều không, nơi Chúa Tể Hư Không cư trú.',
+    recommendedLevel: 60, monsterDensity: 'boss', allowCultivation: false,
+    zoneType: 'secret_realm' as const,
+    energyCostPerMove: 28,
+    deathPenalty: { energyCrystalLoss: 0.45 },
+    respawnLocation: 'moon_base',
+    monsters: [
+      { monsterId: 'void_lord_boss', spawnChance: 1 }
+    ],
+    resources: [
+      { itemId: 'void_lord_core', spawnChance: 0.25, quantity: [1, 1] },
+      { itemId: 'gene_solution_legendary', spawnChance: 0.08, quantity: [1, 1] }
+    ],
+    connectedZones: [
+      { direction: 'thoát khỏi khe nứt', zoneId: 'dimensional_rift' }
+    ]
+  },
+
+  // === SPACE EXPANSION (Feature 6) ===
+  
+  jupiter_orbit: {
+    name: 'Quỹ Đạo Sao Mộc',
+    description: 'Quỹ đạo xung quanh Sao Mộc với các mặt trăng khổng lồ. Trường hấp dẫn mạnh.',
+    recommendedLevel: 65, monsterDensity: 'medium', allowCultivation: false,
+    zoneType: 'space' as const,
+    energyCostPerMove: 20,
+    deathPenalty: { energyCrystalLoss: 0.3 },
+    respawnLocation: 'moon_base',
+    monsters: [
+      { monsterId: 'gas_giant_beast', spawnChance: 0.6 },
+      { monsterId: 'magnetic_anomaly', spawnChance: 0.4 }
+    ],
+    resources: [
+      { itemId: 'jupiter_gas', spawnChance: 0.4, quantity: [2, 5] },
+      { itemId: 'energy_crystal', spawnChance: 0.6, quantity: [15, 30] }
+    ],
+    connectedZones: []
+  },
+
+  saturn_rings: {
+    name: 'Vành Đai Sao Thổ',
+    description: 'Các vòng đá và băng quay quanh Sao Thổ. Cảnh quan tuyệt đẹp nhưng đầy nguy hiểm.',
+    recommendedLevel: 70, monsterDensity: 'high', allowCultivation: false,
+    zoneType: 'space' as const,
+    energyCostPerMove: 22,
+    deathPenalty: { energyCrystalLoss: 0.35 },
+    respawnLocation: 'moon_base',
+    monsters: [
+      { monsterId: 'ring_guardian', spawnChance: 0.5 },
+      { monsterId: 'ice_comet_beast', spawnChance: 0.5 }
+    ],
+    resources: [
+      { itemId: 'saturn_ice', spawnChance: 0.5, quantity: [3, 6] },
+      { itemId: 'cosmic_herb_mid', spawnChance: 0.3, quantity: [2, 4] }
+    ],
+    connectedZones: []
+  },
+
+  deep_space_nebula: {
+    name: 'Tinh Vân Không Gian Sâu',
+    description: 'Một tinh vân màu sắc rực rỡ chứa đầy năng lượng vũ trụ nguyên thủy.',
+    recommendedLevel: 75, monsterDensity: 'high', allowCultivation: true,
+    zoneType: 'space' as const,
+    energyCostPerMove: 25,
+    deathPenalty: { energyCrystalLoss: 0.4 },
+    respawnLocation: 'moon_base',
+    monsters: [
+      { monsterId: 'nebula_entity', spawnChance: 0.6 },
+      { monsterId: 'cosmic_horror', spawnChance: 0.4 }
+    ],
+    resources: [
+      { itemId: 'nebula_essence', spawnChance: 0.4, quantity: [1, 3] },
+      { itemId: 'cosmic_herb_mid', spawnChance: 0.5, quantity: [3, 7] }
+    ],
+    connectedZones: []
+  },
+
+  // === PLAYER HOUSING (Feature 8) ===
+  
+  personal_base: {
+    name: 'Căn Cứ Cá Nhân',
+    description: 'Căn cứ riêng của bạn. Nơi bạn có thể xây dựng và trang trí theo ý muốn.',
+    recommendedLevel: 1, monsterDensity: 'none', allowCultivation: true,
+    zoneType: 'base' as const,
+    energyCostPerMove: 0,
+    respawnLocation: 'personal_base',
+    connectedZones: [
+      { direction: 'về Giang Nam', zoneId: 'giang_nam_khu_dan_cu_01' }
+    ]
   }
 } as const
 
