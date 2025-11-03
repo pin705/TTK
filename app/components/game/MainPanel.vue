@@ -23,22 +23,19 @@
         <button
           v-for="tab in tabs"
           :key="tab.id"
-          class="flex-1 px-3 md:px-4 py-3 text-xs md:text-sm font-semibold focus:outline-none transition-all duration-300 flex items-center justify-center gap-2 relative group uppercase tracking-wider"
+          class="flex-1 px-3 md:px-4 py-3 text-xs md:text-sm font-bold focus:outline-none transition-all duration-300 flex items-center justify-center gap-2 relative group uppercase tracking-widest font-mono"
           :class="activeTab === tab.id 
             ? 'text-cultivation-gold-300 bg-gradient-to-b from-cultivation-gold-900/40 to-cultivation-gold-900/20 border-b-3 border-cultivation-gold-500 shadow-lg' 
             : 'text-cultivation-gold-600 hover:bg-cultivation-gold-900/20 hover:text-cultivation-gold-400'"
           @click="activeTab = tab.id"
         >
-          <Icon :name="tab.icon" class="h-4 w-4 transition-transform group-hover:scale-110" :class="activeTab === tab.id ? 'animate-pulse' : ''" />
-          <span class="hidden sm:inline">{{ tab.name }}</span>
+          <span>{{ activeTab === tab.id ? '>' : '' }}</span>
+          <span>{{ tab.name }}</span>
+          <span>{{ activeTab === tab.id ? '<' : '' }}</span>
           <!-- Active Indicator Glow -->
           <div 
             v-if="activeTab === tab.id"
-            class="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-cultivation-gold-400 to-transparent animate-pulse"
-          ></div>
-          <div 
-            v-if="activeTab === tab.id"
-            class="absolute inset-0 bg-gradient-to-b from-cultivation-gold-500/10 to-transparent pointer-events-none rounded-t-lg"
+            class="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-cultivation-gold-400 to-transparent"
           ></div>
         </button>
       </div>
@@ -47,7 +44,11 @@
       <div class="p-3 md:p-4 flex-grow overflow-y-auto custom-scrollbar">
         <GameTabsZoneTab v-if="activeTab === 'zone'" />
         <GameTabsCharacterTab v-if="activeTab === 'character'" />
+        <GameTabsEquipmentTab v-if="activeTab === 'equipment'" />
         <GameTabsQuestsTab v-if="activeTab === 'quests'" />
+        <GameTabsPetTab v-if="activeTab === 'pet'" />
+        <GameTabsGuildTab v-if="activeTab === 'guild'" />
+        <GameTabsSkillsTab v-if="activeTab === 'skills'" />
       </div>
     </div>
   </div>
@@ -60,9 +61,13 @@ type Tab = 'zone' | 'character' | 'quests'
 const activeTab = ref<Tab>('zone')
 
 const tabs = [
-  { id: 'zone', name: 'Khu Vực', icon: 'lucide:map' },
-  { id: 'character', name: 'Nhân Vật', icon: 'lucide:user' },
-  { id: 'quests', name: 'Nhiệm Vụ', icon: 'lucide:scroll-text' }
+  { id: 'zone', name: 'KHU VỰC' },
+  { id: 'character', name: 'NHÂN VẬT' },
+  { id: 'equipment', name: 'TRANG BỊ' },
+  { id: 'quests', name: 'NHIỆM VỤ' },
+  { id: 'pet', name: 'THÚ CƯỠI' },
+  { id: 'guild', name: 'LIÊN MINH' },
+  { id: 'skills', name: 'KỸ NĂNG' }
 ]
 </script>
 

@@ -1,39 +1,30 @@
 <template>
   <div
     v-if="mapStore.currentZone"
-    class="p-3 bg-gray-900/50 rounded-lg border border-purple-700/50 shadow-inner space-y-3"
+    class="p-3 bg-gray-900/50 border border-purple-700/50 shadow-inner space-y-3 font-mono"
   >
-    <h3 class="text-purple-400 font-semibold flex items-center gap-2">
-      <Icon name="lucide:zap" class="h-4 w-4 text-purple-500" />
-      Hành Động Khả Dụng
+    <h3 class="text-purple-400 font-bold uppercase tracking-wider">
+      > HÀNH ĐỘNG KHẢ DỤNG
     </h3>
     <div class="flex flex-wrap gap-2">
       <button
         v-for="exit in mapStore.currentZone.connectedZones"
         :key="exit.direction"
-        class="bg-gradient-to-r from-green-800/70 to-emerald-800/70 hover:from-green-700/70 hover:to-emerald-700/70 px-3 py-2 rounded-md disabled:opacity-50 border border-green-600/50 text-sm font-medium transition-all hover:scale-105 hover:shadow-lg flex items-center gap-1.5"
+        class="bg-gradient-to-r from-green-800/70 to-emerald-800/70 hover:from-green-700/70 hover:to-emerald-700/70 px-3 py-2 disabled:opacity-50 border border-green-600/50 text-sm font-bold transition-all uppercase tracking-wider"
         :disabled="isLoading"
         @click="performMove(exit.direction)"
       >
-        <Icon
-          name="lucide:map-pin"
-          class="h-4 w-4"
-        />
-        {{ exit.direction }}
+        > DI CHUYỂN: {{ exit.direction.toUpperCase() }}
       </button>
 
       <button
         v-for="resource in mapStore.currentZone.resources"
         :key="resource.itemId"
-        class="bg-gradient-to-r from-yellow-800/70 to-orange-800/70 hover:from-yellow-700/70 hover:to-orange-700/70 px-3 py-2 rounded-md disabled:opacity-50 border border-yellow-600/50 text-sm font-medium transition-all hover:scale-105 hover:shadow-lg flex items-center gap-1.5"
+        class="bg-gradient-to-r from-yellow-800/70 to-orange-800/70 hover:from-yellow-700/70 hover:to-orange-700/70 px-3 py-2 disabled:opacity-50 border border-yellow-600/50 text-sm font-bold transition-all uppercase tracking-wider"
         :disabled="isLoading"
         @click="performGather(resource.itemId)"
       >
-        <Icon
-          name="lucide:pickaxe"
-          class="h-4 w-4"
-        />
-        Thu thập {{ getResourceName(resource.itemId) }}
+        [ THU THẬP {{ getResourceName(resource.itemId).toUpperCase() }} ]
       </button>
 
       <!-- <button

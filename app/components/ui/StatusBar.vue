@@ -1,8 +1,8 @@
 <template>
   <div>
-    <div class="flex justify-between items-center text-xs mb-1" :class="labelColorClass">
-      <span class="font-bold flex items-center gap-1.5 uppercase tracking-wider">
-        <Icon v-if="icon" :name="icon" class="h-4 w-4" /> {{ label }}
+    <div class="flex justify-between items-center text-xs mb-1 font-mono" :class="labelColorClass">
+      <span class="font-bold uppercase tracking-wider">
+        {{ label }}:
       </span>
       <span class="font-mono font-semibold">{{ displayCurrent }} / {{ displayMax }}</span>
     </div>
@@ -25,7 +25,6 @@
 
 const props = defineProps({
   label: { type: String, required: true },
-  icon: { type: String, default: '' },
   current: { type: Number, required: true },
   max: { type: Number, required: true },
   colorClass: { type: String, required: true }, // Class Tailwind cho màu thanh bar (VD: 'bg-red-600')

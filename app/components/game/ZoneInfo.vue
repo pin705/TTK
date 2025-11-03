@@ -88,7 +88,7 @@ async function initiateCombat(monsterId: string) {
 <template>
   <div
     v-if="mapStore.currentZone"
-    class="p-3 md:p-4 space-y-4 text-sm border-2 border-cultivation-gold-700/40 rounded-xl bg-gradient-to-b from-gray-900/60 via-cultivation-gold-950/20 to-gray-900/60 shadow-xl relative overflow-hidden backdrop-blur-sm"
+    class="p-3 md:p-4 space-y-4 text-sm border-2 border-cultivation-gold-700/40 bg-gradient-to-b from-gray-900/60 via-cultivation-gold-950/20 to-gray-900/60 shadow-xl relative overflow-hidden backdrop-blur-sm font-mono"
   >
     <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-cultivation-gold-900/10 via-transparent to-transparent opacity-30 pointer-events-none" />
     
@@ -99,11 +99,8 @@ async function initiateCombat(monsterId: string) {
     <div class="absolute bottom-1 right-1 w-4 h-4 border-b-2 border-r-2 border-cultivation-gold-500/40"></div>
 
     <div class="relative z-10">
-      <h2 class="text-lg md:text-xl text-transparent bg-clip-text bg-gradient-to-r from-cultivation-gold-300 to-cultivation-jade-300 font-bold uppercase tracking-wider flex items-center gap-2 border-b-2 border-cultivation-gold-700/40 pb-2 mb-2">
-        <Icon
-          name="lucide:map-pin"
-          class="h-5 w-5 text-cultivation-gold-400"
-        /> {{ mapStore.currentZone.name }}
+      <h2 class="text-lg md:text-xl text-transparent bg-clip-text bg-gradient-to-r from-cultivation-gold-300 to-cultivation-jade-300 font-bold uppercase tracking-widest border-b-2 border-cultivation-gold-700/40 pb-2 mb-2">
+        > {{ mapStore.currentZone.name }}
       </h2>
       <p class="text-cultivation-gold-200/80 italic leading-relaxed text-xs md:text-sm">
         {{ mapStore.currentZone.description }}
@@ -111,75 +108,40 @@ async function initiateCombat(monsterId: string) {
     </div>
 
     <div class="grid grid-cols-2 md:grid-cols-3 gap-2 text-xs text-cultivation-gold-300/90 relative z-10 border-t-2 border-cultivation-gold-700/30 pt-3">
-      <span
-        class="flex items-center gap-1.5 bg-cultivation-gold-900/20 px-2 py-1.5 rounded-lg border border-cultivation-gold-700/30"
-        title="Cấp độ đề nghị"
-      >
-        <Icon
-          name="lucide:bar-chart"
-          class="h-4 w-4 text-cultivation-gold-400"
-        />
-        <span class="font-semibold">Lv. {{ mapStore.currentZone.recommendedLevel || '??' }}</span>
+      <span class="flex items-center gap-1.5 bg-cultivation-gold-900/20 px-2 py-1.5 border border-cultivation-gold-700/30">
+        <span class="text-cultivation-gold-400 font-bold">CẤP:</span>
+        <span class="font-semibold">{{ mapStore.currentZone.recommendedLevel || '??' }}</span>
       </span>
-      <span
-        class="flex items-center gap-1.5 bg-red-900/20 px-2 py-1.5 rounded-lg border border-red-700/30"
-        title="Mật độ sinh vật"
-      >
-        <Icon
-          name="lucide:bug"
-          class="h-4 w-4 text-red-400"
-        />
+      <span class="flex items-center gap-1.5 bg-red-900/20 px-2 py-1.5 border border-red-700/30">
+        <span class="text-red-400 font-bold">QUÁI:</span>
         <span class="font-semibold text-red-300">{{ monsterDensityText }}</span>
       </span>
-      <span
-        class="flex items-center gap-1.5 bg-cultivation-celestial-900/20 px-2 py-1.5 rounded-lg border border-cultivation-celestial-700/30"
-        title="Linh khí"
-      >
-        <Icon
-          name="lucide:wind"
-          class="h-4 w-4 text-cultivation-celestial-400"
-        />
+      <span class="flex items-center gap-1.5 bg-cultivation-celestial-900/20 px-2 py-1.5 border border-cultivation-celestial-700/30">
+        <span class="text-cultivation-celestial-400 font-bold">NĂNG LƯỢNG:</span>
         <span class="font-semibold text-cultivation-celestial-300">{{ energyFluctuationText }}</span>
       </span>
-      <span
-        class="flex items-center gap-1.5 bg-cultivation-mystic-900/20 px-2 py-1.5 rounded-lg border border-cultivation-mystic-700/30 col-span-2 md:col-span-1"
-        title="Tài nguyên"
-      >
-        <Icon
-          name="lucide:gem"
-          class="h-4 w-4 text-cultivation-mystic-400"
-        />
+      <span class="flex items-center gap-1.5 bg-cultivation-mystic-900/20 px-2 py-1.5 border border-cultivation-mystic-700/30 col-span-2 md:col-span-1">
+        <span class="text-cultivation-mystic-400 font-bold">TÀI NGUYÊN:</span>
         <span class="font-semibold text-cultivation-mystic-300">{{ resourceRarityText }}</span>
       </span>
       <span
         v-if="mapStore.currentZone.weatherEffect && mapStore.currentZone.weatherEffect !== 'none'"
-        class="flex items-center gap-1.5 bg-orange-900/20 px-2 py-1.5 rounded-lg border border-orange-700/30 col-span-2 md:col-span-2 animate-pulse"
-        title="Hiệu ứng môi trường"
+        class="flex items-center gap-1.5 bg-orange-900/20 px-2 py-1.5 border border-orange-700/30 col-span-2 md:col-span-2"
       >
-        <Icon
-          name="lucide:cloud-lightning"
-          class="h-4 w-4 text-orange-400"
-        />
+        <span class="text-orange-400 font-bold">THỜI TIẾT:</span>
         <span class="font-semibold text-orange-300">{{ mapStore.currentZone.weatherEffect }}</span>
       </span>
     </div>
 
     <div class="relative z-10 border-t-2 border-cultivation-gold-700/30 pt-3">
-      <h3 class="text-red-400 font-bold mb-3 flex items-center gap-2 uppercase tracking-wide">
-        <Icon
-          name="lucide:radar"
-          class="h-5 w-5 animate-spin"
-          style="animation-duration: 3s;"
-        /> Quét Sinh Vật Thù Địch
+      <h3 class="text-red-400 font-bold mb-3 uppercase tracking-widest">
+        > QUÉT SINH VẬT THÙ ĐỊCH
       </h3>
       <p
         v-if="!mapStore.currentZone.monsters?.length"
-        class="px-3 py-2 text-sm text-cultivation-jade-400 italic bg-cultivation-jade-900/20 rounded-lg border border-cultivation-jade-700/30"
+        class="px-3 py-2 text-sm text-cultivation-jade-400 italic bg-cultivation-jade-900/20 border border-cultivation-jade-700/30"
       >
-        <Icon
-          name="lucide:shield-check"
-          class="inline-block mr-2 h-4 w-4"
-        /> Tín hiệu an toàn. Không phát hiện mối đe dọa.
+        [ AN TOÀN ] Không phát hiện mối đe dọa.
       </p>
       <ul
         v-else
@@ -188,43 +150,35 @@ async function initiateCombat(monsterId: string) {
         <li
           v-for="monster in mapStore.currentZone.monsters"
           :key="monster.id"
-          class="p-3 bg-gradient-to-r from-gray-800/70 to-red-950/30 rounded-lg border-2 border-red-700/50 flex items-center justify-between hover:border-red-500/70 hover:shadow-lg hover:shadow-red-500/20 transition-all duration-200 group"
+          class="p-3 bg-gradient-to-r from-gray-800/70 to-red-950/30 border-2 border-red-700/50 flex items-center justify-between hover:border-red-500/70 transition-all duration-200 group"
         >
           <div class="flex-grow pr-3 overflow-hidden">
             <div class="flex justify-between items-baseline mb-1">
-              <span
-                class="font-bold text-red-300 truncate group-hover:text-red-200"
+              <button
+                class="font-bold text-red-300 truncate group-hover:text-red-200 hover:underline text-left"
                 :title="monster.name"
+                @click="showMonsterInfo(monster)"
               >
-                <Icon
-                  name="lucide:skull"
-                  class="inline-block mr-1.5 h-4 w-4 text-red-500 -mt-px"
-                />{{ monster.name }}
-              </span>
-              <span class="text-xs text-cultivation-gold-400 flex-shrink-0 ml-2 bg-cultivation-gold-900/30 px-2 py-0.5 rounded border border-cultivation-gold-700/40">Lv.{{ monster.level }}</span>
+                ▸ {{ monster.name }}
+              </button>
+              <span class="text-xs text-cultivation-gold-400 flex-shrink-0 ml-2 bg-cultivation-gold-900/30 px-2 py-0.5 border border-cultivation-gold-700/40">Lv.{{ monster.level }}</span>
             </div>
-            <div class="w-full bg-gradient-to-r from-red-950/80 to-red-900/80 rounded-lg h-3 relative overflow-hidden border-2 border-red-700/60 shadow-inner">
+            <div class="w-full bg-gradient-to-r from-red-950/80 to-red-900/80 h-3 relative overflow-hidden border-2 border-red-700/60 shadow-inner">
               <div class="absolute inset-0 flex items-center justify-center text-[10px] font-bold text-white/90 z-10 tracking-tight">
-                {{ monster.hp }} / {{ monster.maxHp }}
+                HP: {{ monster.hp }} / {{ monster.maxHp }}
               </div>
               <div
                 class="bg-gradient-to-r from-red-600 via-red-500 to-orange-500 h-full transition-all duration-500 ease-out relative"
                 :style="{ width: `${monsterHpPercent(monster)}%` }"
-              >
-                <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shimmer"></div>
-              </div>
+              />
             </div>
           </div>
           <button
-            class="bg-gradient-to-br from-red-700 to-red-800 hover:from-red-600 hover:to-red-700 p-2 rounded-lg text-red-100 flex-shrink-0 border-2 border-red-500/60 disabled:opacity-50 disabled:cursor-not-allowed transition-all hover:scale-110 active:scale-95 shadow-lg"
+            class="bg-gradient-to-br from-red-700 to-red-800 hover:from-red-600 hover:to-red-700 px-3 py-1.5 text-red-100 flex-shrink-0 border-2 border-red-500/60 disabled:opacity-50 disabled:cursor-not-allowed transition-all text-xs uppercase font-bold tracking-wider"
             :disabled="isLoading || playerStore.character?.inCombat"
-            title="Tấn công"
             @click="initiateCombat(monster.id)"
           >
-            <Icon
-              name="lucide:sword"
-              class="h-4 w-4"
-            />
+            [ ĐÁNH ]
           </button>
         </li>
       </ul>
@@ -232,16 +186,28 @@ async function initiateCombat(monsterId: string) {
   </div>
   <div
     v-else
-    class="p-4 text-center text-cultivation-gold-500 italic border-2 border-cultivation-gold-700/40 rounded-xl bg-gradient-to-br from-gray-900/60 to-cultivation-gold-950/20"
+    class="p-4 text-center text-cultivation-gold-500 italic border-2 border-cultivation-gold-700/40 bg-gradient-to-br from-gray-900/60 to-cultivation-gold-950/20"
   >
-    <UiLoadingSpinner class="h-5 w-5 inline mr-2" /> Đang tải dữ liệu khu vực...
+    [ ĐANG TẢI DỮ LIỆU KHU VỰC... ]
   </div>
+
+  <!-- Monster Info Modal -->
+  <GameMonsterInfoModal
+    :is-open="showMonsterModal"
+    :monster="selectedMonster"
+    @close="showMonsterModal = false"
+    @attack="handleAttack"
+    @tame="handleTame"
+  />
 </template>
 
 <script setup lang="ts">
 const mapStore = useMapStore()
 const playerStore = usePlayerStore()
 const { execute, isLoading } = useGameAction()
+
+const showMonsterModal = ref(false)
+const selectedMonster = ref(null)
 
 // --- Hàm tiện ích hiển thị ---
 function monsterHpPercent(monster: any): number {
@@ -274,6 +240,19 @@ const resourceRarityText = computed(() => {
 })
 
 // --- Hành động ---
+
+function showMonsterInfo(monster: any) {
+  selectedMonster.value = monster
+  showMonsterModal.value = true
+}
+
+async function handleAttack(monster: any) {
+  await initiateCombat(monster.id)
+}
+
+async function handleTame(monster: any) {
+  await execute('pet/tame', { monsterId: monster.id })
+}
 
 async function initiateCombat(monsterId: string) {
   // Kiểm tra nếu người chơi đã trong combat
