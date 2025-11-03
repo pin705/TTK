@@ -68,19 +68,19 @@ export default defineEventHandler(async (event) => {
 
   // 6. Tạo nhân vật mặc định nếu chưa có
   let exists = await Character.findOne({ userId: newUser._id })
-  if (!exists) {
-    // Tìm khu vực khởi đầu bằng ID định danh
+  // if (!exists) {
+  //   // Tìm khu vực khởi đầu bằng ID định danh
 
-    const startZone = ZoneManager.getStartZone()
-    if (!startZone)
-      throw createError({ statusCode: 500, message: 'Lỗi hệ thống: Không tìm thấy khu vực khởi đầu. Vui lòng chạy seed data.' })
+  //   const startZone = ZoneManager.getStartZone()
+  //   if (!startZone)
+  //     throw createError({ statusCode: 500, message: 'Lỗi hệ thống: Không tìm thấy khu vực khởi đầu. Vui lòng chạy seed data.' })
 
-    exists = await Character.create({
-      userId: newUser._id,
-      name: 'Người chơi',
-      currentZoneId: startZone.zoneId // Gán _id của khu vực khởi đầu
-    })
-  }
+  //   exists = await Character.create({
+  //     userId: newUser._id,
+  //     name: 'Người chơi',
+  //     currentZoneId: startZone.zoneId // Gán _id của khu vực khởi đầu
+  //   })
+  // }
 
   await setUserSession(event, {
     user: {

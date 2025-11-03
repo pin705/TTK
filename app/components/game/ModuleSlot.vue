@@ -1,11 +1,11 @@
 <template>
-  <div 
+  <div
     class="p-2 rounded-md border transition-all cursor-pointer"
     :class="moduleId ? 'bg-gradient-to-br from-purple-900/40 to-indigo-900/40 border-purple-600/60 hover:border-purple-500' : 'bg-gray-800/60 border-gray-700/80 hover:border-gray-600'"
   >
     <div class="text-center space-y-1">
-      <Icon 
-        :name="slotIcon" 
+      <Icon
+        :name="slotIcon"
         class="h-6 w-6 mx-auto"
         :class="moduleId ? 'text-purple-400' : 'text-gray-600'"
       />

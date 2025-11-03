@@ -14,10 +14,10 @@ export default defineEventHandler(async (event) => {
     return createError({ statusCode: 404, statusMessage: 'Không tìm thấy nhân vật' })
   }
 
-  const enrichedInventory = enrichInventory(character.inventory as any[])
+  // const enrichedInventory = enrichInventory(character.inventory as any[])
 
   return {
     ...character,
-    inventory: enrichedInventory
+    // inventory: enrichedInventory
   }
 })

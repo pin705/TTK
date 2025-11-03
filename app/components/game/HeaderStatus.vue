@@ -8,7 +8,7 @@
     <div class="absolute -top-1 -right-1 w-4 h-4 border-t-2 border-r-2 border-cultivation-gold-500/60"></div>
     <div class="absolute -bottom-1 -left-1 w-4 h-4 border-b-2 border-l-2 border-cultivation-gold-500/60"></div>
     <div class="absolute -bottom-1 -right-1 w-4 h-4 border-b-2 border-r-2 border-cultivation-gold-500/60"></div>
-    
+
     <div class="flex items-center space-x-3 md:space-x-4 mb-4">
       <div class="relative group flex-shrink-0">
         <div class="absolute inset-0 rounded-full bg-gradient-to-br from-cultivation-gold-500/20 to-cultivation-mystic-500/20 blur-lg animate-pulse"></div>
@@ -91,7 +91,7 @@
     <div class="grid grid-cols-1 gap-x-4 gap-y-2 mt-4 border-t border-cultivation-gold-700/30 pt-3 text-xs relative">
       <!-- Decorative divider line -->
       <div class="absolute top-0 left-1/2 -translate-x-1/2 w-16 h-px bg-gradient-to-r from-transparent via-cultivation-gold-500/50 to-transparent"></div>
-      
+
       <div class="col-span-2 md:col-span-1 text-center md:text-left mt-2 md:mt-0">
         <p class="text-[10px] text-cultivation-gold-500/70 uppercase tracking-widest mb-1 flex items-center justify-center md:justify-start gap-1">
           <Icon name="lucide:map" class="h-3 w-3" />

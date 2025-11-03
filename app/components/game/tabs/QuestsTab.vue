@@ -54,11 +54,11 @@
           Hoàn Thành
         </button>
       </div>
-      
+
       <p class="text-sm text-gray-300 leading-relaxed italic">
         {{ quest.description }}
       </p>
-      
+
       <div class="pt-2 border-t border-gray-700/50">
         <p class="text-xs text-gray-400 mb-2 font-semibold">Tiến độ:</p>
         <ul class="space-y-2">

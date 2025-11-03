@@ -35,9 +35,9 @@ export async function geneBreakthrough({ character }: ActionContext) {
   // Check if player has enough gene energy
   if (character.evolution.geneEnergy < currentRank.geneEnergyRequired) {
     return {
-      log: { 
-        message: `Chưa đủ Năng Lượng Gien để đột phá. Cần ${currentRank.geneEnergyRequired}, hiện có ${character.evolution.geneEnergy}.`, 
-        type: 'error' 
+      log: {
+        message: `Chưa đủ Năng Lượng Gien để đột phá. Cần ${currentRank.geneEnergyRequired}, hiện có ${character.evolution.geneEnergy}.`,
+        type: 'error'
       }
     }
   }
@@ -45,12 +45,12 @@ export async function geneBreakthrough({ character }: ActionContext) {
   // Check if player has required breakthrough item
   const requiredItem = (currentRank as any).breakthrough.requiresItem
   const hasItem = character.inventory.find(item => item.itemId === requiredItem && item.quantity > 0)
-  
+
   if (!hasItem) {
     return {
-      log: { 
-        message: `Cần vật phẩm: ${requiredItem} để thực hiện đột phá.`, 
-        type: 'error' 
+      log: {
+        message: `Cần vật phẩm: ${requiredItem} để thực hiện đột phá.`,
+        type: 'error'
       }
     }
   }
@@ -75,7 +75,7 @@ export async function geneBreakthrough({ character }: ActionContext) {
     if (nextRankId) {
       character.evolution.rank = nextRankId
       character.evolution.geneEnergy -= currentRank.geneEnergyRequired
-      
+
       // Apply stat gains
       if (currentRank.statGains) {
         character.hpMax += currentRank.statGains.hpMax || 0
@@ -90,10 +90,10 @@ export async function geneBreakthrough({ character }: ActionContext) {
 
       const nextRank = evolutionRanks[nextRankId as keyof typeof evolutionRanks]
       return {
-        log: { 
+        log: {
           message: `✨ Đột phá thành công! Bạn đã tiến hóa lên ${nextRank.name}!\n` +
-                   `HP: ${character.hpMax}, Năng Lượng: ${character.energyMax}, Công Kích: ${character.stats.attack}, Phòng Thủ: ${character.stats.defense}`, 
-          type: 'success' 
+                   `HP: ${character.hpMax}, Năng Lượng: ${character.energyMax}, Công Kích: ${character.stats.attack}, Phòng Thủ: ${character.stats.defense}`,
+          type: 'success'
         },
         updates: { character }
       }
@@ -103,7 +103,7 @@ export async function geneBreakthrough({ character }: ActionContext) {
     const penalty = (currentRank as any).breakthrough.failurePenalty
     if (penalty?.geneIntegrityLoss) {
       character.evolution.geneIntegrity = Math.max(0, character.evolution.geneIntegrity - penalty.geneIntegrityLoss)
-      
+
       // Add temporary debuff if gene integrity is low
       if (character.evolution.geneIntegrity < 50) {
         character.effects.push({
@@ -122,10 +122,10 @@ export async function geneBreakthrough({ character }: ActionContext) {
     await character.save()
 
     return {
-      log: { 
+      log: {
         message: `❌ Đột phá thất bại! Toàn Vẹn Gien giảm ${penalty?.geneIntegrityLoss || 0} điểm (còn ${character.evolution.geneIntegrity}/100).\n` +
-                 `Vật phẩm đã bị tiêu hao. Hãy nghỉ ngơi và thử lại sau.`, 
-        type: 'error' 
+                 `Vật phẩm đã bị tiêu hao. Hãy nghỉ ngơi và thử lại sau.`,
+        type: 'error'
       },
       updates: { character }
     }

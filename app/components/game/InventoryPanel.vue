@@ -30,7 +30,7 @@
           <div class="flex-shrink-0 w-10 h-10 bg-gradient-to-br from-gray-700 to-gray-800 rounded-md flex items-center justify-center border border-gray-600">
             <Icon :name="getItemIcon(item.itemId)" class="h-6 w-6" :class="getItemColor(item.itemId)" />
           </div>
-          
+
           <!-- Item Info -->
           <div class="flex-grow min-w-0">
             <p class="text-sm font-medium truncate group-hover:text-cyan-300 transition-colors" :class="getItemColor(item.itemId)">
@@ -45,7 +45,7 @@
 
         <!-- Quick Actions (on hover) -->
         <div class="absolute top-1 right-1 opacity-0 group-hover:opacity-100 transition-opacity">
-          <button 
+          <button
             v-if="isUsableItem(item.itemId)"
             class="p-1 bg-green-600/80 hover:bg-green-500 rounded text-white"
             title="Sử dụng"

@@ -18,11 +18,11 @@
               <Icon name="lucide:user" class="h-4 w-4 text-cyan-500" />
               Tên Nhân Vật
             </label>
-            <input 
-              id="character-name" 
-              v-model="characterName" 
-              type="text" 
-              required 
+            <input
+              id="character-name"
+              v-model="characterName"
+              type="text"
+              required
               minlength="3"
               maxlength="20"
               placeholder="Nhập tên nhân vật (3-20 ký tự)"
@@ -64,7 +64,7 @@
               <Icon name="lucide:sparkles" class="h-5 w-5" />
               Thông Tin Ban Đầu - {{ races[selectedRace].nameVi }}
             </h3>
-            
+
             <div class="grid grid-cols-2 gap-4 text-sm">
               <div class="space-y-1">
                 <p class="text-gray-400">Sinh Lực:</p>
@@ -177,7 +177,7 @@ async function handleCreateCharacter() {
   try {
     const response = await $fetch('/api/character/create', {
       method: 'POST',
-      body: { 
+      body: {
         name: characterName.value,
         race: selectedRace.value
       }

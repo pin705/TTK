@@ -8,7 +8,8 @@ export default defineNuxtConfig({
     '@vueuse/nuxt',
     '@vite-pwa/nuxt',
     '@pinia/nuxt',
-    '@nuxt/icon'
+    '@nuxt/icon',
+    '@nuxtjs/tailwindcss'
   ],
 
   ssr: false,
@@ -16,8 +17,6 @@ export default defineNuxtConfig({
   devtools: {
     enabled: false
   },
-
-  css: ['~/assets/css/tailwind.css'],
 
   app: {
     head: {
@@ -36,11 +35,9 @@ export default defineNuxtConfig({
     }
   },
 
-  compatibilityDate: '2025-01-15',
-  vite: {
-    plugins: [tailwindcss()]
-  },
+  css: ['~/assets/css/tailwind.css'],
 
+  compatibilityDate: '2025-01-15',
   eslint: {
     config: {
       stylistic: {

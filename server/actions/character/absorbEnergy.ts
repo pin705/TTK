@@ -42,17 +42,17 @@ export async function absorbEnergy({ character, payload }: ActionContext) {
   }
 
   const geneEnergyGained = Math.floor(amount * 10 * absorptionRate)
-  
+
   // Deduct energy crystals
   character.resources.energyCrystals -= amount
-  
+
   // Add gene energy
   character.evolution.geneEnergy += geneEnergyGained
 
   // Check for automatic rank up
   const currentRankId = character.evolution.rank as keyof typeof evolutionRanks
   const currentRank = evolutionRanks[currentRankId]
-  
+
   let rankUpMessage = ''
   if (character.evolution.geneEnergy >= currentRank.geneEnergyRequired) {
     // Auto rank up if no breakthrough required
@@ -61,7 +61,7 @@ export async function absorbEnergy({ character, payload }: ActionContext) {
       if (nextRankId) {
         character.evolution.rank = nextRankId
         character.evolution.geneEnergy -= currentRank.geneEnergyRequired
-        
+
         // Apply stat gains
         if (currentRank.statGains) {
           character.hpMax += currentRank.statGains.hpMax || 0
@@ -70,7 +70,7 @@ export async function absorbEnergy({ character, payload }: ActionContext) {
           character.stats.defense += currentRank.statGains.defense || 0
           character.hp = character.hpMax // Full heal on rank up
         }
-        
+
         rankUpMessage = ` 🎉 Bạn đã đạt đến ${evolutionRanks[nextRankId as keyof typeof evolutionRanks].name}!`
       }
     } else {
@@ -81,9 +81,9 @@ export async function absorbEnergy({ character, payload }: ActionContext) {
   await character.save()
 
   return {
-    log: { 
-      message: `Bạn đã hấp thụ ${amount} Tinh Thể Năng Lượng, nhận được ${geneEnergyGained} Năng Lượng Gien.${rankUpMessage}`, 
-      type: 'success' 
+    log: {
+      message: `Bạn đã hấp thụ ${amount} Tinh Thể Năng Lượng, nhận được ${geneEnergyGained} Năng Lượng Gien.${rankUpMessage}`,
+      type: 'success'
     },
     updates: { character }
   }

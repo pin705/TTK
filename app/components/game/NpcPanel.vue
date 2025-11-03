@@ -34,7 +34,7 @@
             >
               {{ npc.name }}
             </span>
-            
+
             <!-- Quest Status Badge -->
             <div v-if="npc.hasCompletableQuest" class="mt-1">
               <span class="inline-flex items-center gap-1 px-2 py-0.5 bg-green-900/50 border border-green-600/50 rounded-full text-xs text-green-400 animate-pulse">

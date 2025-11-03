@@ -59,7 +59,7 @@ export async function useRacialSkill(context: ActionContext, payload: RacialSkil
       const healAmount = Math.floor(character.hpMax * 0.3)
       character.hp = Math.min(character.hp + healAmount, character.hpMax)
       logs.push(`[HEAL]: Hồi phục ${healAmount} HP.`)
-      
+
       // Add temporary defense buff (would need effect system to track duration)
       if (!character.effects) {
         character.effects = []
@@ -93,7 +93,7 @@ export async function useRacialSkill(context: ActionContext, payload: RacialSkil
         const damage = Math.floor(character.stats.spirit * 1.5)
         logs.push(`[COMBAT]: Phóng ra 5 làn sóng niệm lực!`)
         logs.push(`[COMBAT]: Gây ${damage} sát thương tinh thần!`)
-        
+
         // Apply damage to current enemy (simplified)
         if (character.combat.monsterHp) {
           character.combat.monsterHp = Math.max(0, character.combat.monsterHp - damage)
@@ -137,10 +137,10 @@ export async function useRacialSkill(context: ActionContext, payload: RacialSkil
         const baseDamage = character.stats.attack * 3.0 // 300% damage
         const defense = 0 // Ignore 50% defense (simplified)
         const damage = Math.floor(baseDamage)
-        
+
         logs.push(`[COMBAT]: [Nhất Kích Tất Sát]!`)
         logs.push(`[COMBAT]: Gây ${damage} sát thương chí mạng và bỏ qua phòng thủ!`)
-        
+
         if (character.combat.monsterHp) {
           character.combat.monsterHp = Math.max(0, character.combat.monsterHp - damage)
         }

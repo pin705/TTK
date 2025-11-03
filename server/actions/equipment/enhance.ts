@@ -85,11 +85,11 @@ export async function enhanceEquipment(context: ActionContext, payload: EnhanceP
     // Success - create enhanced version
     logs.push(`[ENHANCEMENT]: Nâng cấp thành công!`)
     logs.push(`[ENHANCEMENT]: ${itemConfig.name} đã được cường hóa!`)
-    
+
     // For simplicity, we'll add a +1 suffix and increase stats
     // In a real system, you'd track enhancement level separately
     const enhancedItemId = `${payload.itemId}_enhanced`
-    
+
     // Remove original item
     itemSlot.quantity -= 1
     if (itemSlot.quantity <= 0) {
@@ -109,7 +109,7 @@ export async function enhanceEquipment(context: ActionContext, payload: EnhanceP
     // Failure
     logs.push(`[ENHANCEMENT]: Nâng cấp thất bại!`)
     logs.push(`[SYSTEM]: ${itemConfig.name} đã bị phá hủy.`)
-    
+
     // Remove the item
     itemSlot.quantity -= 1
     if (itemSlot.quantity <= 0) {
@@ -118,6 +118,6 @@ export async function enhanceEquipment(context: ActionContext, payload: EnhanceP
   }
 
   logs.push(`[INFO]: Tỷ lệ thành công: ${(successRate * 100).toFixed(0)}%`)
-  
+
   return { logs }
 }

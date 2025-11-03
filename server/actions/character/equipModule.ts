@@ -26,10 +26,10 @@ export async function equipModule({ character, payload }: ActionContext) {
       } else {
         character.inventory.push({ itemId: currentModule, quantity: 1 })
       }
-      
+
       character.evolution.modules[slotType] = null
       await character.save()
-      
+
       return {
         log: { message: `Đã gỡ module từ khe ${slotType}.`, type: 'success' },
         updates: { character }
@@ -93,9 +93,9 @@ export async function equipModule({ character, payload }: ActionContext) {
   await character.save()
 
   return {
-    log: { 
-      message: `Đã trang bị ${item.name} vào khe ${slotType}.`, 
-      type: 'success' 
+    log: {
+      message: `Đã trang bị ${item.name} vào khe ${slotType}.`,
+      type: 'success'
     },
     updates: { character }
   }
