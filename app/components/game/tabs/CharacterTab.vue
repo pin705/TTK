@@ -145,6 +145,7 @@
       >
         Không có điểm tiềm năng để phân phối. Hãy lên cấp để nhận thêm!
       </div>
+      </div>
     </div>
 
     <!-- Stats Section - Always expanded, compact view -->
