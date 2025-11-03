@@ -523,9 +523,9 @@ export const quests = {
     type: 'main',
     requiredLevel: 40,
     objectives: [
-      { type: 'talk', npcId: 'elder_sage', description: 'Tìm gặp Hiền Giả Cổ Lão' },
-      { type: 'explore', zoneId: 'dragon_tomb_entrance', description: 'Khám phá Lăng Mộ Rồng' },
-      { type: 'gather', itemId: 'dragon_scale_fragment', count: 10, description: 'Thu thập 10 Mảnh Vảy Rồng' }
+      { type: 'talk', npcId: 'vo_su_truong', description: 'Hỏi Võ Sư Trương về huyền thoại Rồng' },
+      { type: 'explore', zoneId: 'frozen_palace', description: 'Khám phá Cung Điện Băng Giá' },
+      { type: 'gather', itemId: 'frozen_crystal', count: 10, description: 'Thu thập 10 Tinh Thể Băng' }
     ],
     rewards: {
       exp: 5000,
@@ -543,8 +543,8 @@ export const quests = {
     type: 'main',
     requiredLevel: 42,
     objectives: [
-      { type: 'kill', monsterId: 'dragon_guardian', count: 3, description: 'Đánh bại 3 Vệ Binh Rồng' },
-      { type: 'kill', monsterId: 'ancient_dragon_spirit', count: 1, description: 'Chiến thắng Linh Hồn Rồng Cổ Đại' }
+      { type: 'kill', monsterId: 'ice_queen_boss', count: 1, description: 'Đánh bại Nữ Hoàng Băng' },
+      { type: 'kill', monsterId: 'void_lord_boss', count: 1, description: 'Chiến thắng Chúa Tể Hư Không' }
     ],
     rewards: {
       exp: 8000,
@@ -563,8 +563,7 @@ export const quests = {
     objectives: [
       { type: 'gather', itemId: 'dragon_scale_armor', count: 1, description: 'Sở hữu Giáp Vảy Rồng' },
       { type: 'gather', itemId: 'dragon_scale_gauntlets', count: 1, description: 'Sở hữu Găng Tay Vảy Rồng' },
-      { type: 'gather', itemId: 'dragon_scale_boots', count: 1, description: 'Sở hữu Giày Vảy Rồng' },
-      { type: 'kill', monsterId: 'elder_dragon', count: 1, description: 'Đánh bại Cổ Rồng' }
+      { type: 'gather', itemId: 'dragon_scale_boots', count: 1, description: 'Sở hữu Giày Vảy Rồng' }
     ],
     rewards: {
       exp: 15000,

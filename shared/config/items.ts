@@ -836,6 +836,61 @@ export const items = {
     description: 'Khu vực cho pet nghỉ ngơi, tăng exp pet.',
     effect: { type: 'pet_exp_boost', power: 0.3 }
   },
+
+  // === LEGENDARY QUEST ITEMS ===
+  
+  dragon_scale_fragment: {
+    name: 'Mảnh Vảy Rồng', type: 'resource', rarity: 'rare',
+    description: 'Mảnh vảy của rồng cổ đại.'
+  },
+
+  dragon_amulet: {
+    name: 'Bùa Hộ Mệnh Rồng', type: 'accessory', rarity: 'epic',
+    description: 'Bùa hộ mệnh mang sức mạnh rồng.',
+    stats: { attack: 25, defense: 25, hpMax: 300 }
+  },
+
+  dragon_soul_crystal: {
+    name: 'Tinh Thể Linh Hồn Rồng', type: 'consumable', rarity: 'legendary',
+    description: 'Linh hồn của rồng cổ đại, mở khóa sức mạnh tột cùng.',
+    effect: { type: 'legendary_unlock', unlock: 'dragon' }
+  },
+
+  phoenix_amulet: {
+    name: 'Bùa Hộ Mệnh Phượng', type: 'accessory', rarity: 'epic',
+    description: 'Bùa hộ mệnh mang sức mạnh hỏa phượng.',
+    stats: { attack: 28, spirit: 25, hpMax: 300 }
+  },
+
+  phoenix_essence: {
+    name: 'Tinh Túy Phượng Hoàng', type: 'consumable', rarity: 'legendary',
+    description: 'Tinh túy của hỏa phượng, sức mạnh tái sinh.',
+    effect: { type: 'legendary_unlock', unlock: 'phoenix' }
+  },
+
+  void_amulet: {
+    name: 'Bùa Hộ Mệnh Hư Không', type: 'accessory', rarity: 'epic',
+    description: 'Bùa hộ mệnh từ chiều không gian khác.',
+    stats: { attack: 26, speed: 15, critChance: 0.1 }
+  },
+
+  void_mastery_scroll: {
+    name: 'Cuốn Sách Làm Chủ Hư Không', type: 'consumable', rarity: 'legendary',
+    description: 'Bí quyết làm chủ sức mạnh hư không.',
+    effect: { type: 'legendary_unlock', unlock: 'void' }
+  },
+
+  cosmic_navigator: {
+    name: 'La Bàn Vũ Trụ', type: 'accessory', rarity: 'epic',
+    description: 'La bàn chỉ đường trong vũ trụ bao la.',
+    stats: { speed: 20, energyMax: 500 }
+  },
+
+  cosmic_mastery_tome: {
+    name: 'Sách Làm Chủ Vũ Trụ', type: 'consumable', rarity: 'legendary',
+    description: 'Bí quyết làm chủ sức mạnh vũ trụ.',
+    effect: { type: 'legendary_unlock', unlock: 'cosmic' }
+  },
 } as const
 
 export type ItemId = keyof typeof items;
