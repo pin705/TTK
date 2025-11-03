@@ -54,8 +54,23 @@ import { usePlayerStore } from '~/stores/player'
 
 const playerStore = usePlayerStore()
 
-const showHint = ref(true)
+const showHint = ref(false) // Start with false, will be set based on quest
 const currentHintIndex = ref(0)
+
+// Track dismissed tutorial quests in localStorage
+const dismissedTutorials = ref<string[]>([])
+
+onMounted(() => {
+  // Load dismissed tutorials from localStorage
+  const stored = localStorage.getItem('dismissedTutorials')
+  if (stored) {
+    try {
+      dismissedTutorials.value = JSON.parse(stored)
+    } catch (e) {
+      dismissedTutorials.value = []
+    }
+  }
+})
 
 // Tutorial hints based on active quest
 const hints = computed(() => {
@@ -69,6 +84,11 @@ const hints = computed(() => {
   )
 
   if (!tutorialQuest) return []
+  
+  // Check if this tutorial has been dismissed
+  if (dismissedTutorials.value.includes(tutorialQuest.questId)) {
+    return []
+  }
 
   switch (tutorialQuest.questId) {
     case 'tutorial_welcome':
@@ -106,10 +126,10 @@ const currentQuestObjective = computed(() => {
   const tutorialQuest = character.activeQuests.find((q: any) => 
     q.questId.startsWith('tutorial_')
   )
-  if (!tutorialQuest || !tutorialQuest.objectives || tutorialQuest.objectives.length === 0) return null
+  if (!tutorialQuest || !(tutorialQuest as any).objectives || (tutorialQuest as any).objectives.length === 0) return null
 
   // Find first incomplete objective
-  const incompleteObj = tutorialQuest.objectives.find((obj: any) => obj.current < obj.count)
+  const incompleteObj = (tutorialQuest as any).objectives.find((obj: any) => obj.current < obj.count)
   if (!incompleteObj) return null
 
   const typeLabels: Record<string, string> = {
@@ -136,15 +156,33 @@ function prevHint() {
 
 function dismissHint() {
   showHint.value = false
+  
+  // Save dismissal for current tutorial quest
+  const character = playerStore.character
+  if (character?.activeQuests) {
+    const tutorialQuest = character.activeQuests.find((q: any) => 
+      q.questId.startsWith('tutorial_')
+    )
+    if (tutorialQuest && !dismissedTutorials.value.includes(tutorialQuest.questId)) {
+      dismissedTutorials.value.push(tutorialQuest.questId)
+      localStorage.setItem('dismissedTutorials', JSON.stringify(dismissedTutorials.value))
+    }
+  }
 }
 
 // Auto-show hint when quest changes
-watch(() => playerStore.character?.activeQuests, () => {
+watch(() => playerStore.character?.activeQuests, (newQuests, oldQuests) => {
   if (hints.value.length > 0) {
-    showHint.value = true
-    currentHintIndex.value = 0
+    // Check if we have a new tutorial quest that hasn't been dismissed
+    const tutorialQuest = newQuests?.find((q: any) => q.questId.startsWith('tutorial_'))
+    if (tutorialQuest && !dismissedTutorials.value.includes(tutorialQuest.questId)) {
+      showHint.value = true
+      currentHintIndex.value = 0
+    }
+  } else {
+    showHint.value = false
   }
-}, { deep: true })
+}, { deep: true, immediate: true })
 </script>
 
 <style scoped>

@@ -36,8 +36,15 @@ export function useGameAction() {
       if (result.updates) {
         if (result.updates.character)
           playerStore.updateCharacter(result.updates.character)
-        if (result.updates.zone)
-          mapStore.uploadCurrentZone(result.updates.zone)
+        if (result.updates.zone) {
+          // If zone has zoneId property, it's a complete zone replacement (e.g., after defeat/respawn)
+          if (result.updates.zone.zoneId) {
+            mapStore.setCurrentZone(result.updates.zone)
+          } else {
+            // Otherwise, just update partial zone data (e.g., monster list)
+            mapStore.uploadCurrentZone(result.updates.zone)
+          }
+        }
       }
     } catch (error: any) {
       const message = error.data?.message || 'Có lỗi xảy ra'

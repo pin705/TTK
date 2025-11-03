@@ -1,5 +1,5 @@
 import type { ICharacter } from '~~/server/models/character.model'
-import { getExpRequiredForLevel, STAT_GAINS_PER_LEVEL, getRaceStatGains, applyRacialBonuses } from '~~/shared/config' // Import config mới
+import { getExpRequiredForLevel, STAT_GAINS_PER_LEVEL, getRaceStatGains, applyRacialBonuses, items } from '~~/shared/config' // Import config mới
 import type { LogPayload } from './logger' // Import LogPayload
 import type { RaceId } from '~~/shared/config/races'
 
@@ -75,26 +75,27 @@ export function recalculateStats(character: ICharacter) {
   const baseSpeed = 10 + (character.level - 1) * raceGains.speed
   const baseSpirit = 10 + (character.level - 1) * raceGains.spirit
 
-  // Logic tính chỉ số từ trang bị (equipment) - cần lấy data item từ config
-  const equipmentAttack = 0
-  const equipmentDefense = 0
-  // ...
+  // Tính chỉ số từ trang bị (equipment) - lấy data item từ config
+  const equipmentStats = calculateEquipmentStats(character)
 
   // Tính tổng
-  character.stats.attack = baseAttack + character.allocatedStats.attack + equipmentAttack
-  character.stats.defense = baseDefense + character.allocatedStats.defense + equipmentDefense
-  character.stats.speed = baseSpeed
-  character.stats.spirit = baseSpirit
-  // Tương tự cho các chỉ số khác...
+  character.stats.attack = baseAttack + character.allocatedStats.attack + equipmentStats.attack
+  character.stats.defense = baseDefense + character.allocatedStats.defense + equipmentStats.defense
+  character.stats.speed = baseSpeed + character.allocatedStats.speed + equipmentStats.speed
+  character.stats.spirit = baseSpirit + equipmentStats.spirit
+  character.stats.critChance = 0.05 + equipmentStats.critChance // Base 5% crit
+  character.stats.critDamage = 1.5 + equipmentStats.critDamage // Base 150% crit damage
+  character.stats.dodgeChance = 0.05 + equipmentStats.dodgeChance // Base 5% dodge
+  character.stats.resistance = 0 + equipmentStats.resistance
 
   // Apply racial bonuses
   if (character.race) {
     character.stats = applyRacialBonuses(character.stats, character.race as RaceId)
   }
 
-  // Cập nhật lại HP/Energy Max từ điểm cộng
-  character.hpMax = (100 + (character.level - 1) * raceGains.hpMax) + character.allocatedStats.hpMax // Giả sử base HP là 100
-  character.energyMax = (500 + (character.level - 1) * raceGains.energyMax) + character.allocatedStats.energyMax // Giả sử base Energy là 500
+  // Cập nhật lại HP/Energy Max từ điểm cộng + equipment
+  character.hpMax = (100 + (character.level - 1) * raceGains.hpMax) + character.allocatedStats.hpMax + equipmentStats.hpMax
+  character.energyMax = (500 + (character.level - 1) * raceGains.energyMax) + character.allocatedStats.energyMax + equipmentStats.energyMax
 
   // Đảm bảo HP/Energy hiện tại không vượt quá max mới
   character.hp = Math.min(character.hp, character.hpMax)
@@ -103,4 +104,60 @@ export function recalculateStats(character: ICharacter) {
   character.markModified('stats')
   character.markModified('hpMax')
   character.markModified('energyMax')
+}
+
+/**
+ * Tính toán tổng chỉ số từ trang bị hiện tại
+ */
+function calculateEquipmentStats(character: ICharacter) {
+  const stats = {
+    attack: 0,
+    defense: 0,
+    speed: 0,
+    spirit: 0,
+    critChance: 0,
+    critDamage: 0,
+    dodgeChance: 0,
+    resistance: 0,
+    hpMax: 0,
+    energyMax: 0
+  }
+  
+  // Check weapon
+  if (character.equipment.weapon) {
+    const weaponData = items[character.equipment.weapon as keyof typeof items]
+    if (weaponData?.stats) {
+      Object.keys(weaponData.stats).forEach(key => {
+        if (key in stats) {
+          stats[key as keyof typeof stats] += weaponData.stats[key] || 0
+        }
+      })
+    }
+  }
+
+  // Check armor
+  if (character.equipment.armor) {
+    const armorData = items[character.equipment.armor as keyof typeof items]
+    if (armorData?.stats) {
+      Object.keys(armorData.stats).forEach(key => {
+        if (key in stats) {
+          stats[key as keyof typeof stats] += armorData.stats[key] || 0
+        }
+      })
+    }
+  }
+
+  // Check accessory
+  if (character.equipment.accessory) {
+    const accessoryData = items[character.equipment.accessory as keyof typeof items]
+    if (accessoryData?.stats) {
+      Object.keys(accessoryData.stats).forEach(key => {
+        if (key in stats) {
+          stats[key as keyof typeof stats] += accessoryData.stats[key] || 0
+        }
+      })
+    }
+  }
+
+  return stats
 }

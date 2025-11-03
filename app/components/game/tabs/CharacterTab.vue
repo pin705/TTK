@@ -1,16 +1,64 @@
 <template>
   <div
     v-if="playerStore.character && currentRealm"
-    class="space-y-4 text-sm"
+    class="space-y-3 text-sm"
   >
-    <div class="p-3 bg-gray-900/50 rounded-lg border border-gray-700 shadow-inner">
-      <h3 class="text-yellow-400 border-b border-yellow-700/50 pb-1 mb-2 font-semibold flex items-center">
-        <Icon
-          name="lucide:swords"
-          class="mr-2 h-4 w-4 text-yellow-500"
-        /> Tu Luyện & Cảnh Giới
-      </h3>
-      <div class="grid grid-cols-2 gap-x-4 mb-2">
+    <!-- Character Identity Card -->
+    <div class="p-4 bg-gradient-to-br from-gray-900/70 to-gray-800/70 rounded-lg border-2 border-cyan-700/50 shadow-lg">
+      <div class="flex items-center gap-4 mb-3">
+        <div class="w-16 h-16 bg-gradient-to-br from-cyan-700/40 to-blue-700/40 rounded-full flex items-center justify-center border-2 border-cyan-600/50">
+          <Icon name="lucide:user" class="h-8 w-8 text-cyan-300" />
+        </div>
+        <div class="flex-grow">
+          <h2 class="text-xl font-bold text-cyan-300">{{ playerStore.character.name }}</h2>
+          <div class="flex items-center gap-2 text-sm text-gray-400">
+            <span class="px-2 py-0.5 bg-blue-900/50 rounded text-blue-300 border border-blue-700/50">{{ getRaceName(playerStore.character.race) }}</span>
+            <span class="px-2 py-0.5 bg-purple-900/50 rounded text-purple-300 border border-purple-700/50">{{ getClassName(playerStore.character.class) }}</span>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Quick Stats Grid -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
+        <div class="p-2 bg-gray-800/50 rounded border border-gray-700 text-center">
+          <Icon name="lucide:trending-up" class="h-4 w-4 mx-auto mb-1 text-cyan-400" />
+          <p class="text-xs text-gray-400">Cấp Độ</p>
+          <p class="text-white font-bold">Lv.{{ playerStore.character.level }}</p>
+        </div>
+        <div class="p-2 bg-gray-800/50 rounded border border-gray-700 text-center">
+          <Icon name="lucide:heart" class="h-4 w-4 mx-auto mb-1 text-red-400" />
+          <p class="text-xs text-gray-400">HP</p>
+          <p class="text-white font-bold text-xs">{{ playerStore.character.hp }}/{{ playerStore.character.hpMax }}</p>
+        </div>
+        <div class="p-2 bg-gray-800/50 rounded border border-gray-700 text-center">
+          <Icon name="lucide:zap" class="h-4 w-4 mx-auto mb-1 text-yellow-400" />
+          <p class="text-xs text-gray-400">Năng Lượng</p>
+          <p class="text-white font-bold text-xs">{{ playerStore.character.energy }}/{{ playerStore.character.energyMax }}</p>
+        </div>
+        <div class="p-2 bg-gray-800/50 rounded border border-gray-700 text-center">
+          <Icon name="lucide:gem" class="h-4 w-4 mx-auto mb-1 text-purple-400" />
+          <p class="text-xs text-gray-400">Điểm TN</p>
+          <p class="text-white font-bold">{{ playerStore.character.statPoints }}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Collapsible Sections -->
+    <!-- Cultivation Section -->
+    <details open class="group">
+      <summary class="cursor-pointer list-none">
+        <div class="p-3 bg-gray-900/50 rounded-lg border border-gray-700 shadow-inner hover:border-yellow-600/50 transition-colors">
+          <h3 class="text-yellow-400 font-semibold flex items-center justify-between">
+            <span class="flex items-center gap-2">
+              <Icon name="lucide:swords" class="h-4 w-4 text-yellow-500" />
+              Tu Luyện & Cảnh Giới
+            </span>
+            <Icon name="lucide:chevron-down" class="h-4 w-4 transition-transform group-open:rotate-180" />
+          </span>
+        </div>
+      </summary>
+      <div class="mt-2 p-3 bg-gray-900/50 rounded-lg border border-gray-700 shadow-inner space-y-2">
+      <div class="grid grid-cols-2 gap-x-4">
         <p>Cấp Độ: <span class="text-white font-bold">Lv.{{ playerStore.character.level }}</span></p>
         <p>Cảnh Giới Hiện Tại: <span class="text-white font-bold">{{ playerStore.character.cultivation.stage }}</span></p>
         <p>Ngộ Đạo: <span class="text-white">{{ playerStore.character.cultivation.comprehension }}</span></p>
@@ -75,19 +123,23 @@
         </p>
       </div>
     </div>
+    </details>
 
-    <div class="p-3 bg-gray-900/50 rounded-lg border border-gray-700 shadow-inner">
-      <h3 class="text-emerald-400 border-b border-emerald-700/50 pb-1 mb-2 font-semibold flex items-center justify-between">
-        <span class="flex items-center">
-          <Icon
-            name="lucide:gem"
-            class="mr-2 h-4 w-4 text-emerald-500"
-          /> Phân Phối Tiềm Năng
-        </span>
-        <span class="text-xs text-gray-400">Điểm còn lại:
-          <span class="text-white font-bold text-base ml-1">{{ playerStore.character.statPoints }}</span>
-        </span>
-      </h3>
+    <!-- Stat Allocation Section -->
+    <details open class="group">
+      <summary class="cursor-pointer list-none">
+        <div class="p-3 bg-gray-900/50 rounded-lg border border-gray-700 shadow-inner hover:border-emerald-600/50 transition-colors">
+          <h3 class="text-emerald-400 font-semibold flex items-center justify-between">
+            <span class="flex items-center gap-2">
+              <Icon name="lucide:gem" class="h-4 w-4 text-emerald-500" />
+              Phân Phối Tiềm Năng
+              <span class="text-xs text-gray-400">Còn lại: <span class="text-white font-bold text-base ml-1">{{ playerStore.character.statPoints }}</span></span>
+            </span>
+            <Icon name="lucide:chevron-down" class="h-4 w-4 transition-transform group-open:rotate-180" />
+          </h3>
+        </div>
+      </summary>
+      <div class="mt-2 p-3 bg-gray-900/50 rounded-lg border border-gray-700 shadow-inner">
       <div
         v-if="playerStore.character.statPoints > 0"
         class="space-y-2"
@@ -125,14 +177,22 @@
         Không có điểm tiềm năng để phân phối. Hãy lên cấp để nhận thêm!
       </div>
     </div>
+    </details>
 
-    <div class="p-3 bg-gray-900/50 rounded-lg border border-gray-700 shadow-inner">
-      <h3 class="text-cyan-400 border-b border-cyan-700/50 pb-1 mb-2 font-semibold flex items-center">
-        <Icon
-          name="lucide:bar-chart-3"
-          class="mr-2 h-4 w-4 text-cyan-500"
-        /> Bảng Thuộc Tính
-      </h3>
+    <!-- Stats Panel Section -->
+    <details open class="group">
+      <summary class="cursor-pointer list-none">
+        <div class="p-3 bg-gray-900/50 rounded-lg border border-gray-700 shadow-inner hover:border-cyan-600/50 transition-colors">
+          <h3 class="text-cyan-400 font-semibold flex items-center justify-between">
+            <span class="flex items-center gap-2">
+              <Icon name="lucide:bar-chart-3" class="h-4 w-4 text-cyan-500" />
+              Bảng Thuộc Tính
+            </span>
+            <Icon name="lucide:chevron-down" class="h-4 w-4 transition-transform group-open:rotate-180" />
+          </h3>
+        </div>
+      </summary>
+      <div class="mt-2 p-3 bg-gray-900/50 rounded-lg border border-gray-700 shadow-inner">
       <div class="grid grid-cols-2 md:grid-cols-3 gap-x-4 gap-y-1">
         <span class="flex items-center"><Icon
           name="lucide:sword"
@@ -174,14 +234,23 @@
         >{{ playerStore.character.karma }}</span></span>
       </div>
     </div>
+    </details>
 
-    <div class="p-3 bg-gray-900/50 rounded-lg border border-gray-700 shadow-inner">
-      <h3 class="text-orange-400 border-b border-orange-700/50 pb-1 mb-2 font-semibold flex items-center">
-        <Icon
-          name="lucide:wand-sparkles"
-          class="mr-2 h-4 w-4 text-orange-500"
-        /> Trạng Thái & Hiệu Ứng
-      </h3>
+    <!-- Status Effects Section -->
+    <details class="group">
+      <summary class="cursor-pointer list-none">
+        <div class="p-3 bg-gray-900/50 rounded-lg border border-gray-700 shadow-inner hover:border-orange-600/50 transition-colors">
+          <h3 class="text-orange-400 font-semibold flex items-center justify-between">
+            <span class="flex items-center gap-2">
+              <Icon name="lucide:wand-sparkles" class="h-4 w-4 text-orange-500" />
+              Trạng Thái & Hiệu Ứng
+              <span v-if="activeEffects.length > 0" class="text-xs bg-orange-900/50 px-2 py-0.5 rounded-full">{{ activeEffects.length }}</span>
+            </span>
+            <Icon name="lucide:chevron-down" class="h-4 w-4 transition-transform group-open:rotate-180" />
+          </h3>
+        </div>
+      </summary>
+      <div class="mt-2 p-3 bg-gray-900/50 rounded-lg border border-gray-700 shadow-inner">
       <div
         v-if="!activeEffects.length"
         class="text-sm text-gray-500 italic"
@@ -210,6 +279,10 @@
         </li>
       </ul>
     </div>
+    </details>
+
+    <!-- Equipment, Evolution, Inventory remain as is -->
+    <GameEquipmentPanel />
 
     <GameEvolutionPanel />
 
@@ -374,5 +447,27 @@ function effectIcon(effect: any): string {
   if (effect.hpRegenModifier < 0) return 'lucide:trending-down' // Debuff
   // Thêm icon cho các buff/debuff khác dựa trên effectId
   return 'lucide:sparkles' // Icon mặc định
+}
+
+// Hàm lấy tên chủng tộc
+function getRaceName(raceId: string): string {
+  const raceNames: Record<string, string> = {
+    human: 'Nhân Loại',
+    mutant: 'Dị Nhân',
+    esper: 'Linh Năng Giả',
+    cyborg: 'Cơ Giới Chiến Binh',
+    beastkin: 'Thú Nhân',
+    voidwalker: 'Hư Không Hành Giả'
+  }
+  return raceNames[raceId] || raceId
+}
+
+// Hàm lấy tên lớp nhân vật
+function getClassName(classId: string): string {
+  const classNames: Record<string, string> = {
+    Warrior: 'Chiến Binh',
+    SpiritReader: 'Độc Giả Tinh Thần'
+  }
+  return classNames[classId] || classId
 }
 </script>

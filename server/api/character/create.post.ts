@@ -46,6 +46,21 @@ export default defineEventHandler(async (event) => {
       dodgeChance: raceConfig.racialBonuses.dodgeChance || 0.05,
       resistance: raceConfig.racialBonuses.resistance || 0
     },
+    // Trang bị tân thủ - Starter equipment
+    inventory: [
+      { itemId: 'standard_combat_knife', quantity: 1 },
+      { itemId: 'standard_combat_vest', quantity: 1 },
+      { itemId: 'energy_solution', quantity: 3 }, // 3 dung dịch năng lượng
+      { itemId: 'energy_crystal', quantity: 100 } // 100 tinh thể năng lượng ban đầu
+    ],
+    equipment: {
+      weapon: 'standard_combat_knife', // Trang bị sẵn dao găm
+      armor: 'standard_combat_vest', // Trang bị sẵn áo giáp
+      accessory: null,
+      moduleSlot1: null,
+      moduleSlot2: null,
+      moduleSlot3: null
+    },
     // Auto-assign the welcome tutorial quest
     activeQuests: [{
       questId: 'tutorial_welcome',
