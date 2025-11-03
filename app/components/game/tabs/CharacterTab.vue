@@ -85,7 +85,7 @@
           Cần thêm {{ expNeeded }} Tu Vi để đột phá lên {{ nextRealm.name }}
         </p>
       </div>
-      </div>
+    </div>
     </div>
 
     <!-- Potential Points Section - Collapsible -->

@@ -41,10 +41,10 @@ export default defineEventHandler(async (event) => {
       defense: raceConfig.baseStats.defense,
       speed: raceConfig.baseStats.speed,
       spirit: raceConfig.baseStats.spirit,
-      critChance: raceConfig.racialBonuses.critChance || 0.05,
-      critDamage: raceConfig.racialBonuses.critDamage ? 1.5 + raceConfig.racialBonuses.critDamage : 1.5,
-      dodgeChance: raceConfig.racialBonuses.dodgeChance || 0.05,
-      resistance: raceConfig.racialBonuses.resistance || 0
+      critChance: (raceConfig.racialBonuses as any)?.critChance || 0.05,
+      critDamage: (raceConfig.racialBonuses as any)?.critDamage ? 1.5 + (raceConfig.racialBonuses as any).critDamage : 1.5,
+      dodgeChance: (raceConfig.racialBonuses as any)?.dodgeChance || 0.05,
+      resistance: (raceConfig.racialBonuses as any)?.resistance || 0
     },
     // Starter equipment set for beginners
     inventory: [

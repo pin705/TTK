@@ -62,13 +62,13 @@ export interface CharacterBaseStats {
  */
 export function applyRacialBonuses(baseStats: CharacterBaseStats, race: RaceId): CharacterBaseStats {
   const raceConfig = races[race]
-  const bonuses = raceConfig.racialBonuses
+  const bonuses = raceConfig.racialBonuses as any // Type assertion to handle varied bonus structures
   
   return {
     ...baseStats,
-    critChance: (baseStats.critChance || 0) + (bonuses.critChance || 0),
-    critDamage: (baseStats.critDamage || 1.5) + (bonuses.critDamage || 0),
-    dodgeChance: (baseStats.dodgeChance || 0) + (bonuses.dodgeChance || 0),
-    resistance: (baseStats.resistance || 0) + (bonuses.resistance || 0)
+    critChance: (baseStats.critChance || 0) + (bonuses?.critChance || 0),
+    critDamage: (baseStats.critDamage || 1.5) + (bonuses?.critDamage || 0),
+    dodgeChance: (baseStats.dodgeChance || 0) + (bonuses?.dodgeChance || 0),
+    resistance: (baseStats.resistance || 0) + (bonuses?.resistance || 0)
   }
 }

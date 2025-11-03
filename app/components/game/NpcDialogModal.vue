@@ -1,6 +1,9 @@
 <template>
-  <UModal v-model="isOpen" :ui="{ width: 'sm:max-w-2xl' }">
-    <div class="p-6 bg-gradient-to-br from-gray-900 to-gray-800">
+  <Teleport to="body">
+    <Transition name="modal">
+      <div v-if="isOpen" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm" @click.self="close">
+        <div class="relative w-full max-w-2xl bg-gradient-to-br from-gray-900 to-gray-800 rounded-lg shadow-2xl border border-gray-700" @click.stop>
+          <div class="p-6">
       <!-- NPC Header -->
       <div class="flex items-center gap-4 mb-4 pb-4 border-b border-gray-700">
         <div class="w-16 h-16 bg-gradient-to-br from-green-700/40 to-emerald-700/40 rounded-full flex items-center justify-center border-2 border-green-600/50">
@@ -94,8 +97,10 @@
           Đóng
         </button>
       </div>
-    </div>
-  </UModal>
+        </div>
+      </div>
+    </Transition>
+  </Teleport>
 </template>
 
 <script setup lang="ts">
@@ -202,3 +207,25 @@ watch(() => props.npcId, (newId) => {
   }
 }, { immediate: true })
 </script>
+
+<style scoped>
+.modal-enter-active,
+.modal-leave-active {
+  transition: opacity 0.2s ease;
+}
+
+.modal-enter-from,
+.modal-leave-to {
+  opacity: 0;
+}
+
+.modal-enter-active > div,
+.modal-leave-active > div {
+  transition: transform 0.2s ease;
+}
+
+.modal-enter-from > div,
+.modal-leave-to > div {
+  transform: scale(0.95);
+}
+</style>
