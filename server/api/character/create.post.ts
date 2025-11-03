@@ -46,6 +46,12 @@ export default defineEventHandler(async (event) => {
       dodgeChance: raceConfig.racialBonuses.dodgeChance || 0.05,
       resistance: raceConfig.racialBonuses.resistance || 0
     },
+    // Starter equipment set for beginners
+    inventory: [
+      { itemId: 'standard_combat_knife', quantity: 1 },
+      { itemId: 'standard_combat_vest', quantity: 1 },
+      { itemId: 'energy_solution', quantity: 3 }
+    ],
     // Auto-assign the welcome tutorial quest
     activeQuests: [{
       questId: 'tutorial_welcome',

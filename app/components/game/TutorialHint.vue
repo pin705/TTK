@@ -56,6 +56,21 @@ const playerStore = usePlayerStore()
 
 const showHint = ref(true)
 const currentHintIndex = ref(0)
+const dismissedQuests = ref<Set<string>>(new Set())
+
+// Load dismissed quests from localStorage on mount
+onMounted(() => {
+  if (typeof window !== 'undefined') {
+    const stored = localStorage.getItem('dismissedTutorialQuests')
+    if (stored) {
+      try {
+        dismissedQuests.value = new Set(JSON.parse(stored))
+      } catch (e) {
+        // Ignore parse errors
+      }
+    }
+  }
+})
 
 // Tutorial hints based on active quest
 const hints = computed(() => {
@@ -136,13 +151,34 @@ function prevHint() {
 
 function dismissHint() {
   showHint.value = false
+  
+  // Save to dismissed list
+  const character = playerStore.character
+  if (character?.activeQuests) {
+    const tutorialQuest = character.activeQuests.find((q: any) => 
+      q.questId.startsWith('tutorial_')
+    )
+    if (tutorialQuest) {
+      dismissedQuests.value.add(tutorialQuest.questId)
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('dismissedTutorialQuests', JSON.stringify(Array.from(dismissedQuests.value)))
+      }
+    }
+  }
 }
 
-// Auto-show hint when quest changes
+// Auto-show hint when quest changes (only if not dismissed)
 watch(() => playerStore.character?.activeQuests, () => {
-  if (hints.value.length > 0) {
-    showHint.value = true
-    currentHintIndex.value = 0
+  const character = playerStore.character
+  if (hints.value.length > 0 && character?.activeQuests) {
+    const tutorialQuest = character.activeQuests.find((q: any) => 
+      q.questId.startsWith('tutorial_')
+    )
+    // Only show if quest is not in dismissed list
+    if (tutorialQuest && !dismissedQuests.value.has(tutorialQuest.questId)) {
+      showHint.value = true
+      currentHintIndex.value = 0
+    }
   }
 }, { deep: true })
 </script>
