@@ -1,5 +1,5 @@
 import type { ICharacter } from '~~/server/models/character.model'
-import { getExpRequiredForLevel, STAT_GAINS_PER_LEVEL, getRaceStatGains, applyRacialBonuses } from '~~/shared/config' // Import config mới
+import { getExpRequiredForLevel, STAT_GAINS_PER_LEVEL, getRaceStatGains, applyRacialBonuses, items } from '~~/shared/config' // Import config mới
 import type { LogPayload } from './logger' // Import LogPayload
 import type { RaceId } from '~~/shared/config/races'
 
@@ -122,9 +122,6 @@ function calculateEquipmentStats(character: ICharacter) {
     hpMax: 0,
     energyMax: 0
   }
-
-  // Import items config
-  const { items } = await import('~~/shared/config')
   
   // Check weapon
   if (character.equipment.weapon) {

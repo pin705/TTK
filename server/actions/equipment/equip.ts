@@ -1,5 +1,6 @@
 import type { ActionHandler } from '../types'
 import type { ItemId } from '~~/shared/config'
+import { items } from '~~/shared/config'
 
 export const equipItem: ActionHandler = async ({ character, payload }) => {
   const { itemId } = payload as { itemId: ItemId }
