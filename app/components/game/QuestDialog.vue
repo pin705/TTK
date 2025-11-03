@@ -156,16 +156,17 @@ const canAccept = computed(() => {
 
 function formatObjective(objective: QuestObjective): string {
   const count = (objective as any).count || 1
+  const objAny = objective as any
   
   switch (objective.type) {
     case 'kill':
-      return `Tiêu diệt ${count} ${objective.monsterId}`
+      return `Tiêu diệt ${count} ${objAny.monsterId || ''}`
     case 'gather':
-      return `Thu thập ${count} ${getItemName(objective.itemId)}`
+      return `Thu thập ${count} ${getItemName(objAny.itemId || '')}`
     case 'talk':
-      return `Nói chuyện với ${objective.npcId}`
+      return `Nói chuyện với ${objAny.npcId || ''}`
     case 'explore':
-      return `Khám phá khu vực ${objective.zoneId}`
+      return `Khám phá khu vực ${objAny.zoneId || ''}`
     default:
       return objective.type
   }

@@ -127,7 +127,7 @@ const { execute, isLoading } = useGameAction()
 const equippableItems = computed(() => {
   if (!playerStore.character?.inventory) return []
   
-  return playerStore.character.inventory.filter(item => {
+  return playerStore.character.inventory.filter((item: any) => {
     const itemData = items[item.itemId as ItemId]
     return itemData && (
       itemData.type === 'weapon' || 
@@ -160,14 +160,15 @@ function getItemIcon(itemId: string): string {
 
 function getItemStats(itemId: string): string {
   const item = items[itemId as ItemId]
-  if (!item?.stats) return ''
+  if (!item || !('stats' in item)) return ''
   
   const statStrings: string[] = []
-  if (item.stats.attack) statStrings.push(`+${item.stats.attack} Tấn Công`)
-  if (item.stats.defense) statStrings.push(`+${item.stats.defense} Phòng Thủ`)
-  if (item.stats.spirit) statStrings.push(`+${item.stats.spirit} Tinh Thần`)
-  if (item.stats.speed) statStrings.push(`+${item.stats.speed} Tốc Độ`)
-  if (item.stats.hpMax) statStrings.push(`+${item.stats.hpMax} HP`)
+  const stats = item.stats as any
+  if (stats?.attack) statStrings.push(`+${stats.attack} Tấn Công`)
+  if (stats?.defense) statStrings.push(`+${stats.defense} Phòng Thủ`)
+  if (stats?.spirit) statStrings.push(`+${stats.spirit} Tinh Thần`)
+  if (stats?.speed) statStrings.push(`+${stats.speed} Tốc Độ`)
+  if (stats?.hpMax) statStrings.push(`+${stats.hpMax} HP`)
   
   return statStrings.join(', ')
 }

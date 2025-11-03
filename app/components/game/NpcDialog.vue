@@ -156,11 +156,11 @@ const completableQuests = computed(() => {
   if (!props.npcId || !playerStore.character) return []
   
   const completable: { id: QuestId, template: QuestTemplate }[] = []
-  playerStore.character.activeQuests.forEach((q) => {
+  playerStore.character.activeQuests.forEach((q: any) => {
     const template = quests[q.questId as QuestId]
     if (template && q.status === 'completed') {
       const lastObjective = template.objectives[template.objectives.length - 1]
-      if (lastObjective?.type === 'talk' && lastObjective.npcId === props.npcId) {
+      if (lastObjective?.type === 'talk' && (lastObjective as any).npcId === props.npcId) {
         completable.push({ id: q.questId as QuestId, template })
       }
     }

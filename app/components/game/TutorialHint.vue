@@ -126,10 +126,10 @@ const currentQuestObjective = computed(() => {
   const tutorialQuest = character.activeQuests.find((q: any) => 
     q.questId.startsWith('tutorial_')
   )
-  if (!tutorialQuest || !tutorialQuest.objectives || tutorialQuest.objectives.length === 0) return null
+  if (!tutorialQuest || !(tutorialQuest as any).objectives || (tutorialQuest as any).objectives.length === 0) return null
 
   // Find first incomplete objective
-  const incompleteObj = tutorialQuest.objectives.find((obj: any) => obj.current < obj.count)
+  const incompleteObj = (tutorialQuest as any).objectives.find((obj: any) => obj.current < obj.count)
   if (!incompleteObj) return null
 
   const typeLabels: Record<string, string> = {

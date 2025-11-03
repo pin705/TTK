@@ -138,7 +138,7 @@ const npcsInZoneDetails = computed(() => {
       hasCompletableQuest,
       questStatusTitle
     }
-  }).filter(npc => npc !== null)
+  }).filter((npc): npc is NonNullable<typeof npc> => npc !== null)
 })
 
 // NPC Dialog state
